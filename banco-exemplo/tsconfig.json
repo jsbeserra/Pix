@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+    "module": "commonjs",
+    "target": "es2019",
+    "esModuleInterop": true,
+    "allowJs": true,
+    "baseUrl": ".",
+    "isolatedModules": false,
+    "types": ["node", "jest"],
+    "resolveJsonModule":true,
+    "paths": {
+      "@main/*": ["./src/main/*"],
+      "@domain/*": ["./src/domain/*"],
+      "@application/*": ["./src/application/*"],
+      "@infra/*": ["./src/infra/*"],
+      "@presentation/*": ["./src/presentation/*"],
+      "@test/*": ["tests/*"]
+    } 
+  }
+}
