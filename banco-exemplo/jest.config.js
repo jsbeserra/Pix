@@ -16,9 +16,7 @@ module.exports = {
 		'^@main/(.*)$': '<rootDir>/src/main/$1',
 		'^@presentation/(.*)$': '<rootDir>/src/presentation/$1',
 		'^@shared/(.*)$': '<rootDir>/src/shared/$1',
-		'^@test/(.*)$': '<rootDir>/tests/$1',
-		'^@frameworks-and-drives/(.*)$': '<rootDir>/src/frameworks-and-drives/$1'
-		
+		'^@test/(.*)$': '<rootDir>/tests/$1'	
 	},
 	setupFiles: ['dotenv/config'],
 }

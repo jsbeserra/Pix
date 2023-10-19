@@ -1,0 +1,90 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API de Contas",
+        "version": "1.0.0",
+        "description": "Documentação da API de Contas"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:3005/api",
+            "description": "local server url"
+        }
+    ],
+    "paths": {
+        "/create/account": {
+            "post": {
+                "summary": "Cria uma nova conta",
+                "tags": [
+                    "Contas"
+                ],
+                "requestBody": {
+                    "description": "Dados da conta a ser criada",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "cpf": {
+                                        "type": "string",
+                                        "pattern": "^[0-9]{3}\\.[0-9]{3}\\.[0-9]{3}-[0-9]{2}$",
+                                        "description": "CPF do titular da conta (formato: XXX.XXX.XXX-XX)"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Nome do titular da conta"
+                                    },
+                                    "motherName": {
+                                        "type": "string",
+                                        "description": "Nome do titular da conta"
+                                    },
+                                    "dateOfBirth": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "description": "Nome do titular da conta"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Conta criada com sucesso"
+                    },
+                    "400": {
+                        "description": "Requisição inválida",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "exemplo-2": {
+                                        "value": {
+                                            "message": "error message",
+                                            "error": "Error"
+                                          }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Requisição inválida",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "exemplo-2": {
+                                        "value": {
+                                            "message": "Internal server error",
+                                            "error": "Error"
+                                          }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

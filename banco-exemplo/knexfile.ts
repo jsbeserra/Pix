@@ -1,10 +1,8 @@
+import type { Knex } from 'knex'
+
 // Update with your config settings.
 
-/**
- * @type { Object.<string, import("knex").Knex.Config> }
- */
-module.exports = {
-
+const knexConfig: { [key: string]: Knex.Config } = {
 	development: {
 		client: 'sqlite3',
 		connection: ':memory:',
@@ -15,7 +13,7 @@ module.exports = {
 		},
 		migrations: {
 			tableName: 'knex_migrations',
-			directory: './src/frameworks-and-drives/knex/migrations'
+			directory: './src/main/data-base/knex/migrations'
 		}
 	},
 
@@ -32,16 +30,17 @@ module.exports = {
 		},
 		migrations: {
 			tableName: 'knex_migrations',
-			directory: './src/frameworks-and-drives/knex/migrations'
+			directory: './src/main/data-base/knex/migrations'
 		}
 	},
 
 	production: {
 		client: 'postgresql',
 		connection: {
-			database: 'my_db',
-			user:     'username',
-			password: 'password'
+			database: 'bancoTeste',
+			user:     'admin',
+			password: '123@Mudar',
+			port: 5432
 		},
 		pool: {
 			min: 2,
@@ -49,8 +48,10 @@ module.exports = {
 		},
 		migrations: {
 			tableName: 'knex_migrations',
-			directory: './src/frameworks-and-drives/knex/migrations'
+			directory: './src/main/data-base/knex/migrations'
 		}
 	}
 
 }
+
+export default knexConfig

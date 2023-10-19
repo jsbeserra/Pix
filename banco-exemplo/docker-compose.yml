@@ -1,0 +1,14 @@
+version: '3.7'
+
+services:  
+  postgresdb:
+    container_name: banco-database
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: bancoTeste
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 123@Mudar
+    ports:
+      - 5432:5432
+    

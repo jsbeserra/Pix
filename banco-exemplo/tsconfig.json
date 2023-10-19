@@ -20,7 +20,7 @@
       "@application/*": ["./src/application/*"],
       "@infra/*": ["./src/infra/*"],
       "@presentation/*": ["./src/presentation/*"],
-      "@frameworks-and-drives/*": ["./src/frameworks-and-drives/*"],
+      "@frameworks-and-drives/*": ["src/main/*"],
       "@test/*": ["tests/*"]
     } 
   }

@@ -4,17 +4,22 @@
    "main": "index.js",
    "license": "MIT",
    "scripts": {
-      "test": "jest --passWithNoTests --silent --noStackTrace --runInBand --detectOpenHandles",
+      "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
       "test:verbose": "jest --passWithNoTests --runInBand --watchAll",
       "coverage": "jest --coverage",
-      "dev": "tsx watch src/main/main.ts --ignore node_modules",
+      "dev": "tsx watch src/main/server.ts --ignore node_modules",
       "lint": "eslint . --ext .ts --fix",
       "build": "tsc --project tsconfig.build.json && tscpaths -p tsconfig .json -s ./src -o ./dist",
-      "start": "ts-node src/index.ts"
+      "start": "ts-node src/index.ts",
+      "migration": "tsx knex migrate:up"
    },
    "dependencies": {
+      "cors": "^2.8.5",
       "dotenv": "^16.3.1",
+      "express": "^4.18.2",
       "knex": "^3.0.1",
+      "pg": "^8.11.3",
+      "swagger-ui-express": "^5.0.0",
       "tsconfig-paths": "^4.2.0"
    },
    "devDependencies": {
