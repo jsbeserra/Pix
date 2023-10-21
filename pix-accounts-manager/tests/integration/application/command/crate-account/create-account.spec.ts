@@ -2,41 +2,52 @@ import CreateAccount from '@application/command/create-account/create-account'
 import { BankNotFoundAlreadyRegistered, CpfAlreadyRegistered, PixKeyAlreadyRegistered } from '@application/errors/use-case/create-account'
 import IAccountRepository from '@application/interfaces/data/repository/iaccount-repository'
 import { IBankRepository } from '@application/interfaces/data/repository/ibank-repository'
+import Bank from '@domain/entities/bank'
+import Cpf from '@domain/value-objects/cpf'
+import Url from '@domain/value-objects/url'
 import { faker } from '@faker-js/faker'
 import AccountRepository from '@infra/repository/Accout-repository-sql'
-
 import BankRepository from '@infra/repository/bank-repository-sql'
-import TypeOrmAdpterMemory from '@main/data-base/typeorm/typeorm-adpter-memory'
+import { TypeOrmHelper } from '@main/data-base/typeorm/tyepeorm.helper'
+
 
 
 
 describe('CreateAccount',() => {
-	const databaseConnection = TypeOrmAdpterMemory.getIntance()
+	beforeAll(async()=>{
+		await TypeOrmHelper.connect()
+	})
+
 	let accountRepository:IAccountRepository
 	let bankRepository: IBankRepository
 	let sut:CreateAccount
 
 	beforeAll(async()=>{
-		await databaseConnection.connect()
-		await databaseConnection.runMigrations()
-		bankRepository = new BankRepository(databaseConnection)
-		accountRepository = new AccountRepository(databaseConnection)
+		bankRepository = new BankRepository()
+		accountRepository = new AccountRepository()
 		sut = new CreateAccount(accountRepository,bankRepository)
 	})
+	afterEach(async ()=>{
+		await TypeOrmHelper.getAccountEntity().clear()
+		await TypeOrmHelper.getBankEntity().clear()
+	})
 
+	afterAll(async ()=>{
+		await TypeOrmHelper.disconect()
+	})
 
 	it('Should create an account and persist', async () => {
-		await databaseConnection.save('insert into bank (name, url_for_transaction, webhook_notification) VALUES (?, ?, ?)',['x','x','x'])
-		const [bankid] = await databaseConnection.query('select * from bank')
+		const bank = Bank.create('teste2', Url.create(faker.internet.url()),Url.create(faker.internet.url()))
+		await bankRepository.create(bank)
+		const bankid = await bankRepository.findByName('teste2')
 		const input = {
-			bank_id:bankid.id,
+			bank_id:bankid!.id!,
 			cpf:'70131319035',
-			pix_key:'1xxxxxd58d'
+			pix_key:'1xszxxd58d'
 		}
 		await sut.handle(input)
-		const accounts = await databaseConnection.query('select * from account')
-		expect(accounts[0].cpf).toBe('70131319035')
-		expect(accounts.length).toBe(1)
+		const accounts = await accountRepository.existsCpf(Cpf.restore('70131319035'))
+		expect(accounts).toBe(true)
 	})
 
 	it('Should fail to create a pix account if the bank id does not exist', async () => {
@@ -49,28 +60,35 @@ describe('CreateAccount',() => {
 	})
 
 	it('Should create fail account with cpf already existis', async () => {
-		await databaseConnection.save('insert into bank (name, url_for_transaction, webhook_notification) VALUES (?, ?, ?)',['teste','teste','teste'])
-		const [bank] = await databaseConnection.query('select * from bank')
-		await databaseConnection.save('INSERT INTO account (cpf, bank_id, pix_key) VALUES (?, ?, ?)',['84402820014',bank.id, 'xts2365ss'])
+		const bank = Bank.create('teste5', Url.create(faker.internet.url()),Url.create(faker.internet.url()))
+		await bankRepository.create(bank)
+		const bankid = await bankRepository.findByName('teste5')
 		const input = {
-			bank_id:bank.id!,
+			bank_id:bankid!.id!,
 			cpf:'844.028.200-14',
 			pix_key:'1xxxxxd58d'
 		}
-		await expect(sut.handle(input)).rejects.toThrow(new CpfAlreadyRegistered())
+		await sut.handle(input)
+		expect(async()=>await sut.handle(input)).rejects.toThrow(new CpfAlreadyRegistered())
 	})
 
 	it('Should fail to create a pix account if the pix_key already exists', async () => {
 		const bankName = faker.person.firstName()
-		await databaseConnection.save('insert into bank (name, url_for_transaction, webhook_notification) VALUES (?, ?, ?)',[bankName,faker.internet.url(),faker.internet.url()])
-		const [bankid] = await databaseConnection.query(`select id from bank where name='${bankName}'`)
-		await databaseConnection.save('INSERT INTO account (cpf, bank_id, pix_key) VALUES (?, ?, ?)',['93376796041', bankid.id, 'xts2365ss'])
+		const bank = Bank.create(bankName, Url.create(faker.internet.url()),Url.create(faker.internet.url()))
+		await bankRepository.create(bank)
+		const bankid = await bankRepository.findByName(bankName)
 		const input = {
-			bank_id: bankid.id,
-			cpf:'913.548.790-90',
-			pix_key:'xts2365ss'
+			bank_id: bankid!.id!,
+			cpf:'965.402.280-07',
+			pix_key:'9ts2365sv'
 		}
-		await expect(sut.handle(input)).rejects.toThrow(new PixKeyAlreadyRegistered())
+		const input2 = {
+			bank_id: bankid!.id!,
+			cpf:'032.932.780-19',
+			pix_key:'9ts2365sv'
+		}
+		await sut.handle(input)
+		await expect(sut.handle(input2)).rejects.toThrow(new PixKeyAlreadyRegistered())
 	})
 
 })

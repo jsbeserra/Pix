@@ -1,8 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn, Generated } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, BaseEntity } from 'typeorm'
 import { Bank } from './Bank' // Importe a entidade Bank se você tiver uma
 
 @Entity()
-export default class Account {
+export default class Account extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
   	id: number
 
@@ -18,13 +18,10 @@ export default class Account {
   @UpdateDateColumn({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
   	updated_at: Date
 
-  // @Column({ type: 'uuid', nullable: true })
-  // 	bank_id: string
+  @Column({ nullable: true })
+  	bank_id: number
 
-  // @OneToOne(() => Bank)
-  // @JoinColumn({ name: 'bank_id' })
-  // 	bank: Bank
+  @ManyToOne(() => Bank, bank => bank.accounts) // Define a relação ManyToOne com a entidade Bank
+  @JoinColumn({ name: 'bank_id' }) // Define a coluna de chave estrangeira
+  	bank: Bank
 }
-
-
-

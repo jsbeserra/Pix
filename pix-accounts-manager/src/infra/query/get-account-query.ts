@@ -1,16 +1,24 @@
-import IDatabaseConnection from '@application/interfaces/data/connection/Idatabase-connection'
 import { AccountDto, IAccountQuery } from '@application/interfaces/data/query/account-query'
+import { TypeOrmHelper } from '@main/data-base/typeorm/tyepeorm.helper'
 
 export default class AccountQuery implements IAccountQuery{
-	constructor(private database:IDatabaseConnection){
+	constructor(){
 	}
 
 	async getAccountByPixKey(pix_key: string): Promise<AccountDto | undefined> {
-
-		const [account] = await this.database.query(`SELECT account.pix_key, account.cpf, bank.url_for_transaction, 
-		bank.webhook_notification from account inner join bank on account.bank_id = bank.id where account.pix_key = '${pix_key}'`)
+		const account = await TypeOrmHelper.getAccountEntity()
+			.createQueryBuilder('account')
+			.innerJoinAndSelect('account.bank', 'bank')
+			.where('account.pix_key = :pixKey', { pixKey: pix_key })
+			.getOne()
 		if (!account) return
-		return account as AccountDto
+		const output:AccountDto = {
+			cpf:account.cpf,
+			pix_key:account.pix_key,
+			url_for_transaction:account.bank.url_for_transaction,
+			webhook_notification:account.bank.webhook_notification
+		}
+		return output
 	}
 
 }

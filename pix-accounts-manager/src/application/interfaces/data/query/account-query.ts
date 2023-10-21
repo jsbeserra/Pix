@@ -1,6 +1,6 @@
 
 export interface AccountDto {
-    bank_id:string
+    // bank_id:string
     cpf:string
     pix_key:string
     url_for_transaction:string

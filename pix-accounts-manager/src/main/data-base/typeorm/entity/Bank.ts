@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm'
+import Account from './Account'
 
 @Entity()
 export class Bank {
@@ -19,4 +20,7 @@ export class Bank {
 
   @UpdateDateColumn({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
   	updated_at: Date
+
+  @OneToMany(() => Account, account => account.bank) // Define a relação OneToMany com a entidade Account
+  	accounts: Account[]
 }

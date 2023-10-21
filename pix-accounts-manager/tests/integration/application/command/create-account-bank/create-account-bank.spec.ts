@@ -1,19 +1,22 @@
 import CreateAccountBank from '@application/command/create-account-bank/create-account-bank'
 import { IBankRepository } from '@application/interfaces/data/repository/ibank-repository'
 import BankRepository from '@infra/repository/bank-repository-sql'
-import TypeOrmAdpterMemory from '@main/data-base/typeorm/typeorm-adpter-memory'
 import {faker} from '@faker-js/faker'
 import { BankAlreadyExists } from '@application/errors/use-case/create-account'
+import { TypeOrmHelper } from '@main/data-base/typeorm/tyepeorm.helper'
 describe('Create Account Bank',()=>{
-	const databaseConnection = TypeOrmAdpterMemory.getIntance()
 	let bankRepository: IBankRepository
 	let sut:CreateAccountBank
 
 	beforeAll(async()=>{
-		await databaseConnection.connect()
-		await databaseConnection.runMigrations()
-		bankRepository = new BankRepository(databaseConnection)
+		await TypeOrmHelper.connect()
+		bankRepository = new BankRepository()
 		sut = new CreateAccountBank(bankRepository)
+	})
+
+	afterAll(async ()=>{
+		await TypeOrmHelper.getBankEntity().clear()
+		await TypeOrmHelper.disconect()
 	})
 
 	it('Should crete bank account', async ()=>{
@@ -23,8 +26,8 @@ describe('Create Account Bank',()=>{
 			webhook_notification: faker.internet.url()
 		}
 		await sut.handle(input)
-		const [bank] = await databaseConnection.query(`select * from bank where name='${input.name}'`)
-		expect(bank.name).toBe(input.name)
+		const bank = await bankRepository.findByName(input.name)
+		expect(input.name).toBe(bank?.name)
 	})
 
 	it('Should fail when creating banks with repeated names', async ()=>{

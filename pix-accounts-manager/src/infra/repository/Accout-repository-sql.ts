@@ -1,28 +1,37 @@
 import IAccountRepository from '@application/interfaces/data/repository/iaccount-repository'
 import Account from '@domain/entities/account'
 import Cpf from '@domain/value-objects/cpf'
-import IDatabaseConnection from '@application/interfaces/data/connection/Idatabase-connection'
 import PixKey from '@domain/value-objects/pix-key'
+import { TypeOrmHelper } from '@main/data-base/typeorm/tyepeorm.helper'
+
 
 export default class AccountRepository implements IAccountRepository {
 
-	constructor(private database:IDatabaseConnection){
+	constructor(){
 	}
 
 	async existsPixKey(pixKey: PixKey): Promise<boolean> {
-		const exist = await this.database.query(`SELECT pix_key FROM account WHERE pix_key = '${pixKey.value}'`)
-		if (exist === undefined) return false
-		return exist.length > 0 ? true : false
+		const exist = await TypeOrmHelper.getAccountEntity().findOneBy({pix_key:pixKey.value})
+		console.log('0---------------------------------------------------------')
+		console.log(exist)
+		if (!exist) return false
+		return true
 	}
     
 	async create(account: Account): Promise<void> {
-		await this.database.save('INSERT INTO account (cpf, bank_id, pix_key) VALUES (?, ?, ?)',[account.cpf.value, account.bank.id, account.pixKey.value])
+		const bankId = parseInt(account.bank.id!)
+		const _account = TypeOrmHelper.getAccountEntity().create({
+			cpf:account.cpf.value,
+			pix_key: account.pixKey.value,
+			bank_id: bankId
+		})
+		await TypeOrmHelper.getAccountEntity().save(_account)
 	}
     
 	async existsCpf(cpf: Cpf): Promise<boolean> {
-		const exist = await this.database.query(`SELECT cpf FROM account WHERE cpf = '${cpf.value}'`)
-		if (exist === undefined) return false
-		return exist.length > 0 ? true : false
+		const exist = await TypeOrmHelper.getAccountEntity().findOneBy({cpf:cpf.value})
+		if (!exist) return false
+		return true
 	}
     
 }
