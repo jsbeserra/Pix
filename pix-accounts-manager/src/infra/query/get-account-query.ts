@@ -6,7 +6,6 @@ export default class AccountQuery implements IAccountQuery{
 	}
 
 	async getAccountByPixKey(pix_key: string): Promise<AccountDto | undefined> {
-		console.log(pix_key)
 		const account = await this.typeormAdpter.getAccountEntity()
 			.createQueryBuilder('account')
 			.innerJoinAndSelect('account.bank', 'bank')

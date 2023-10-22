@@ -23,4 +23,3 @@ describe('Create Account',()=>{
 		const account = Account.restore('1','45693014010',bank)
 		expect(account).toBeInstanceOf(Account)
 	})
-})
