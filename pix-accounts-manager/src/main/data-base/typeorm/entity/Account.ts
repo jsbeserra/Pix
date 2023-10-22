@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, BaseEntity } from 'typeorm'
-import { Bank } from './Bank' // Importe a entidade Bank se você tiver uma
+import { Bank } from './Bank'
 
 @Entity()
 export default class Account extends BaseEntity {
@@ -9,7 +9,7 @@ export default class Account extends BaseEntity {
   @Column({ type: 'varchar', length: 11, unique: true, nullable: false })
   	cpf: string
 
-  @Column({ type: 'varchar', length: 10, nullable: false })
+  @Column({ type: 'varchar', length: 10, unique: true, nullable: false })
   	pix_key: string
 
   @CreateDateColumn({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
@@ -21,7 +21,7 @@ export default class Account extends BaseEntity {
   @Column({ nullable: true })
   	bank_id: number
 
-  @ManyToOne(() => Bank, bank => bank.accounts) // Define a relação ManyToOne com a entidade Bank
-  @JoinColumn({ name: 'bank_id' }) // Define a coluna de chave estrangeira
+  @ManyToOne(() => Bank, bank => bank.accounts)
+  @JoinColumn({ name: 'bank_id' })
   	bank: Bank
 }

@@ -25,12 +25,14 @@ export class Accounts1697843348465 implements MigrationInterface {
 						name: 'url_for_transaction',
 						type: 'varchar',
 						length: '255',
+						isUnique: true,
 						isNullable: false,
 					},
 					{
 						name: 'webhook_notification',
 						type: 'varchar',
 						length: '255',
+						isUnique: true,
 						isNullable: false,
 					},
 					{

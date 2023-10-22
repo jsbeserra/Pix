@@ -9,10 +9,10 @@ export class Bank {
   @Column({ type: 'varchar', length: 255, unique: true, nullable: false })
   	name: string
 
-  @Column({ type: 'varchar', length: 255, nullable: false })
+  @Column({ type: 'varchar', length: 255,unique: true, nullable: false })
   	url_for_transaction: string
 
-  @Column({ type: 'varchar', length: 255, nullable: false })
+  @Column({ type: 'varchar', length: 255,unique: true, nullable: false })
   	webhook_notification: string
 
   @CreateDateColumn({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
@@ -21,6 +21,6 @@ export class Bank {
   @UpdateDateColumn({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
   	updated_at: Date
 
-  @OneToMany(() => Account, account => account.bank) // Define a relação OneToMany com a entidade Account
+  @OneToMany(() => Account, account => account.bank) 
   	accounts: Account[]
 }

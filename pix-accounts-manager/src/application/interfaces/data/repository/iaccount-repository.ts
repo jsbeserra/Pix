@@ -6,4 +6,5 @@ export default interface IAccountRepository {
     create(account:Account): Promise<void>
     existsCpf(cpf:Cpf): Promise<boolean>
     existsPixKey(pixKey:PixKey): Promise<boolean>
+    delete(pix_key:PixKey): Promise<void>
 }

@@ -17,7 +17,6 @@ import { TypeOrmHelper } from '@main/data-base/typeorm/tyepeorm.helper'
 
 
 describe('GetAccount',() => {
-	// const databaseConnection = TypeOrmAdpterMemory.getIntance()
 	let accountQuery:IAccountQuery
 	let accountRepository:IAccountRepository
 	let bankRepository: IBankRepository
