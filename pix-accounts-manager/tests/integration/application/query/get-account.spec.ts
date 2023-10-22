@@ -1,4 +1,5 @@
 import { PixKeyNotFound } from '@application/errors/application-error'
+import ICache from '@application/interfaces/data/cache/icache'
 import { IAccountQuery } from '@application/interfaces/data/query/account-query'
 import IAccountRepository from '@application/interfaces/data/repository/iaccount-repository'
 import { IBankRepository } from '@application/interfaces/data/repository/ibank-repository'
@@ -9,10 +10,13 @@ import Cpf from '@domain/value-objects/cpf'
 import PixKey from '@domain/value-objects/pix-key'
 import Url from '@domain/value-objects/url'
 import { faker } from '@faker-js/faker'
+import RedisCache from '@infra/cache/redis-cache'
 import AccountQuery from '@infra/query/get-account-query'
 import AccountRepository from '@infra/repository/Accout-repository-sql'
 import BankRepository from '@infra/repository/bank-repository-sql'
+import { RedisHelper } from '@main/data-base/redis/redis.helper'
 import { TypeOrmHelper } from '@main/data-base/typeorm/tyepeorm.helper'
+import Redis from 'ioredis-mock'
 
 
 
@@ -21,13 +25,16 @@ describe('GetAccount',() => {
 	let accountRepository:IAccountRepository
 	let bankRepository: IBankRepository
 	let sut:GetAccount
+	let cache:ICache
 
 	beforeAll(async()=>{
+		await RedisHelper.connect(new Redis())
 		await TypeOrmHelper.connect()
 		bankRepository = new BankRepository()
 		accountRepository = new AccountRepository()
 		accountQuery = new AccountQuery()
-		sut = new GetAccount(accountQuery)
+		cache = new RedisCache()
+		sut = new GetAccount(accountQuery,cache)
 	})
 
 	afterEach(async ()=>{
@@ -55,6 +62,31 @@ describe('GetAccount',() => {
 		expect(account.pix_key).toBe(input.pix_key)
 		expect(account.url_for_transaction).toBe(url_for_transaction)
 		expect(account.webhook_notification).toBe(webhook_notification)
+	})
+
+	it('Should return the cached account', async () => {
+		const url_for_transaction = faker.internet.url()
+		const webhook_notification = faker.internet.url()
+		const bankObject = Bank.create('teste2', Url.create(url_for_transaction),Url.create(webhook_notification))
+		await bankRepository.create(bankObject)
+		const bank = await bankRepository.findByName('teste2')
+		const input = {
+			pix_key:'888888aaa'
+		}
+		const account = Account.create(PixKey.create(input.pix_key),Cpf.create('049.459.470-58'),bank!)
+		await accountRepository.create(account)
+		const cacheData = {
+			cpf:account.cpf.value,
+			pix_key:account.pixKey.value,
+			url_for_transaction:account.bank.urlForTransactions.value,
+			webhook_notification:account.bank.webhookNotification.value
+		}
+		await cache.create(input.pix_key,JSON.stringify(cacheData),3000)		
+		const result = await sut.handle(input.pix_key)
+		expect(result.cpf).toBe('04945947058')
+		expect(result.pix_key).toBe(input.pix_key)
+		expect(result.url_for_transaction).toBe(url_for_transaction)
+		expect(result.webhook_notification).toBe(webhook_notification)
 	})
 
 	it('Should fail if it doesnt find a pix key', async () => {

@@ -13,20 +13,26 @@ import Account from '@domain/entities/account'
 import PixKey from '@domain/value-objects/pix-key'
 import Cpf from '@domain/value-objects/cpf'
 import { PixKeyNotFound } from '@application/errors/application-error'
-
+import { RedisHelper } from '@main/data-base/redis/redis.helper'
+import ICache from '@application/interfaces/data/cache/icache'
+import Redis from 'ioredis-mock'
+import RedisCache from '@infra/cache/redis-cache'
 
 describe('Delete Account',()=>{
 	let accountQuery:IAccountQuery
 	let accountRepository:IAccountRepository
 	let bankRepository: IBankRepository
 	let sut:DeleteAccount
-
+	let cache:ICache
+	
 	beforeAll(async()=>{
+		await RedisHelper.connect(new Redis())
 		await TypeOrmHelper.connect()
 		bankRepository = new BankRepository()
 		accountRepository = new AccountRepository()
 		accountQuery = new AccountQuery()
-		sut = new DeleteAccount(accountQuery,accountRepository)
+		cache = new RedisCache()
+		sut = new DeleteAccount(accountQuery,accountRepository,cache)
 	})
 
 	afterEach(async ()=>{
@@ -43,9 +49,12 @@ describe('Delete Account',()=>{
 		const bank = Bank.create('teste2', Url.create(faker.internet.url()),Url.create(faker.internet.url()))
 		await bankRepository.create(bank)
 		const bankData = await bankRepository.findByName('teste2')
+		await cache.create(pix_key,'fake payload',3000)
 		const account = Account.create(PixKey.create(pix_key),Cpf.create('990.650.830-22'),bankData!)
 		await accountRepository.create(account)
 		await expect(sut.handle(pix_key)).resolves.toBeUndefined()
+		const cachedAccount = await cache.find(pix_key)
+		expect(cachedAccount).toBeNull()
 	})
 
 	it('Should fail if pix key not found', async ()=>{
