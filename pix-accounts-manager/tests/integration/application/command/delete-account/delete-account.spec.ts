@@ -12,7 +12,8 @@ import Url from '@domain/value-objects/url'
 import Account from '@domain/entities/account'
 import PixKey from '@domain/value-objects/pix-key'
 import Cpf from '@domain/value-objects/cpf'
-import { PixKeyNotFound } from '@application/errors/use-case/get-account'
+import { PixKeyNotFound } from '@application/errors/application-error'
+
 
 describe('Delete Account',()=>{
 	let accountQuery:IAccountQuery

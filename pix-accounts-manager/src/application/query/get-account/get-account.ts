@@ -1,8 +1,8 @@
 import { usecase } from '../../command/usecase'
 import PixKey from '@domain/value-objects/pix-key'
-import { PixKeyNotFound } from '@application/errors/use-case/get-account'
 import { OutPutGetAccount } from './out-put-get-account'
 import { IAccountQuery } from '@application/interfaces/data/query/account-query'
+import { PixKeyNotFound } from '@application/errors/application-error'
 
 export default class GetAccount implements usecase {
 

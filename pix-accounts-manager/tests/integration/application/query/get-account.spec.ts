@@ -1,4 +1,4 @@
-import { PixKeyNotFound } from '@application/errors/use-case/get-account'
+import { PixKeyNotFound } from '@application/errors/application-error'
 import { IAccountQuery } from '@application/interfaces/data/query/account-query'
 import IAccountRepository from '@application/interfaces/data/repository/iaccount-repository'
 import { IBankRepository } from '@application/interfaces/data/repository/ibank-repository'

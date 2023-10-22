@@ -1,8 +1,8 @@
 import { usecase } from '../usecase'
 import PixKey from '@domain/value-objects/pix-key'
 import { IAccountQuery } from '@application/interfaces/data/query/account-query'
-import { PixKeyNotFound } from '@application/errors/use-case/get-account'
 import IAccountRepository from '@application/interfaces/data/repository/iaccount-repository'
+import { PixKeyNotFound } from '@application/errors/application-error'
 
 
 export default class DeleteAccount implements usecase {
