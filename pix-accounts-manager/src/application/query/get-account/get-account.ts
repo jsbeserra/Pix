@@ -7,7 +7,7 @@ import ICache from '@application/interfaces/data/cache/icache'
 
 export default class GetAccount implements usecase {
 
-	constructor(private query:IAccountQuery, private cache:ICache){}
+	constructor(private query:IAccountQuery, private cache:ICache, private cacheExpireIn:number){}
 
 	async handle(input_pix_key: string): Promise<OutPutGetAccount> {
 		const pix_key = PixKey.create(input_pix_key)
@@ -16,7 +16,7 @@ export default class GetAccount implements usecase {
 		const account = await this.query.getAccountByPixKey(pix_key.value)
 		if (!account) throw new PixKeyNotFound()
 		const output:OutPutGetAccount = account
-		await this.cache.create(input_pix_key,JSON.stringify(output),3000)
+		await this.cache.create(input_pix_key,JSON.stringify(output),this.cacheExpireIn)
 		return output
 	}
     

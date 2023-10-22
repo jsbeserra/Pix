@@ -7,7 +7,7 @@ import PixKey from '@domain/value-objects/pix-key'
 import { PixKeyValueNotFound } from '@application/errors/query/check-accounts-and-bring-the-data-errors'
 
 export default class CheckAccountsAndBringTheData implements usecase {
-	constructor(private query:IAccountQuery, private cache:ICache){}
+	constructor(private query:IAccountQuery, private cache:ICache, private cacheExpireIn:number){}
 
 	async handle(input: InputcheckAccountsAndBringTheData): Promise<OutPutcheckAccountsAndBringTheData> {
 		this.validateInput(input)
@@ -15,16 +15,16 @@ export default class CheckAccountsAndBringTheData implements usecase {
 		if (!cachedData.payer && !cachedData.receiver){
 			const payerAccount = await this.getAccountPayer(input.payer_pix_key)
 			const receiverAccount = await this.getAccountReceiver(input.receiver_pix_key)
-			await this.cache.create(input.payer_pix_key,JSON.stringify(payerAccount),1200)
-			await this.cache.create(input.receiver_pix_key,JSON.stringify(receiverAccount),1200)
+			await this.cache.create(input.payer_pix_key,JSON.stringify(payerAccount),this.cacheExpireIn)
+			await this.cache.create(input.receiver_pix_key,JSON.stringify(receiverAccount),this.cacheExpireIn)
 			return this.createOutput(payerAccount,receiverAccount)
 		} else if (cachedData.payer && !cachedData.receiver){
 			const receiverAccount = await this.getAccountReceiver(input.receiver_pix_key)
-			await this.cache.create(input.receiver_pix_key,JSON.stringify(receiverAccount),1200)
+			await this.cache.create(input.receiver_pix_key,JSON.stringify(receiverAccount),this.cacheExpireIn)
 			return this.createOutput(JSON.parse(cachedData.payer),receiverAccount)
 		} else if (!cachedData.payer && cachedData.receiver){
 			const payerAccount = await this.getAccountPayer(input.payer_pix_key)
-			await this.cache.create(input.payer_pix_key,JSON.stringify(payerAccount),1200)
+			await this.cache.create(input.payer_pix_key,JSON.stringify(payerAccount),this.cacheExpireIn)
 			return this.createOutput(payerAccount,JSON.parse(cachedData.receiver!))
 		} else {
 			return this.createOutput(JSON.parse(cachedData.payer!),JSON.parse(cachedData.receiver!))

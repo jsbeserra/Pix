@@ -34,7 +34,8 @@ describe('GetAccount',() => {
 		accountRepository = new AccountRepository()
 		accountQuery = new AccountQuery()
 		cache = new RedisCache()
-		sut = new GetAccount(accountQuery,cache)
+		const cacheExpireIn = 60
+		sut = new GetAccount(accountQuery,cache,cacheExpireIn)
 	})
 
 	afterEach(async ()=>{

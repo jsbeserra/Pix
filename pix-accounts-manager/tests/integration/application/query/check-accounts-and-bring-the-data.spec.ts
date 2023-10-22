@@ -37,7 +37,8 @@ describe('CheckAccountsAndBringTheData',() => {
 		accountRepository = new AccountRepository()
 		accountQuery = new AccountQuery()
 		cache = new RedisCache()
-		sut = new CheckAccountsAndBringTheData(accountQuery,cache)
+		const cacheExpireIn = 60
+		sut = new CheckAccountsAndBringTheData(accountQuery,cache,cacheExpireIn)
 	})
 
 	afterEach(async ()=>{
