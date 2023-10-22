@@ -3,25 +3,18 @@ import { Bank } from './Bank'
 
 @Entity()
 export default class Account extends BaseEntity {
-  @PrimaryGeneratedColumn('increment')
-  	id: number
+	@PrimaryGeneratedColumn('uuid') id: string
 
-  @Column({ type: 'varchar', length: 11, unique: true, nullable: false })
-  	cpf: string
+	@Column({ type: 'varchar', length: 11, unique: true, nullable: false }) cpf: string
 
-  @Column({ type: 'varchar', length: 10, unique: true, nullable: false })
-  	pix_key: string
+	@Column({ type: 'varchar', length: 10, unique: true, nullable: false }) pix_key: string
 
-  @CreateDateColumn({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
-  	created_at: Date
+	@CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' }) created_at: Date
 
-  @UpdateDateColumn({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
-  	updated_at: Date
+	@UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' }) updated_at: Date
 
-  @Column({ nullable: true })
-  	bank_id: number
+	@Column({ nullable: true, type:'uuid',unique:false }) bank_id: string
 
-  @ManyToOne(() => Bank, bank => bank.accounts)
-  @JoinColumn({ name: 'bank_id' })
-  	bank: Bank
+	@ManyToOne(() => Bank, bank => bank.accounts)
+	@JoinColumn({ name: 'bank_id' })bank: Bank
 }

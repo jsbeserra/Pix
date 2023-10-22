@@ -3,42 +3,42 @@ import Account from '@domain/entities/account'
 import Cpf from '@domain/value-objects/cpf'
 import PixKey from '@domain/value-objects/pix-key'
 import { TransactionFailed } from '@infra/errors/repository/create-account'
-import { TypeOrmHelper } from '@main/data-base/typeorm/tyepeorm.helper'
+import ITypeOrmAdpter from '@infra/itypeorm-adpter'
 
 
-export default class AccountRepository implements IAccountRepository {
+export default class AccountRepositoryTypeOrm implements IAccountRepository {
 
-	constructor(){
+	constructor(readonly typeormAdpter:ITypeOrmAdpter){
 	}
 
 	async existsPixKey(pixKey: PixKey): Promise<boolean> {
-		const exist = await TypeOrmHelper.getAccountEntity().findOneBy({pix_key:pixKey.value})
+		const exist = await this.typeormAdpter.getAccountEntity().findOneBy({pix_key:pixKey.value})
 		if (!exist) return false
 		return true
 	}
     
 	async create(account: Account): Promise<void> {
-		const bankId = parseInt(account.bank.id!)
-		const _account = TypeOrmHelper.getAccountEntity().create({
+		const _account = this.typeormAdpter.getAccountEntity().create({
 			cpf:account.cpf.value,
 			pix_key: account.pixKey.value,
-			bank_id: bankId
+			bank_id: account.bank.id
 		})
-		await TypeOrmHelper.getAccountEntity().save(_account)
+		await this.typeormAdpter.getAccountEntity().save(_account)
+		
 	}
     
 	async existsCpf(cpf: Cpf): Promise<boolean> {
-		const exist = await TypeOrmHelper.getAccountEntity().findOneBy({cpf:cpf.value})
+		const exist = await this.typeormAdpter.getAccountEntity().findOneBy({cpf:cpf.value})
 		if (!exist) return false
 		return true
 	}
 
 	async delete(pix_key:PixKey): Promise<void> {
 		try {
-			await TypeOrmHelper.manager().transaction(async transactionalEntityManager => {
-				const accountData = await TypeOrmHelper.getAccountEntity().findOneBy({pix_key:pix_key.value})
-				const bankData = await TypeOrmHelper.getBankEntity().findOneBy({id:accountData!.bank_id})
-				const accountHistory = TypeOrmHelper.getHistoryAccountEntity().create({
+			await this.typeormAdpter.manager().transaction(async transactionalEntityManager => {
+				const accountData = await this.typeormAdpter.getAccountEntity().findOneBy({pix_key:pix_key.value})
+				const bankData = await this.typeormAdpter.getBankEntity().findOneBy({id:accountData!.bank_id})
+				const accountHistory = this.typeormAdpter.getHistoryAccountEntity().create({
 					cpf:accountData!.cpf,
 					bank_name:bankData!.name,
 					bank_url_for_transaction:bankData!.url_for_transaction,

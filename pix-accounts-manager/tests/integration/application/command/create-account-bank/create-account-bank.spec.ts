@@ -1,22 +1,27 @@
 import CreateAccountBank from '@application/command/create-account-bank/create-account-bank'
 import { IBankRepository } from '@application/interfaces/data/repository/ibank-repository'
-import BankRepository from '@infra/repository/bank-repository-sql'
 import {faker} from '@faker-js/faker'
 import { BankAlreadyExists } from '@application/errors/use-case/create-account'
-import { TypeOrmHelper } from '@main/data-base/typeorm/tyepeorm.helper'
+import TypeOrmHelperAdpterMemory from '@test/integration/typeorm/typeorm-adpter-memory'
+import ITypeOrmAdpter from '@infra/itypeorm-adpter'
+import BankRepositoryTypeOrm from '@infra/repository/bank-repository-typeorm'
+
+
 describe('Create Account Bank',()=>{
 	let bankRepository: IBankRepository
 	let sut:CreateAccountBank
+	let typeormAdpter:ITypeOrmAdpter
 
 	beforeAll(async()=>{
-		await TypeOrmHelper.connect()
-		bankRepository = new BankRepository()
+		typeormAdpter = new TypeOrmHelperAdpterMemory()
+		await typeormAdpter.connect()
+		bankRepository = new BankRepositoryTypeOrm(typeormAdpter)
 		sut = new CreateAccountBank(bankRepository)
 	})
 
 	afterAll(async ()=>{
-		await TypeOrmHelper.getBankEntity().clear()
-		await TypeOrmHelper.disconect()
+		await typeormAdpter.getBankEntity().clear()
+		await typeormAdpter.disconect()
 	})
 
 	it('Should crete bank account', async ()=>{

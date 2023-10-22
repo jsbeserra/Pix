@@ -4,11 +4,6 @@ export const RedisHelper = {
 	client: Redis,
 	async connect (redisIntance:Redis) : Promise<void> {
 		this.client = redisIntance
-		// this.client = new Redis({
-		// 	host: 'localhost',
-		// 	port: 6379,
-		// 	password: 'suaSenha'
-		// })
 	},
 	async disconect(): Promise<void>{
 		await this.client.disconnect()

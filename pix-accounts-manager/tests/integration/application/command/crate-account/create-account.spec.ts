@@ -6,34 +6,35 @@ import Bank from '@domain/entities/bank'
 import Cpf from '@domain/value-objects/cpf'
 import Url from '@domain/value-objects/url'
 import { faker } from '@faker-js/faker'
-import AccountRepository from '@infra/repository/Accout-repository-sql'
-import BankRepository from '@infra/repository/bank-repository-sql'
-import { TypeOrmHelper } from '@main/data-base/typeorm/tyepeorm.helper'
-
+import ITypeOrmAdpter from '@infra/itypeorm-adpter'
+import AccountRepositoryTypeOrm from '@infra/repository/Accout-repository-typeorm'
+import BankRepositoryTypeOrm from '@infra/repository/bank-repository-typeorm'
+import TypeOrmHelperAdpterMemory from '@test/integration/typeorm/typeorm-adpter-memory'
 
 
 
 describe('CreateAccount',() => {
-	beforeAll(async()=>{
-		await TypeOrmHelper.connect()
-	})
-
+	let typeormAdpter:ITypeOrmAdpter
 	let accountRepository:IAccountRepository
 	let bankRepository: IBankRepository
 	let sut:CreateAccount
 
 	beforeAll(async()=>{
-		bankRepository = new BankRepository()
-		accountRepository = new AccountRepository()
+		typeormAdpter = new TypeOrmHelperAdpterMemory()
+		await typeormAdpter.connect()
+		bankRepository = new BankRepositoryTypeOrm(typeormAdpter)
+		accountRepository = new AccountRepositoryTypeOrm(typeormAdpter)
 		sut = new CreateAccount(accountRepository,bankRepository)
 	})
+
+
 	afterEach(async ()=>{
-		await TypeOrmHelper.getAccountEntity().clear()
-		await TypeOrmHelper.getBankEntity().clear()
+		await typeormAdpter.getAccountEntity().clear()
+		await typeormAdpter.getBankEntity().clear()
 	})
 
 	afterAll(async ()=>{
-		await TypeOrmHelper.disconect()
+		await typeormAdpter.disconect()
 	})
 
 	it('Should create an account and persist', async () => {

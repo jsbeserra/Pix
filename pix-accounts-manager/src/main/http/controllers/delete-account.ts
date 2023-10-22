@@ -4,8 +4,8 @@ import { ControllerOperation, HttpRequest, HttpResponse } from '../ports'
 import { created } from '../util'
 import handleError from '@main/errors/handleError'
 
-export class CreateAccountController implements ControllerOperation {
-	readonly requiredParams: string[] = [ 'bank_id', 'cpf', 'pix_key']
+export class DeleteAccountController implements ControllerOperation {
+	readonly requiredParams: string[] = [ 'pix_key' ]
 	private usecase: usecase
 	
 	constructor(usecase: usecase) {
@@ -14,7 +14,7 @@ export class CreateAccountController implements ControllerOperation {
 
 	async operation(request: HttpRequest): Promise<HttpResponse> {
 		try {
-			const result = await this.usecase.handle(request.body)
+			const result = await this.usecase.handle(request.params.pix_key)
 			return created(result)
 		} catch (err: any) {
 			return handleError(err)

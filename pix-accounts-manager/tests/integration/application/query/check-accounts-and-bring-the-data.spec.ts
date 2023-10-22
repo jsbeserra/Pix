@@ -14,16 +14,17 @@ import PixKey from '@domain/value-objects/pix-key'
 import Url from '@domain/value-objects/url'
 import { faker } from '@faker-js/faker'
 import RedisCache from '@infra/cache/redis-cache'
+import ITypeOrmAdpter from '@infra/itypeorm-adpter'
 import AccountQuery from '@infra/query/get-account-query'
-import AccountRepository from '@infra/repository/Accout-repository-sql'
-import BankRepository from '@infra/repository/bank-repository-sql'
+import AccountRepositoryTypeOrm from '@infra/repository/Accout-repository-typeorm'
+import BankRepositoryTypeOrm from '@infra/repository/bank-repository-typeorm'
 import { RedisHelper } from '@main/data-base/redis/redis.helper'
-import { TypeOrmHelper } from '@main/data-base/typeorm/tyepeorm.helper'
+import TypeOrmHelperAdpterMemory from '@test/integration/typeorm/typeorm-adpter-memory'
 import Redis from 'ioredis-mock'
 
 
 describe('CheckAccountsAndBringTheData',() => {
-	
+	let typeormAdpter:ITypeOrmAdpter
 	let accountQuery:IAccountQuery
 	let accountRepository:IAccountRepository
 	let bankRepository: IBankRepository
@@ -32,22 +33,23 @@ describe('CheckAccountsAndBringTheData',() => {
 
 	beforeAll(async()=>{
 		await RedisHelper.connect(new Redis())
-		await TypeOrmHelper.connect()
-		bankRepository = new BankRepository()
-		accountRepository = new AccountRepository()
-		accountQuery = new AccountQuery()
+		typeormAdpter = new TypeOrmHelperAdpterMemory()
+		await typeormAdpter.connect()
+		bankRepository = new BankRepositoryTypeOrm(typeormAdpter)
+		accountRepository = new AccountRepositoryTypeOrm(typeormAdpter)
+		accountQuery = new AccountQuery(typeormAdpter)
 		cache = new RedisCache()
 		const cacheExpireIn = 60
 		sut = new CheckAccountsAndBringTheData(accountQuery,cache,cacheExpireIn)
 	})
 
 	afterEach(async ()=>{
-		await TypeOrmHelper.getAccountEntity().clear()
-		await TypeOrmHelper.getBankEntity().clear()
+		await typeormAdpter.getAccountEntity().clear()
+		await typeormAdpter.getBankEntity().clear()
 	})
 
 	afterAll(async ()=>{
-		await TypeOrmHelper.disconect()
+		await typeormAdpter.disconect()
 	})
 
 	it('Should fail if pix key is invalid', async () => {

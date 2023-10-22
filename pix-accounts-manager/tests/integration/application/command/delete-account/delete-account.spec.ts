@@ -1,11 +1,8 @@
 import { IBankRepository } from '@application/interfaces/data/repository/ibank-repository'
-import BankRepository from '@infra/repository/bank-repository-sql'
 import {faker} from '@faker-js/faker'
-import { TypeOrmHelper } from '@main/data-base/typeorm/tyepeorm.helper'
 import IAccountRepository from '@application/interfaces/data/repository/iaccount-repository'
 import { IAccountQuery } from '@application/interfaces/data/query/account-query'
 import AccountQuery from '@infra/query/get-account-query'
-import AccountRepository from '@infra/repository/Accout-repository-sql'
 import DeleteAccount from '@application/command/delete-account/delete.account'
 import Bank from '@domain/entities/bank'
 import Url from '@domain/value-objects/url'
@@ -17,8 +14,14 @@ import { RedisHelper } from '@main/data-base/redis/redis.helper'
 import ICache from '@application/interfaces/data/cache/icache'
 import Redis from 'ioredis-mock'
 import RedisCache from '@infra/cache/redis-cache'
+import ITypeOrmAdpter from '@infra/itypeorm-adpter'
+import TypeOrmHelperAdpterMemory from '@test/integration/typeorm/typeorm-adpter-memory'
+import BankRepositoryTypeOrm from '@infra/repository/bank-repository-typeorm'
+import AccountRepositoryTypeOrm from '@infra/repository/Accout-repository-typeorm'
+
 
 describe('Delete Account',()=>{
+	let typeormAdpter:ITypeOrmAdpter
 	let accountQuery:IAccountQuery
 	let accountRepository:IAccountRepository
 	let bankRepository: IBankRepository
@@ -27,21 +30,22 @@ describe('Delete Account',()=>{
 	
 	beforeAll(async()=>{
 		await RedisHelper.connect(new Redis())
-		await TypeOrmHelper.connect()
-		bankRepository = new BankRepository()
-		accountRepository = new AccountRepository()
-		accountQuery = new AccountQuery()
+		typeormAdpter = new TypeOrmHelperAdpterMemory()
+		await typeormAdpter.connect()
+		bankRepository = new BankRepositoryTypeOrm(typeormAdpter)
+		accountRepository = new AccountRepositoryTypeOrm(typeormAdpter)
+		accountQuery = new AccountQuery(typeormAdpter)
 		cache = new RedisCache()
 		sut = new DeleteAccount(accountQuery,accountRepository,cache)
 	})
 
 	afterEach(async ()=>{
-		await TypeOrmHelper.getAccountEntity().clear()
-		await TypeOrmHelper.getBankEntity().clear()
+		await typeormAdpter.getAccountEntity().clear()
+		await typeormAdpter.getBankEntity().clear()
 	})
 
 	afterAll(async ()=>{
-		await TypeOrmHelper.disconect()
+		await typeormAdpter.disconect()
 	})
 
 	it('Should delete account', async ()=>{

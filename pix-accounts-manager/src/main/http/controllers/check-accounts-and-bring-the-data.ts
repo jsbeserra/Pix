@@ -1,11 +1,11 @@
 
 import { usecase } from '@application/command/usecase'
 import { ControllerOperation, HttpRequest, HttpResponse } from '../ports'
-import { created } from '../util'
+import { ok } from '../util'
 import handleError from '@main/errors/handleError'
 
-export class CreateAccountController implements ControllerOperation {
-	readonly requiredParams: string[] = [ 'bank_id', 'cpf', 'pix_key']
+export class CheckAccountsAndBringTheDataAccountController implements ControllerOperation {
+	readonly requiredParams: string[] = [ 'payer_pix_key','receiver_pix_key' ]
 	private usecase: usecase
 	
 	constructor(usecase: usecase) {
@@ -14,8 +14,8 @@ export class CreateAccountController implements ControllerOperation {
 
 	async operation(request: HttpRequest): Promise<HttpResponse> {
 		try {
-			const result = await this.usecase.handle(request.body)
-			return created(result)
+			const result = await this.usecase.handle(request.params)
+			return ok(result)
 		} catch (err: any) {
 			return handleError(err)
 		}

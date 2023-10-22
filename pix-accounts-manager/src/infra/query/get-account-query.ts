@@ -1,12 +1,13 @@
 import { AccountDto, IAccountQuery } from '@application/interfaces/data/query/account-query'
-import { TypeOrmHelper } from '@main/data-base/typeorm/tyepeorm.helper'
+import ITypeOrmAdpter from '@infra/itypeorm-adpter'
 
 export default class AccountQuery implements IAccountQuery{
-	constructor(){
+	constructor(readonly typeormAdpter:ITypeOrmAdpter){
 	}
 
 	async getAccountByPixKey(pix_key: string): Promise<AccountDto | undefined> {
-		const account = await TypeOrmHelper.getAccountEntity()
+		console.log(pix_key)
+		const account = await this.typeormAdpter.getAccountEntity()
 			.createQueryBuilder('account')
 			.innerJoinAndSelect('account.bank', 'bank')
 			.where('account.pix_key = :pixKey', { pixKey: pix_key })

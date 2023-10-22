@@ -4,8 +4,8 @@ import { ControllerOperation, HttpRequest, HttpResponse } from '../ports'
 import { created } from '../util'
 import handleError from '@main/errors/handleError'
 
-export class CreateAccountController implements ControllerOperation {
-	readonly requiredParams: string[] = [ 'bank_id', 'cpf', 'pix_key']
+export class CreateAccountBankController implements ControllerOperation {
+	readonly requiredParams: string[] = [ 'name', 'url_for_transaction', 'webhook_notification']
 	private usecase: usecase
 	
 	constructor(usecase: usecase) {

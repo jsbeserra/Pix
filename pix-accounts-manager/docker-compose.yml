@@ -1,6 +1,14 @@
 version: '3.7'
 
-services:  
+services: 
+  redis:
+      image: redis
+      container_name: redis-account-manager
+      restart: always
+      ports:
+        - 6379:6379
+      command: redis-server --requirepass 123@Mudar
+
   postgresdb:
     container_name: account-manager
     image: postgres
@@ -10,5 +18,5 @@ services:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: 123@Mudar
     ports:
-      - 5432:5432
+      - 5433:5432
     

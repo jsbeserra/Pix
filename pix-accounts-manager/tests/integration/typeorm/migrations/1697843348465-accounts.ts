@@ -9,10 +9,10 @@ export class Accounts1697843348465 implements MigrationInterface {
 				columns: [
 					{
 						name: 'id',
-						type: 'uuid',
+						type: 'integer',
 						isPrimary: true,
 						isGenerated: true,
-						generationStrategy: 'uuid',
+						generationStrategy: 'increment',
 					},
 					{
 						name: 'name',
@@ -56,10 +56,10 @@ export class Accounts1697843348465 implements MigrationInterface {
 				columns: [
 					{
 						name: 'id',
-						type: 'uuid',
+						type: 'integer',
 						isPrimary: true,
 						isGenerated: true,
-						generationStrategy: 'uuid',
+						generationStrategy: 'increment',
 					},
 					{
 						name: 'cpf',
@@ -74,20 +74,20 @@ export class Accounts1697843348465 implements MigrationInterface {
 					},
 					{
 						name: 'created_at',
-						type: 'timestamp',
+						type: 'timestamptz',
 						default: 'CURRENT_TIMESTAMP',
 						isNullable: false,
 					},
 					{
 						name: 'updated_at',
-						type: 'timestamp',
+						type: 'timestamptz',
 						default: 'CURRENT_TIMESTAMP',
 						onUpdate: 'CURRENT_TIMESTAMP',
 						isNullable: false,
 					},
 					{
 						name: 'bank_id',
-						type: 'uuid',
+						type: 'integer',
 						isNullable: false,
 					},
 				],
