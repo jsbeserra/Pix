@@ -2,10 +2,15 @@ import IAccountRepository from '@application/interfaces/data/repository/iaccount
 import Account from '@domain/entities/account'
 import Cpf from '@domain/value-objects/cpf'
 import IDatabaseConnection from '@application/interfaces/data/connection/Idatabase-connection'
+import PixKey from '@domain/value-objects/pix-key'
 
 export default class AccountRepositoryPostgresql implements IAccountRepository {
 
 	constructor(private postgresqlAdpter:IDatabaseConnection){
+	}
+
+	async savePixKey(pixKey: PixKey, cpf: Cpf): Promise<void> {
+		await this.postgresqlAdpter.query(`UPDATE accounts set pix_key ='${pixKey.value}'  WHERE cpf = '${cpf.value}'`)
 	}
     
 	async create(account: Account): Promise<void> {

@@ -17,6 +17,7 @@ export class WebController {
 			}
 			return await this.controllerOp.operation(request)
 		} catch (error) {
+			console.log(error.message)
 			return serverError(error)
 		}
 	}

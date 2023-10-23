@@ -12,7 +12,7 @@
         }
     ],
     "paths": {
-        "/create/account": {
+        "/account/create": {
             "post": {
                 "summary": "Cria uma nova conta",
                 "tags": [
@@ -86,7 +86,7 @@
                 }
             }
         },
-        "/get/account/{cpf}": {
+        "/account/{cpf}": {
             "get": {
                 "summary": "Busca trazer os dados de uma conta bancaria",
                 "tags": [
@@ -152,6 +152,71 @@
                                             "message": "Internal server error",
                                             "error": "Error"
                                         }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/account/create/pixkey": {
+            "post": {
+                "summary": "Adiciona uma nova chave pix a uma conta",
+                "tags": [
+                    "Contas"
+                ],
+                "requestBody": {
+                    "description": "Dados necessários",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "cpf": {
+                                        "type": "string",
+                                        "pattern": "^[0-9]{3}\\.[0-9]{3}\\.[0-9]{3}-[0-9]{2}$",
+                                        "description": "CPF do titular da conta (formato: XXX.XXX.XXX-XX)"
+                                    },
+                                    "pix_key": {
+                                        "type": "string",
+                                        "description": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "Requisição inválida",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "exemplo-2": {
+                                        "value": {
+                                            "message": "error message",
+                                            "error": "Error"
+                                          }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Requisição inválida",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "exemplo-2": {
+                                        "value": {
+                                            "message": "Internal server error",
+                                            "error": "Error"
+                                          }
                                     }
                                 }
                             }
