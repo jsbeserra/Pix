@@ -13,3 +13,10 @@ export class AccountNotFound extends ApplicationError {
 		super('Unable to create pix key, account not found')
 	}
 }
+
+export class AlreadyExistsAccountPixKey extends ApplicationError {
+	public readonly name = 'Already exists account pixKey'
+	constructor () {
+		super('There is already a pix key for this account, delete it to create a new one')
+	}
+}

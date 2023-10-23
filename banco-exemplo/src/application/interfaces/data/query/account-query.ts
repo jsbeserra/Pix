@@ -8,5 +8,5 @@ export interface AccountDto {
     pix_key:string
 }
 export interface IAccountQuery {
-    getAccountByCpf(pix_key:string):Promise<AccountDto | undefined>
+    getAccountByCpf(cpf:string):Promise<AccountDto | undefined>
 }
