@@ -224,6 +224,67 @@
                     }
                 }
             }
+        },
+        "/account/delete/pixkey/{cpf}/{pix_key}": {
+            "delete": {
+                "summary": "Deleta uma chave pix.",
+                "tags": [
+                    "Contas"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "cpf",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "path",
+                        "name": "pix_key",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "Requisição inválida",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "exemplo-2": {
+                                        "value": {
+                                            "message": "error message",
+                                            "error": "Error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Requisição inválida",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "exemplo-2": {
+                                        "value": {
+                                            "message": "Internal server error",
+                                            "error": "Error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

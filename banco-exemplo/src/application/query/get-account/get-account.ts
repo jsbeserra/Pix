@@ -2,8 +2,7 @@ import { IAccountQuery } from '@application/interfaces/data/query/account-query'
 import { usecase } from '@application/usecase'
 import Cpf from '@domain/value-objects/cpf'
 import { OutPutAccount } from './out-put-get-account'
-import { AccountNotFound } from '@application/errors/query/create-account'
-
+import { AccountNotFound } from '@application/errors/shared-errors'
 
 export default class GetAccount implements usecase {
 

@@ -1,4 +1,4 @@
-import { ApplicationError } from '../application-errors'
+import { ApplicationError } from './application-errors'
 
 export class AccountNotFound extends ApplicationError {
 	public readonly name = 'Account not found'

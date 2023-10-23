@@ -8,10 +8,6 @@ export default class AccountRepositoryPostgresql implements IAccountRepository {
 
 	constructor(private postgresqlAdpter:IDatabaseConnection){
 	}
-
-	async savePixKey(pixKey: PixKey, cpf: Cpf): Promise<void> {
-		await this.postgresqlAdpter.query(`UPDATE accounts set pix_key ='${pixKey.value}'  WHERE cpf = '${cpf.value}'`)
-	}
     
 	async create(account: Account): Promise<void> {
 		await this.postgresqlAdpter.save(`INSERT INTO accounts (cpf, name, mother_name, active, opening_date, balance, date_of_birth)
@@ -24,4 +20,13 @@ export default class AccountRepositoryPostgresql implements IAccountRepository {
 		return exist.length > 0 ? true : false
 	}
     
+	async savePixKey(pixKey: PixKey, cpf: Cpf): Promise<void> {
+		await this.postgresqlAdpter.query(`UPDATE accounts set pix_key ='${pixKey.value}'  WHERE cpf = '${cpf.value}'`)
+	}
+
+	async removePixKey(pixKey: PixKey, cpf: Cpf): Promise<void> {
+		await this.postgresqlAdpter.query(`UPDATE accounts set pix_key ='${null}'  WHERE cpf = '${cpf.value}'`)
+	}
+
+	
 }

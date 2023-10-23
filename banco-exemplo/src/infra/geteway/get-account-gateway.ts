@@ -11,7 +11,7 @@ export default class PixGateway implements IGatewayPix{
 	}
 
 	async deletePixKey(pix_key: string): Promise<any> {
-		await this.httpClient.delete(`${environment.PIX_API_URL}/api/delete/pix-account/${pix_key}`)
+		return await this.httpClient.delete(`${environment.PIX_API_URL}/delete/pix-account/${pix_key}`)
 	}
     
 	// async exec(input: InputGateway): Promise<OutPutGateway> {
