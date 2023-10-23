@@ -13,7 +13,7 @@ export default class Account {
 		readonly name:FullName, 
 		readonly motherName:FullName, 
         readonly dateOfBirth:DateOfBirth,
-		private _balance: number = 1000, 
+		private _balance: number = 1000.00, 
 		readonly openingDate:Date = new Date(), 
 		private active:boolean = true
 	){}

@@ -7,7 +7,7 @@ import DateOfBirth from '@domain/value-objects/date-of-birth'
 import { CpfAlreadyRegistered } from '@application/errors/command/create-account'
 import IAccountRepository from '@application/interfaces/data/repository/iaccount-repository'
 
-export default class CreateAccountCommand implements usecase {
+export default class CreateAccount implements usecase {
 
 	constructor(private repository:IAccountRepository){}
 

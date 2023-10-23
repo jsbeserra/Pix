@@ -8,10 +8,10 @@ export default class AccountRepositoryPostgresql implements IAccountRepository {
 
 	constructor(private postgresqlAdpter:IDatabaseConnection){
 	}
-    
+   
 	async create(account: Account): Promise<void> {
 		await this.postgresqlAdpter.save(`INSERT INTO accounts (cpf, name, mother_name, active, opening_date, balance, date_of_birth)
-        VALUES ('${account.cpf.value}', '${account.name.value}', '${account.motherName.value}', '${account.isActive}', '${account.openingDate.toISOString()}', '${account.balance}', '${account.dateOfBirth.value.toISOString()}')`)
+        VALUES ('${account.cpf.value}', '${account.name.value}', '${account.motherName.value}', '${account.isActive}', '${account.openingDate.toISOString()}', '${account.balance.toFixed(2)}', '${account.dateOfBirth.value.toISOString()}')`)
 	}
     
 	async exists(cpf: Cpf): Promise<boolean> {
@@ -28,5 +28,13 @@ export default class AccountRepositoryPostgresql implements IAccountRepository {
 		await this.postgresqlAdpter.query(`UPDATE accounts set pix_key ='${null}'  WHERE cpf = '${cpf.value}'`)
 	}
 
+	async deposit(cpf: Cpf, deposit: number): Promise<void> {
+		await this.postgresqlAdpter.query(`UPDATE accounts set balance ='${deposit}'  WHERE cpf = '${cpf.value}'`)
+	}
+
+	async balance(cpf: Cpf): Promise<number> {
+		const [account] = await this.postgresqlAdpter.query(`SELECT balance from accounts  WHERE cpf = '${cpf.value}'`)
+		return account.balance
+	}
 	
 }

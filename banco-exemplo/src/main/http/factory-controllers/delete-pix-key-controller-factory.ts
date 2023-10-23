@@ -4,7 +4,7 @@ import { WebController } from '../web-controller'
 
 
 export const makeDeletePixKeyController = (): WebController => {
-	const createAccountCommand = MakeDeletePixKey()
-	const controller = new WebController(new DeletePixKeyController(createAccountCommand))
+	const deletePixKey = MakeDeletePixKey()
+	const controller = new WebController(new DeletePixKeyController(deletePixKey))
 	return controller
 }

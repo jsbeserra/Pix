@@ -3,7 +3,7 @@ import { CreateAccountController } from '../controllers/create-account'
 import { WebController } from '../web-controller'
 
 export const makeCreateAccountController = (): WebController => {
-	const createAccountCommand = MakeCreateAccountCommand()
-	const controller = new WebController(new CreateAccountController(createAccountCommand))
+	const createAccount = MakeCreateAccountCommand()
+	const controller = new WebController(new CreateAccountController(createAccount))
 	return controller
 }

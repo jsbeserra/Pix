@@ -1,4 +1,4 @@
-import CreateAccountCommand from '@application/command/create-account/create-account'
+import CreateAccount from '@application/command/create-account/create-account'
 import { CpfAlreadyRegistered } from '@application/errors/command/create-account'
 import AccountRepositoryPostgresql from '@infra/data/Accout-repository-sql'
 import IAccountRepository from '@application/interfaces/data/repository/iaccount-repository'
@@ -9,13 +9,13 @@ import KnexAdpterSqlite3 from '@main/data-base/knex/adpters/knex-adpter-sqlite3'
 describe('CreateAccountCommand',() => {
 	let databaseConnection:KnexAdpter
 	let accountRepositoryPostgresql:IAccountRepository
-	let sut:CreateAccountCommand
+	let sut:CreateAccount
 
 	beforeAll(async()=>{
 		databaseConnection = new KnexAdpterSqlite3('development')
 		await databaseConnection.connect()
 		accountRepositoryPostgresql = new AccountRepositoryPostgresql(databaseConnection)
-		sut = new CreateAccountCommand(accountRepositoryPostgresql)
+		sut = new CreateAccount(accountRepositoryPostgresql)
 	})
 	
 	afterAll(async () => {
