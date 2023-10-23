@@ -1,4 +1,4 @@
-import { Command } from '../command'
+import { usecase } from '../../usecase'
 import { InputCreateAccount } from './input-create-account'
 import Account from '@domain/entities/account'
 import FullName from '@domain/value-objects/full-name'
@@ -7,7 +7,7 @@ import DateOfBirth from '@domain/value-objects/date-of-birth'
 import { CpfAlreadyRegistered } from '@application/errors/command/create-account'
 import IAccountRepository from '@application/interfaces/data/repository/iaccount-repository'
 
-export default class CreateAccountCommand implements Command {
+export default class CreateAccountCommand implements usecase {
 
 	constructor(private repository:IAccountRepository){}
 

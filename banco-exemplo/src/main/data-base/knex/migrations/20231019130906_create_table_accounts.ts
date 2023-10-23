@@ -6,10 +6,10 @@ export async function up(knex: Knex): Promise<void> {
 		table.string('cpf', 11).notNullable().unique()
 		table.string('name', 255).notNullable()
 		table.string('mother_name', 255).notNullable()
-		table.timestamp('date_of_birth', { useTz: true }).notNullable() // Use table.timestamp() para campos de data e hora
+		table.timestamp('date_of_birth', { useTz: true }).notNullable()
 		table.decimal('balance').notNullable()
-		table.timestamp('opening_date', { useTz: true }).notNullable() // Use table.timestamp() para campos de data e hora
-		table.timestamp('updated_at', { useTz: true }).notNullable().defaultTo(knex.fn.now()) // Use table.timestamp() e knex.fn.now()
+		table.timestamp('opening_date', { useTz: true }).notNullable() 
+		table.timestamp('updated_at', { useTz: true }).notNullable().defaultTo(knex.fn.now())
 		table.boolean('active').notNullable()
 		table.string('pix_key', 10)
 	})

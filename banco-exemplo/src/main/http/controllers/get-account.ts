@@ -3,8 +3,8 @@ import { ControllerOperation, HttpRequest, HttpResponse } from '../ports'
 import { created } from '../util'
 import handleError from '@main/errors/handleError'
 
-export class CreateAccountController implements ControllerOperation {
-	readonly requiredParams: string[] = [ 'name', 'cpf', 'motherName', 'dateOfBirth']
+export class GetAccountController implements ControllerOperation {
+	readonly requiredParams: string[] = ['cpf']
 	private command: usecase
 
 	constructor(command: usecase) {
@@ -13,7 +13,7 @@ export class CreateAccountController implements ControllerOperation {
 
 	async operation(request: HttpRequest): Promise<HttpResponse> {
 		try {
-			const result = await this.command.handle(request.body)
+			const result = await this.command.handle(request.params.cpf)
 			return created(result)
 		} catch (err: any) {
 			return handleError(err)

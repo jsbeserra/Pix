@@ -85,6 +85,80 @@
                     }
                 }
             }
+        },
+        "/get/account/{cpf}": {
+            "get": {
+                "summary": "Busca trazer os dados de uma conta bancaria",
+                "tags": [
+                    "Contas"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "cpf",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "name": {
+                                            "type": "string",
+                                            "example": "string"
+                                        },
+                                        "pix_key": {
+                                            "type": "string",
+                                            "example": "string"
+                                        },
+                                        "balance": {
+                                            "type": "number",
+                                            "example": "1000"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Requisição inválida",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "exemplo-2": {
+                                        "value": {
+                                            "message": "error message",
+                                            "error": "Error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Requisição inválida",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "exemplo-2": {
+                                        "value": {
+                                            "message": "Internal server error",
+                                            "error": "Error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
