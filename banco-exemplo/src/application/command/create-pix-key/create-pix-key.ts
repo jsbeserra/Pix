@@ -1,4 +1,4 @@
-import { usecase } from '../../usecase'
+import { ApplicationHandle } from '../../applicationHandle'
 import Cpf from '@domain/value-objects/cpf'
 import IAccountRepository from '@application/interfaces/data/repository/iaccount-repository'
 import { InputCreatePixKey } from './input-create-cpf'
@@ -8,7 +8,7 @@ import PixKey from '@domain/value-objects/pix-key'
 import { AccountNotFound, AlreadyExistsAccountPixKey, FailCreatePixKey } from '@application/errors/command/create-pix-key'
 import { IAccountQuery } from '@application/interfaces/data/query/account-query'
 
-export default class CreatePixKey implements usecase {
+export default class CreatePixKey implements ApplicationHandle {
 
 	constructor(private repository:IAccountRepository, private gatewayPix:IGatewayPix,private accountQuery:IAccountQuery){}
 

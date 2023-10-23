@@ -1,13 +1,13 @@
-import { usecase } from '@application/usecase'
+import { ApplicationHandle } from '@application/applicationHandle'
 import { ControllerOperation, HttpRequest, HttpResponse } from '../ports'
 import { created } from '../util'
 import handleError from '@main/errors/handleError'
 
 export class DebitController implements ControllerOperation {
 	readonly requiredParams: string[] = [ 'value', 'payer_cpf', 'receiver_cpf']
-	private command: usecase
+	private command: ApplicationHandle
 
-	constructor(command: usecase) {
+	constructor(command: ApplicationHandle) {
 		this.command = command
 	}
 

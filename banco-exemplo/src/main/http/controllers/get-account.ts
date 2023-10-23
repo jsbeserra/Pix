@@ -1,20 +1,20 @@
-import { usecase } from '@application/usecase'
+import { ApplicationHandle } from '@application/applicationHandle'
 import { ControllerOperation, HttpRequest, HttpResponse } from '../ports'
-import { created } from '../util'
+import { ok } from '../util'
 import handleError from '@main/errors/handleError'
 
 export class GetAccountController implements ControllerOperation {
 	readonly requiredParams: string[] = ['cpf']
-	private command: usecase
+	private command: ApplicationHandle
 
-	constructor(command: usecase) {
+	constructor(command: ApplicationHandle) {
 		this.command = command
 	}
 
 	async operation(request: HttpRequest): Promise<HttpResponse> {
 		try {
 			const result = await this.command.handle(request.params.cpf)
-			return created(result)
+			return ok(result)
 		} catch (err: any) {
 			return handleError(err)
 		}

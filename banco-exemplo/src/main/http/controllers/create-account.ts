@@ -1,13 +1,13 @@
-import { usecase } from '@application/usecase'
+import { ApplicationHandle } from '@application/applicationHandle'
 import { ControllerOperation, HttpRequest, HttpResponse } from '../ports'
 import { created } from '../util'
 import handleError from '@main/errors/handleError'
 
 export class CreateAccountController implements ControllerOperation {
 	readonly requiredParams: string[] = [ 'name', 'cpf', 'motherName', 'dateOfBirth']
-	private command: usecase
+	private command: ApplicationHandle
 
-	constructor(command: usecase) {
+	constructor(command: ApplicationHandle) {
 		this.command = command
 	}
 

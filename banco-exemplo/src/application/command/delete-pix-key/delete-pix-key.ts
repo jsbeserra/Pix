@@ -1,4 +1,4 @@
-import { usecase } from '../../usecase'
+import { ApplicationHandle } from '../../applicationHandle'
 import Cpf from '@domain/value-objects/cpf'
 import IAccountRepository from '@application/interfaces/data/repository/iaccount-repository'
 import PixKey from '@domain/value-objects/pix-key'
@@ -9,7 +9,7 @@ import { InputDeletePixKey } from './input-create-cpf'
 import { IGatewayPix } from '@application/gateway/pix-gateway'
 
 
-export default class DeletePixKey implements usecase {
+export default class DeletePixKey implements ApplicationHandle {
 
 	constructor(private repository:IAccountRepository, private gatewayPix:IGatewayPix, private accountQuery:IAccountQuery){}
 

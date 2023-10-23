@@ -1,13 +1,13 @@
-import { usecase } from '@application/usecase'
+import { ApplicationHandle } from '@application/applicationHandle'
 import { ControllerOperation, HttpRequest, HttpResponse } from '../ports'
 import { ok } from '../util'
 import handleError from '@main/errors/handleError'
 
 export class DeletePixKeyController implements ControllerOperation {
 	readonly requiredParams: string[] = ['cpf','pix_key']
-	private command: usecase
+	private command: ApplicationHandle
 
-	constructor(command: usecase) {
+	constructor(command: ApplicationHandle) {
 		this.command = command
 	}
 

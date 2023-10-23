@@ -1,11 +1,11 @@
 import IAccountRepository from '@application/interfaces/data/repository/iaccount-repository'
-import { usecase } from '@application/usecase'
 import Cpf from '@domain/value-objects/cpf'
 import { InputDeposit } from './input-deposit'
 import { AccountNotFound } from '@application/errors/shared-errors'
 import { DepositMinimumValue } from '@application/errors/command/deposit'
+import { ApplicationHandle } from '@application/applicationHandle'
 
-export default class Deposit implements usecase{
+export default class Deposit implements ApplicationHandle{
 
 	constructor(private repository:IAccountRepository){}
     
