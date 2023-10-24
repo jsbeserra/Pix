@@ -23,7 +23,7 @@ export default class TransactionRepositoryTypeOrm implements ITransactionReposit
 	async get(code: string): Promise<Transaction | undefined> {
 		const transaction = await this.typeormAdpter.getTransactionEntity().findOneBy({code:code})
 		if (!transaction) return
-		return new Transaction(transaction.code,transaction.receiver_pix_key,transaction.receiver_pix_key,transaction.value,transaction.status)
+		return Transaction.create(transaction.code,transaction.receiver_pix_key,transaction.receiver_pix_key,transaction.value,transaction.status)
 	}
 
 	async updateStatus(code: string, status: string): Promise<void> {
