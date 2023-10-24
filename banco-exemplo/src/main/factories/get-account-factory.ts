@@ -1,11 +1,10 @@
 import GetAccount from '@application/query/get-account/get-account'
-import QueryAccount from '@infra/query/query-account'
-import { environment } from '@main/config/config'
-import KnexAdpterPostgresql from '@main/data-base/knex/adpters/knex-adpter-postgresql'
+import QueryAccount from '@infra/data/query/query-account'
+import TypeOrmHelperAdpter from '@main/data-base/typeorm/typeorm-adpter-postgres'
 
 
 export const MakeGetAccount = (): GetAccount => {
-	const databaseconnection = new KnexAdpterPostgresql(environment.mode!)
+	const databaseconnection = TypeOrmHelperAdpter.instance()
 	const queryAccount = new QueryAccount(databaseconnection)
 	return new GetAccount(queryAccount)
 }

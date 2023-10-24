@@ -1,39 +1,55 @@
 import IAccountRepository from '@application/interfaces/data/repository/iaccount-repository'
 import Account from '@domain/entities/account'
 import Cpf from '@domain/value-objects/cpf'
-import IDatabaseConnection from '@application/interfaces/data/connection/Idatabase-connection'
 import PixKey from '@domain/value-objects/pix-key'
+import ITypeOrmAdpter from '@infra/itypeorm-adpter'
 
 export default class AccountRepositoryPostgresql implements IAccountRepository {
 
-	constructor(private postgresqlAdpter:IDatabaseConnection){
+	constructor(private typeormAdpter:ITypeOrmAdpter){
 	}
    
 	async create(account: Account): Promise<void> {
-		await this.postgresqlAdpter.save(`INSERT INTO accounts (cpf, name, mother_name, active, opening_date, balance, date_of_birth)
-        VALUES ('${account.cpf.value}', '${account.name.value}', '${account.motherName.value}', '${account.isActive}', '${account.openingDate.toISOString()}', '${account.balance.toFixed(2)}', '${account.dateOfBirth.value.toISOString()}')`)
+		const _account = this.typeormAdpter.getAccountEntity().create({
+			cpf:account.cpf.value,
+			balance:account.balance,
+			date_of_birth:account.dateOfBirth.value,
+			name:account.name.value,
+			mother_name:account.motherName.value
+		})
+		await this.typeormAdpter.getAccountEntity().save(_account)
 	}
     
 	async exists(cpf: Cpf): Promise<boolean> {
-		const exist = await this.postgresqlAdpter.query(`SELECT cpf FROM accounts WHERE cpf = '${cpf.value}'`)
-		if (exist === undefined) return false
-		return exist.length > 0 ? true : false
+		const exist = await this.typeormAdpter.getAccountEntity().findOneBy({cpf:cpf.value})
+		if (!exist) return false
+		return true
 	}
     
 	async savePixKey(pixKey: PixKey, cpf: Cpf): Promise<void> {
-		await this.postgresqlAdpter.query(`UPDATE accounts set pix_key ='${pixKey.value}'  WHERE cpf = '${cpf.value}'`)
+		const account = await this.typeormAdpter.getAccountEntity().findOneBy({cpf:cpf.value})
+		if (!account) throw new Error('Account not found')
+		account.pix_key = pixKey.value
+		await this.typeormAdpter.getAccountEntity().save(account)
 	}
 
-	async removePixKey(pixKey: PixKey, cpf: Cpf): Promise<void> {
-		await this.postgresqlAdpter.query(`UPDATE accounts set pix_key ='${null}'  WHERE cpf = '${cpf.value}'`)
+	async removePixKey(cpf: Cpf): Promise<void> {
+		const account = await this.typeormAdpter.getAccountEntity().findOneBy({cpf:cpf.value})
+		if (!account) throw new Error('Account not found')
+		account.pix_key = null
+		await this.typeormAdpter.getAccountEntity().save(account)
 	}
 
 	async deposit(cpf: Cpf, deposit: number): Promise<void> {
-		await this.postgresqlAdpter.query(`UPDATE accounts set balance ='${deposit}'  WHERE cpf = '${cpf.value}'`)
+		const account = await this.typeormAdpter.getAccountEntity().findOneBy({cpf:cpf.value})
+		if (!account) throw new Error('Account not found')
+		account.balance = deposit
+		await this.typeormAdpter.getAccountEntity().save(account)
 	}
 
 	async balance(cpf: Cpf): Promise<number> {
-		const [account] = await this.postgresqlAdpter.query(`SELECT balance from accounts  WHERE cpf = '${cpf.value}'`)
+		const account = await this.typeormAdpter.getAccountEntity().findOneBy({cpf:cpf.value})
+		if (!account) throw new Error('Account not found')
 		return account.balance
 	}
 	

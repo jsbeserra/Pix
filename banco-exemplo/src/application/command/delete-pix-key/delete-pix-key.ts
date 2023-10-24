@@ -22,7 +22,7 @@ export default class DeletePixKey implements ApplicationHandle {
 		if (account!.pix_key != pixkey.value) throw new PixKeyNotBelongToAccount()
 		const result = await this.gatewayPix.deletePixKey(input.pix_key)
 		if (result instanceof Error) throw new FailedToRemovePixKey(result.message) 
-		await this.repository.removePixKey(pixkey,cpf)
+		await this.repository.removePixKey(cpf)
 	}
 
 	private async existAccount(cpf:Cpf): Promise<boolean> {
