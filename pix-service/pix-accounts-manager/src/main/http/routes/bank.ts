@@ -4,5 +4,5 @@ import { makeCreateAccountBankController } from '../factory-controllers/create-b
 
 
 export default (router: Router): void => {
-	router.post('/create/bank/account', adaptRoute(makeCreateAccountBankController())) 
+	router.post('/bank/account/create', adaptRoute(makeCreateAccountBankController())) 
 }
