@@ -6,7 +6,7 @@ export const DeletePixKey = {
 		'delete': {
 			'summary': 'Deleta chave pix',
 			'tags': [
-				'Contas'
+				'PixKey'
 			],
 			'parameters': [
 				{

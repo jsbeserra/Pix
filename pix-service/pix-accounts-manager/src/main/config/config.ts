@@ -14,5 +14,6 @@ export const environment = {
 	REDIS_PORT: process.env.REDIS_PORT,
 	REDIS_HOST: process.env.REDIS_HOST,
 	CACHE_EXPIRATION_TIME_IN_SECONDS: parseInt(process.env.CACHE_EXPIRATION_TIME_IN_SECONDS!),
-	BASE_URL: process.env.BASE_URL
+	BASE_URL: process.env.BASE_URL,
+	AUTORIZATION_PUBLIC_KEY: process.env.AUTORIZATION_PUBLIC_KEY
 }

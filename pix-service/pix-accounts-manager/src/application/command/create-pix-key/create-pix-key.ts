@@ -12,7 +12,7 @@ export default class CreatePixKey implements usecase {
 
 	constructor(private repository:IAccountRepository, private bankRepository:IBankRepository){}
 
-	async handle(input: InputCreatePixKey): Promise<any> {
+	async handle(input: InputCreatePixKey): Promise<void> {
 		const cpf = Cpf.create(input.cpf)
 		const pix_key = PixKey.create(input.pix_key)
 		const existsCpf = await this.repository.existsCpf(cpf)

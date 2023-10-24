@@ -6,12 +6,7 @@ export const PostCreatePixKey = {
 		'post': {
 			'summary': 'Cria uma nova conta pix',
 			'tags': [
-				'Contas'
-			],
-			'security': [
-				{
-					'jwt_auth': []
-				}
+				'PixKey'
 			],
 			'requestBody': {
 				'description': 'Dados da conta a ser criada',
@@ -41,7 +36,7 @@ export const PostCreatePixKey = {
 			},
 			'responses': {
 				'201': {
-					'description': 'Conta criada com sucesso'
+					'description': ''
 				},
 				...http400,
 				...http500

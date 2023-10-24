@@ -6,7 +6,7 @@ export const GetPixKeyDetails = {
 		'get': {
 			'summary': 'Busca dados de uma conta pix',
 			'tags': [
-				'Contas'
+				'PixKey'
 			],
 			'parameters': [
 				{

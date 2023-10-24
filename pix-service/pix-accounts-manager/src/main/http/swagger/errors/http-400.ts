@@ -4,7 +4,7 @@ export const http400 = {
 		'content': {
 			'application/json': {
 				'examples': {
-					'exemplo-2': {
+					'exemplo': {
 						'value': {
 							'message': 'error message',
 							'error': 'Error'

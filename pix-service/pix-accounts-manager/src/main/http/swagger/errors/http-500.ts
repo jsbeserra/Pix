@@ -4,7 +4,7 @@ export const http500 = {
 		'content': {
 			'application/json': {
 				'examples': {
-					'exemplo-2': {
+					'exemplo': {
 						'value': {
 							'message': 'Internal server error',
 							'error': 'Error'

@@ -1,4 +1,5 @@
 import { http400 } from '../errors/http-400'
+import { http401 } from '../errors/http-401'
 import { http500 } from '../errors/http-500'
 
 export const GetPixKeyTwoDetails = {
@@ -6,7 +7,12 @@ export const GetPixKeyTwoDetails = {
 		'get': {
 			'summary': 'Busca dados de duas contas',
 			'tags': [
-				'Contas'
+				'PixKey'
+			],
+			'security': [
+				{
+					'jwt_auth': []
+				}
 			],
 			'parameters': [
 				{
@@ -81,6 +87,7 @@ export const GetPixKeyTwoDetails = {
 						}
 					}
 				},
+				...http401,
 				...http400,
 				...http500
 
