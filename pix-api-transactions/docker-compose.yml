@@ -1,0 +1,14 @@
+version: '3.7'
+
+services: 
+  postgresdb:
+    container_name: transaction-pix
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: transaction_db
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 123@Mudar
+    ports:
+      - 5434:5432
+    

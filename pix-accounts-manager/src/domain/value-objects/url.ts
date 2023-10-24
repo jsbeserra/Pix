@@ -24,7 +24,7 @@ export default class Url {
 	}
 
 	private static isValidDomain(value:string): boolean {
-		const regexp = new RegExp(/^(https?:\/\/)?(?:(?:[a-zA-Z0-9-]+)\.)+[a-zA-Z]{2,}(\/[^\s]*)?|^([a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/[^\s]*)?)$/)
+		const regexp = new RegExp(/^(https?:\/\/)?((?:(?:[a-zA-Z0-9-]+)\.)+[a-zA-Z]{2,}|localhost)(\/[^\s]*)?|^([a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/[^\s]*)?)$/)
 		return regexp.test(value)
 	}
 }

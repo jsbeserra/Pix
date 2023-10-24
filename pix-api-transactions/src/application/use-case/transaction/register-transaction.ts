@@ -1,0 +1,51 @@
+import ICreateCode from '@application/interfaces/create-code'
+import { IGatewayAccount } from '@application/interfaces/gateway/account-gateway'
+import { IQueue } from '@application/interfaces/queue/queue'
+import { InputTransaction } from './input-transaction'
+import { ApplicationHandle } from '@application/application-handle'
+import { payloadTransactionQueue } from '@application/dto/TransactionDto'
+import { OutputTransaction } from './output-transaction'
+import Transaction from '@domain/transaction'
+import { ITransactionRepository } from '@application/interfaces/repository/transaction-repository'
+
+export default class RegisterTransaction implements ApplicationHandle {
+
+	constructor(private accountGateway:IGatewayAccount,
+		private queue:IQueue, private createCode:ICreateCode, 
+		private transactionRepository:ITransactionRepository){}
+
+	async handle(input: InputTransaction): Promise<OutputTransaction> {
+		const accountsData = await this.accountGateway.exec({
+			payer_pix_key:input.payer_pix_key,
+			receiver_pix_key:input.receiver_pix_key
+		})
+		if (accountsData instanceof Error){
+			console.log(accountsData.message)
+			throw new Error(accountsData.message)
+		}
+		const code = await this.existsCode()
+		const registerPayload:payloadTransactionQueue = {
+			code:code,
+			value:input.value,
+			payer: accountsData.payer,
+			receiver: accountsData.receiver
+		}
+		const transaction = new Transaction(code, accountsData.payer.pix_key,accountsData.receiver.pix_key,input.value,'pending')
+		await this.transactionRepository.save(transaction)
+		await this.queue.publish('transactions', registerPayload)
+		return {code}
+	}
+
+	private async existsCode(): Promise<string> {
+		let code = this.createCode.createCode()
+		let exists = true
+		while (exists) {
+			const transaction = await this.transactionRepository.get(code)
+			if (!transaction) exists = false
+			code = this.createCode.createCode()
+		}
+		return code
+	}
+
+    
+}
