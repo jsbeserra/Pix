@@ -33,14 +33,6 @@ export const GetPixKeyDetails = {
 									'pix_key': {
 										'type': 'string',
 										'example': 'string'
-									},
-									'url_for_transaction': {
-										'type': 'string',
-										'example': 'string'
-									},
-									'webhook_notification': {
-										'type': 'string',
-										'example': 'string'
 									}
 								}
 							}

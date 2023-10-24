@@ -15,8 +15,11 @@ export default class GetAccount implements usecase {
 		if (isCache) return JSON.parse(isCache) as OutPutGetAccount
 		const account = await this.query.getAccountByPixKey(pix_key.value)
 		if (!account) throw new PixKeyNotFound()
-		const output:OutPutGetAccount = account
-		await this.cache.create(input_pix_key,JSON.stringify(output),this.cacheExpireIn)
+		const output:OutPutGetAccount = {
+			cpf:account.cpf,
+			pix_key:account.pix_key
+		}
+		await this.cache.create(input_pix_key,JSON.stringify(account),this.cacheExpireIn)
 		return output
 	}
     

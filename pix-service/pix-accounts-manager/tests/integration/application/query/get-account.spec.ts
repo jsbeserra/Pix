@@ -64,8 +64,6 @@ describe('GetAccount',() => {
 		const account = await sut.handle(input.pix_key)
 		expect(account.cpf).toBe('64475006066')
 		expect(account.pix_key).toBe(input.pix_key)
-		expect(account.url_for_transaction).toBe(url_for_transaction)
-		expect(account.webhook_notification).toBe(webhook_notification)
 	})
 
 	it('Should return the cached account', async () => {
@@ -81,16 +79,12 @@ describe('GetAccount',() => {
 		await accountRepository.create(account)
 		const cacheData = {
 			cpf:account.cpf.value,
-			pix_key:account.pixKey.value,
-			url_for_transaction:account.bank.urlForTransactions.value,
-			webhook_notification:account.bank.webhookNotification.value
+			pix_key:account.pixKey.value
 		}
 		await cache.create(input.pix_key,JSON.stringify(cacheData),3000)		
 		const result = await sut.handle(input.pix_key)
 		expect(result.cpf).toBe('04945947058')
 		expect(result.pix_key).toBe(input.pix_key)
-		expect(result.url_for_transaction).toBe(url_for_transaction)
-		expect(result.webhook_notification).toBe(webhook_notification)
 	})
 
 	it('Should fail if it doesnt find a pix key', async () => {
