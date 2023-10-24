@@ -1,7 +1,7 @@
 
 import axios, { AxiosInstance } from 'axios'
 import HttpClient from '@infra/http/http-client'
-import { HttpClientError } from '@main/errors/http/http-error'
+import { HttpClientECONNREFUSED, HttpClientError } from '@main/errors/http/http-error'
 
 export default class AxiosAdapter implements HttpClient {
 	private apiAxios: AxiosInstance
@@ -17,6 +17,7 @@ export default class AxiosAdapter implements HttpClient {
 			const response = await this.apiAxios.get(url)
 			return response.data
 		} catch (err: any) {
+			if (err.code === 'ECONNREFUSED') return new HttpClientECONNREFUSED()
 			return new HttpClientError(err.response.data, err.statusCode)
 		}
 	}
@@ -26,6 +27,7 @@ export default class AxiosAdapter implements HttpClient {
 			const response = await this.apiAxios.post(url, body)
 			return response.data
 		} catch (err: any) {
+			if (err.code === 'ECONNREFUSED') return new HttpClientECONNREFUSED()
 			return new HttpClientError(err.response.data, err.statusCode)
 		}
 	}
@@ -35,6 +37,7 @@ export default class AxiosAdapter implements HttpClient {
 			const response = await this.apiAxios.put(url, body)
 			return response.data
 		} catch (err: any) {
+			if (err.code === 'ECONNREFUSED') return new HttpClientECONNREFUSED()
 			return new HttpClientError(err.response.data, err.statusCode)
 		}
 	}
@@ -44,6 +47,7 @@ export default class AxiosAdapter implements HttpClient {
 			const response = await this.apiAxios.delete(url)
 			return response.data
 		} catch (err: any) {
+			if (err.code === 'ECONNREFUSED') return new HttpClientECONNREFUSED()
 			return new HttpClientError(err.response.data, err.statusCode)
 		}
 	}

@@ -20,5 +20,5 @@ export default class Account extends BaseEntity {
 
 	@UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' }) updated_at: Date
 	
-	@Column({ type: 'boolean', nullable: false }) active: boolean
+	@Column({ type: 'boolean', nullable: false, default:true }) active: boolean
 }

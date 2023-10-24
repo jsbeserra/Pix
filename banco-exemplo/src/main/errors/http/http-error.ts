@@ -8,3 +8,9 @@ export class HttpClientError extends MainError {
 		this.message = message
 	}
 }
+
+export class HttpClientECONNREFUSED extends MainError {
+	constructor () {
+		super('Service temporarily unavailable.')
+	}
+}
