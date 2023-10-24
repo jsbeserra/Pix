@@ -4,7 +4,7 @@ import { ControllerOperation, HttpRequest, HttpResponse } from '../ports'
 import { created } from '../util'
 import handleError from '@main/errors/handleError'
 
-export class DeleteAccountController implements ControllerOperation {
+export class DeletePixKeyController implements ControllerOperation {
 	readonly requiredParams: string[] = [ 'pix_key' ]
 	private usecase: usecase
 	

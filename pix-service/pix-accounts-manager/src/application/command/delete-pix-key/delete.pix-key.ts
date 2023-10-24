@@ -6,7 +6,7 @@ import { PixKeyNotFound } from '@application/errors/application-error'
 import ICache from '@application/interfaces/data/cache/icache'
 
 
-export default class DeleteAccount implements usecase {
+export default class DeletePixKey implements usecase {
 
 	constructor(private query:IAccountQuery, private accountRepository:IAccountRepository, private cache:ICache){}
 
