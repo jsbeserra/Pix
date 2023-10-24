@@ -15,28 +15,21 @@ export default class RegisterTransaction implements ApplicationHandle {
 		private transactionRepository:ITransactionRepository){}
 
 	async handle(input: InputTransaction): Promise<OutputTransaction> {
-		const accountsData = await this.accountGateway.exec({
-			payer_pix_key:input.payer_pix_key,
-			receiver_pix_key:input.receiver_pix_key
-		})
-		if (accountsData instanceof Error){
-			console.log(accountsData.message)
-			throw new Error(accountsData.message)
-		}
-		const code = await this.existsCode()
+		const accountsData = await this.requestAccountsData(input.payer_pix_key,input.receiver_pix_key)
+		const code = await this.generateCode()
 		const registerPayload:payloadTransactionQueue = {
 			code:code,
 			value:input.value,
 			payer: accountsData.payer,
 			receiver: accountsData.receiver
 		}
-		const transaction = new Transaction(code, accountsData.payer.pix_key,accountsData.receiver.pix_key,input.value,'pending')
+		const transaction = Transaction.create(code, accountsData.payer.pix_key,accountsData.receiver.pix_key,input.value,'pending')
 		await this.transactionRepository.save(transaction)
 		await this.queue.publish('transactions', registerPayload)
-		return {code}
+		return {code,status:'pending'}
 	}
 
-	private async existsCode(): Promise<string> {
+	private async generateCode(): Promise<string> {
 		let code = this.createCode.createCode()
 		let exists = true
 		while (exists) {
@@ -45,6 +38,18 @@ export default class RegisterTransaction implements ApplicationHandle {
 			code = this.createCode.createCode()
 		}
 		return code
+	}
+
+	private async requestAccountsData(payer_pix_key:string,receiver_pix_key:string) {
+		const accountsData = await this.accountGateway.exec({
+			payer_pix_key:payer_pix_key,
+			receiver_pix_key:receiver_pix_key
+		})
+		if (accountsData instanceof Error){
+			console.log(accountsData.message)
+			throw new Error(accountsData.message)
+		}
+		return accountsData
 	}
 
     

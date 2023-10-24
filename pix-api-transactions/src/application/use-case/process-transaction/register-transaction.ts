@@ -6,7 +6,9 @@ import { ITransactionRepository } from '@application/interfaces/repository/trans
 
 export default class ProcessTransaction implements ApplicationHandle {
 
-	constructor(private processTransactionGateway:IProcessTransactionGateway,private transactionRepository:ITransactionRepository){}
+	constructor(private processTransactionGateway:IProcessTransactionGateway,
+		private transactionRepository:ITransactionRepository
+	){}
 
 	async handle(input:payloadTransactionQueue): Promise<void> {
 		const payload:payloadTransactionQueue = input
@@ -20,6 +22,5 @@ export default class ProcessTransaction implements ApplicationHandle {
 			throw new Error(response.message)
 		}
 		await this.transactionRepository.updateStatus(payload.code,'success')
-
 	}
 }
