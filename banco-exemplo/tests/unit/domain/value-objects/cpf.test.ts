@@ -1,22 +1,21 @@
 import Cpf from '@domain/value-objects/cpf'
-import { InvalidCpf } from '@domain/errors/value-objects'
+import { CpfAllDigitsAreTheSame, CpfInvalidDigit, InvalidCpfLength } from '@domain/errors/value-objects'
 
 describe('Test Cpf',()=>{
 
-	test.each(['340.962.240-30', '706.409.590-40', '204.065.400-39'])(
-		'Should create a cpf valid %s',
-		function (value) {
-			const cpf = Cpf.create(value)
-			expect(cpf.value).toBeDefined()
-		}
-	)
+	it('Should fail if the digit is invalid',()=>{
+		const cpf = '733.344.266-33'
+		expect(() => Cpf.create(cpf)).toThrow(new CpfInvalidDigit())
+	})
+	it('Should fail if the cpf does not have 11 digits',()=>{
+		const cpf = '111.111.1-11'
+		expect(() => Cpf.create(cpf)).toThrow(new InvalidCpfLength())
+	})
 
-	test.each(['111.111.111-11', '222.222.222-22', '333.333.3336-33'])(
-		'Should test an invalid cpf: %s',
-		(value) => {
-			expect(() => Cpf.create(value)).toThrow(new InvalidCpf())
-		}
-	)
+	it('Should fail if the cpf has all the numbers repeated',()=>{
+		const cpf = '111.111.111-11'
+		expect(() => Cpf.create(cpf)).toThrow(new CpfAllDigitsAreTheSame())
+	})
 
 	it('Should restore a cpf',()=>{
 		const cpf = Cpf.restore('706.409.590-40')

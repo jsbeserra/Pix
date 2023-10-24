@@ -1,10 +1,10 @@
 import { IAccountQuery } from '@application/interfaces/data/query/account-query'
-import { applicationHandle } from '@application/usecase'
 import Cpf from '@domain/value-objects/cpf'
 import { OutPutAccount } from './out-put-get-account'
 import { AccountNotFound } from '@application/errors/shared-errors'
+import { ApplicationHandle } from '@application/applicationHandle'
 
-export default class GetAccount implements applicationHandle {
+export default class GetAccount implements ApplicationHandle {
 
 	constructor(private accountQuery:IAccountQuery){}
 
