@@ -1,5 +1,5 @@
 import { usecase } from '../usecase'
-import { InputCreateAccount } from './input-create-account'
+import { InputCreatePixKey } from './input-create-account'
 import Account from '@domain/entities/account'
 import Cpf from '@domain/value-objects/cpf'
 
@@ -8,11 +8,11 @@ import PixKey from '@domain/value-objects/pix-key'
 import { IBankRepository } from '@application/interfaces/data/repository/ibank-repository'
 import { BankNotFoundAlreadyRegistered, CpfAlreadyRegistered, PixKeyAlreadyRegistered } from '@application/errors/use-case/create-account'
 
-export default class CreateAccount implements usecase {
+export default class CreatePixKey implements usecase {
 
 	constructor(private repository:IAccountRepository, private bankRepository:IBankRepository){}
 
-	async handle(input: InputCreateAccount): Promise<any> {
+	async handle(input: InputCreatePixKey): Promise<any> {
 		const cpf = Cpf.create(input.cpf)
 		const pix_key = PixKey.create(input.pix_key)
 		const existsCpf = await this.repository.existsCpf(cpf)

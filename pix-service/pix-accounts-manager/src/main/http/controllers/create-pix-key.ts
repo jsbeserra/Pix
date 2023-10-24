@@ -4,7 +4,7 @@ import { ControllerOperation, HttpRequest, HttpResponse } from '../ports'
 import { created } from '../util'
 import handleError from '@main/errors/handleError'
 
-export class CreateAccountController implements ControllerOperation {
+export class CreatePixKeyController implements ControllerOperation {
 	readonly requiredParams: string[] = [ 'bank_id', 'cpf', 'pix_key']
 	private usecase: usecase
 	

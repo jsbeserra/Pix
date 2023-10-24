@@ -1,4 +1,4 @@
-import CreateAccount from '@application/command/create-account/create-account'
+import CreatePixKey from '@application/command/create-pix-key/create-pix-key'
 import { BankNotFoundAlreadyRegistered, CpfAlreadyRegistered, PixKeyAlreadyRegistered } from '@application/errors/use-case/create-account'
 import IAccountRepository from '@application/interfaces/data/repository/iaccount-repository'
 import { IBankRepository } from '@application/interfaces/data/repository/ibank-repository'
@@ -13,18 +13,18 @@ import TypeOrmHelperAdpterMemory from '@test/integration/typeorm/typeorm-adpter-
 
 
 
-describe('CreateAccount',() => {
+describe('CreatePixKey',() => {
 	let typeormAdpter:ITypeOrmAdpter
 	let accountRepository:IAccountRepository
 	let bankRepository: IBankRepository
-	let sut:CreateAccount
+	let sut:CreatePixKey
 
 	beforeAll(async()=>{
 		typeormAdpter = new TypeOrmHelperAdpterMemory()
 		await typeormAdpter.connect()
 		bankRepository = new BankRepositoryTypeOrm(typeormAdpter)
 		accountRepository = new AccountRepositoryTypeOrm(typeormAdpter)
-		sut = new CreateAccount(accountRepository,bankRepository)
+		sut = new CreatePixKey(accountRepository,bankRepository)
 	})
 
 
@@ -37,7 +37,7 @@ describe('CreateAccount',() => {
 		await typeormAdpter.disconect()
 	})
 
-	it('Should create an account and persist', async () => {
+	it('Should create an pixkey and persist', async () => {
 		const bank = Bank.create('teste2', Url.create(faker.internet.url()),Url.create(faker.internet.url()))
 		await bankRepository.create(bank)
 		const bankid = await bankRepository.findByName('teste2')
@@ -51,7 +51,7 @@ describe('CreateAccount',() => {
 		expect(accounts).toBe(true)
 	})
 
-	it('Should fail to create a pix account if the bank id does not exist', async () => {
+	it('Should fail to create a pixkey if the bank id does not exist', async () => {
 		const input = {
 			bank_id: '90',
 			cpf:'835.049.920-69',
@@ -60,7 +60,7 @@ describe('CreateAccount',() => {
 		expect(async()=>await sut.handle(input)).rejects.toThrow(new BankNotFoundAlreadyRegistered())
 	})
 
-	it('Should create fail account with cpf already existis', async () => {
+	it('Should create fail pixkey with cpf already existis', async () => {
 		const bank = Bank.create('teste5', Url.create(faker.internet.url()),Url.create(faker.internet.url()))
 		await bankRepository.create(bank)
 		const bankid = await bankRepository.findByName('teste5')
@@ -73,7 +73,7 @@ describe('CreateAccount',() => {
 		expect(async()=>await sut.handle(input)).rejects.toThrow(new CpfAlreadyRegistered())
 	})
 
-	it('Should fail to create a pix account if the pix_key already exists', async () => {
+	it('Should fail to create a pix pixkey if the pix_key already exists', async () => {
 		const bankName = faker.person.firstName()
 		const bank = Bank.create(bankName, Url.create(faker.internet.url()),Url.create(faker.internet.url()))
 		await bankRepository.create(bank)
