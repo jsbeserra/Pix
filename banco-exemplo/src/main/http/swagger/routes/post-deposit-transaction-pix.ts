@@ -7,7 +7,7 @@ export const PostDepositTransactionPix = {
 			'summary': 'Realiza um deposito',
 			'description':'Deve ser utilizado somente pelo proprio sistema pix',
 			'tags': [
-				'webhook'
+				'Transaction-pix'
 			],
 			'requestBody': {
 				'description': 'Deve ser utilizado por serviços externos para realizar depositos',

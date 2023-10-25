@@ -14,6 +14,7 @@ export default class Transaction implements ApplicationHandle {
 	constructor(private repository:IAccountRepository, private gatewayPix:IGatewayPix){}
 
 	async handle(input: InputTransaction): Promise<OutPutTransaction> {
+		console.log(input)
 		this.validateInput(input)
 		const account = await this.repository.getAccount(input.payer_cpf)
 		if (!account) throw new AccountNotFound()

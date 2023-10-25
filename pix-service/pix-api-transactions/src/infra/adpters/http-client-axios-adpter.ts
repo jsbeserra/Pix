@@ -1,7 +1,7 @@
 
 import axios, { AxiosInstance } from 'axios'
 import HttpClient from '@infra/http/http-client'
-import { GatewayError } from '@infra/errors/gateway/create-account'
+import { HttpClientECONNREFUSED, HttpClientErrorInfra } from '@infra/errors/http-client/http-client-error'
 
 export default class AxiosClientAdapter implements HttpClient {
 	private apiAxios: AxiosInstance
@@ -13,38 +13,44 @@ export default class AxiosClientAdapter implements HttpClient {
 	}
 
 	async get(url: string): Promise<any> {
-		const response = await this.apiAxios.get(url).then((response)=>{
+		try {
+			const response = await this.apiAxios.get(url)
 			return response.data
-		}).catch(err => {
-			return new GatewayError()
-		})
-		return response.data
+		} catch (err: any) {
+			console.log(err)
+			if (err.code === 'ECONNREFUSED') throw new HttpClientECONNREFUSED()
+			throw new HttpClientErrorInfra(err.response)
+		}
 	}
 
 	async post(url: string, body: any): Promise<any> {
-		const response = await this.apiAxios.post(url, body).then((response)=>{
+		try {
+			const response = await this.apiAxios.post(url, body)
 			return response.data
-		}).catch(err => {
-			return new GatewayError()
-		})
-		return response.data
-
+		} catch (err: any) {
+			console.log(err)
+			if (err.code === 'ECONNREFUSED') return new HttpClientECONNREFUSED()
+			throw new HttpClientErrorInfra(err.response.data)
+		}
 	}
 
 	async put(url: string, body: any): Promise<any> {
-		const response = await this.apiAxios.put(url, body).then((response)=>{
+		try {
+			const response = await this.apiAxios.put(url, body)
 			return response.data
-		}).catch(err => {
-			return new GatewayError()
-		})
-		return response
+		} catch (err: any) {
+			if (err.code === 'ECONNREFUSED') throw new HttpClientECONNREFUSED()
+			throw new HttpClientErrorInfra(err.response.data)
+		}
 	}
 
 	async delete(url: string): Promise<any> {
-		await this.apiAxios.delete(url).then((response)=>{
+		try {
+			const response = await this.apiAxios.delete(url)
 			return response.data
-		}).catch(err => {
-			return new GatewayError()
-		})
+		} catch (err: any) {
+			if (err.code === 'ECONNREFUSED') return new HttpClientECONNREFUSED()
+			throw new HttpClientErrorInfra(err.response.data)
+		}
 	}
 }
