@@ -1,21 +1,19 @@
-
-import { ApplicationHandle } from '@application/application-handle'
+import { ApplicationHandle } from '@application/applicationHandle'
 import { ControllerOperation, HttpRequest, HttpResponse } from '../ports'
 import { created } from '../util'
 import handleError from '@main/errors/handleError'
 
 export class TransactionController implements ControllerOperation {
-	readonly requiredParams: string[] = [ 'payer_pix_key', 'receiver_pix_key', 'value']
-	private applicationHandle: ApplicationHandle
+	readonly requiredParams: string[] = [ 'payer_cpf', 'receiver_pixkey', 'value']
+	private command: ApplicationHandle
 
-	constructor(usecase: ApplicationHandle) {
-		this.applicationHandle = usecase
+	constructor(command: ApplicationHandle) {
+		this.command = command
 	}
 
 	async operation(request: HttpRequest): Promise<HttpResponse> {
 		try {
-			console.log('oce')
-			const result = await this.applicationHandle.handle(request.body)
+			const result = await this.command.handle(request.body)
 			return created(result)
 		} catch (err: any) {
 			return handleError(err)

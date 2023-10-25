@@ -5,5 +5,5 @@ import { makeGetTransactionStatusController } from '../factory-controllers/make-
 
 export default (router: Router): void => {
 	router.post('/transaction', adaptRoute(makeTransactionController())) 
-	router.get('/transaction/:code', adaptRoute(makeGetTransactionStatusController())) 
+	router.get('/get/transaction/:code', adaptRoute(makeGetTransactionStatusController())) 
 }

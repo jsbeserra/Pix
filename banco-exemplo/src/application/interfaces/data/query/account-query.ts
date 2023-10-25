@@ -1,6 +1,6 @@
 
 export interface AccountDto {
-    balance:string
+    balance:number
     name:string,
     cpf:string,
     mother_name:string

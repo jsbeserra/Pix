@@ -7,6 +7,7 @@ export default interface IAccountRepository {
     exists(cpf:Cpf): Promise<boolean>
     savePixKey(pixKey: PixKey,cpf:Cpf): Promise<void>
     removePixKey(cpf:Cpf): Promise<void>
-    deposit(cpf:Cpf, deposit:number):Promise<void>
+    deposit(cpf:Cpf, debit:number):Promise<void>
+    debit(cpf:Cpf, value:number):Promise<void>
     balance(cpf:Cpf):Promise<number>
 }

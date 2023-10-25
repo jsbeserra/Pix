@@ -52,5 +52,12 @@ export default class AccountRepositoryPostgresql implements IAccountRepository {
 		if (!account) throw new Error('Account not found')
 		return account.balance
 	}
+
+	async debit(cpf: Cpf, value: number): Promise<void> {
+		const account = await this.typeormAdpter.getAccountEntity().findOneBy({cpf:cpf.value})
+		if (!account) throw new Error('Account not found')
+		account.balance = value
+		await this.typeormAdpter.getAccountEntity().save(account)
+	}
 	
 }
