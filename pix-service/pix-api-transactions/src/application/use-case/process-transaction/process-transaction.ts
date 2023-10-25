@@ -11,16 +11,27 @@ export default class ProcessTransaction implements ApplicationHandle {
 	){}
 
 	async handle(input:payloadTransactionQueue): Promise<void> {
-		const payload:payloadTransactionQueue = input
 		try {
-			await this.processTransactionGateway.exec(payload.receiver.url_for_transaction,{
-				payer_cpf:payload.payer.cpf,
-				receiver_cpf:payload.receiver.cpf,
-				value:payload.value
-			})
-			await this.transactionRepository.updateStatus(payload.code,'success')
+			await this.sendTransaction(input)
+			await this.transactionRepository.updateStatus(input.code,'success')
 		} catch (error) {
-			throw new Error(error.message)
+			await this.sendRefound(input)
 		}	
+	}
+
+	private async sendTransaction(input:payloadTransactionQueue): Promise<void> {
+		await this.processTransactionGateway.exec(input.receiver.url_for_transaction,{
+			payer_cpf:input.payer.cpf,
+			receiver_cpf:input.receiver.cpf,
+			value:input.value
+		})	
+	}
+
+	private async sendRefound(input:payloadTransactionQueue): Promise<void> {
+		await this.processTransactionGateway.refaund(input.payer.webhook_notification,{
+			cpf:input.payer.cpf,
+			code:input.code,
+			value:input.value
+		})
 	}
 }

@@ -17,12 +17,12 @@ export const PostRefundTransactionPix = {
 						'schema': {
 							'type': 'object',
 							'properties': {
-								'payer_cpf': {
+								'cpf': {
 									'type': 'string',
 									'pattern': '^[0-9]{3}\\.[0-9]{3}\\.[0-9]{3}-[0-9]{2}$',
 									'description': 'CPF do pagador (formato: XXX.XXX.XXX-XX)'
 								},
-								'receiver_pixkey': {
+								'code': {
 									'type': 'string',
 									'description': 'string'
 								},

@@ -17,7 +17,7 @@ export default class AxiosClientAdapter implements HttpClient {
 			const response = await this.apiAxios.get(url)
 			return response.data
 		} catch (err: any) {
-			console.log(err)
+			console.log(err.message)
 			if (err.code === 'ECONNREFUSED') throw new HttpClientECONNREFUSED()
 			throw new HttpClientErrorInfra(err.response)
 		}
@@ -28,7 +28,7 @@ export default class AxiosClientAdapter implements HttpClient {
 			const response = await this.apiAxios.post(url, body)
 			return response.data
 		} catch (err: any) {
-			console.log(err)
+			console.log(err.message)
 			if (err.code === 'ECONNREFUSED') return new HttpClientECONNREFUSED()
 			throw new HttpClientErrorInfra(err.response.data)
 		}

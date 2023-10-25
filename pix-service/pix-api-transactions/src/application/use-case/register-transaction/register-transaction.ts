@@ -15,9 +15,7 @@ export default class RegisterTransaction implements ApplicationHandle {
 		private transactionRepository:ITransactionRepository){}
 
 	async handle(input: InputTransaction): Promise<OutputTransaction> {
-		console.log(input)
 		const accountsData = await this.requestAccountsData(input.payer_pix_key,input.receiver_pix_key)
-		console.log(accountsData)
 		const code = await this.generateCode()
 		const registerPayload:payloadTransactionQueue = {
 			code:code,

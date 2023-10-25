@@ -4,7 +4,7 @@ import { ControllerOperation, HttpRequest, HttpResponse } from '@main/http/ports
 import { created } from '@main/http/util'
 
 export class FaildTransactionPixController implements ControllerOperation {
-	readonly requiredParams: string[] = [ 'cpf', 'value']
+	readonly requiredParams: string[] = [ 'cpf', 'value', 'code']
 	private command: ApplicationHandle
 
 	constructor(command: ApplicationHandle) {
