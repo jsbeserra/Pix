@@ -12,14 +12,18 @@ export default class CreateAccount implements ApplicationHandle {
 	constructor(private repository:IAccountRepository){}
 
 	async handle(input: InputCreateAccount): Promise<any> {
-		const cpf = Cpf.create(input.cpf)
-		const existsCpf = await this.repository.exists(cpf)
+		const account = this.createAccount(input)
+		const existsCpf = await this.repository.getAccount(account.cpf.value)
 		if (existsCpf) throw new CpfAlreadyRegistered()
-		const name = FullName.create(input.name)
-		const motherName = FullName.create(input.motherName)
-		const dateOfBirth = DateOfBirth.create(input.dateOfBirth)
-		const account = new Account(cpf,name,motherName,dateOfBirth)
 		await this.repository.create(account)
+	}
+
+	private createAccount(input: InputCreateAccount):Account{
+		const _cpf = Cpf.create(input.cpf)
+		const _name = FullName.create(input.name)
+		const _motherName = FullName.create(input.motherName)
+		const _dateOfBirth = DateOfBirth.create(input.dateOfBirth)
+		return new Account(_cpf,_name,_motherName,_dateOfBirth)
 	}
     
 }

@@ -10,24 +10,23 @@ export default class Deposit implements ApplicationHandle{
 	constructor(private repository:IAccountRepository){}
     
 	async handle(input: InputDeposit): Promise<void> {
-		if (input.value <= 0) throw new DepositMinimumValue()
-		const cpf = Cpf.create(input.receiver_cpf)
-		const exists = await this.existAccount(cpf)
-		if (!exists) throw new AccountNotFound()
-		const balance:number = await this.repository.balance(cpf)
-		const new_balance = this.increaseTheBalance(balance,input.value)
-		await this.repository.deposit(cpf,new_balance)
+		this.validateInput(input)
+		const account = await this.repository.getAccount(input.receiver_cpf)
+		if (!account) throw new AccountNotFound()
+		account.deposit(input.value)
+		await this.repository.deposit(account.cpf,account.balance)
 	}
-
-	private async existAccount(cpf:Cpf): Promise<boolean> {
-		return await this.repository.exists(cpf)
+	
+	private validateInput(input: InputDeposit){
+		if (input.value <= 0) throw new DepositMinimumValue()
+		Cpf.isValid(input.receiver_cpf)
 	}
 
 	private convertToFloat(valeu:number):number {
 		return parseFloat(valeu.toString())
 	}
 
-	private increaseTheBalance (balance:number, deposit:number){
+	private increaseTheBalance (balance:number, deposit:number):number {
 		return this.convertToFloat(balance) + this.convertToFloat(deposit)
 	}
     

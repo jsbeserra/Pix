@@ -1,4 +1,3 @@
-import PixKey from '@domain/value-objects/pix-key'
 
 export type InputCreatePixKey = {
     cpf:string
@@ -8,5 +7,5 @@ export type InputCreatePixKey = {
 export interface IGatewayPix {
     createPixKey(input:InputCreatePixKey):Promise<any>
     deletePixKey(pix_key:string):Promise<any>
-    transaction(payerPixKey:PixKey, receiverPixKey:PixKey, value:number):Promise<{code:string,status:string}>
+    transaction(payerPixKey:string, receiverPixKey:string, value:number):Promise<{code:string,status:string}>
 }

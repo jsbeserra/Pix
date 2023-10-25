@@ -20,8 +20,8 @@ export default class AccountRepositoryPostgresql implements IAccountRepository {
 		await this.typeormAdpter.getAccountEntity().save(_account)
 	}
     
-	async exists(cpf: Cpf): Promise<boolean> {
-		const exist = await this.typeormAdpter.getAccountEntity().findOneBy({cpf:cpf.value})
+	async exists(cpf: string): Promise<boolean> {
+		const exist = await this.typeormAdpter.getAccountEntity().findOneBy({cpf:cpf})
 		if (!exist) return false
 		return true
 	}
@@ -53,11 +53,21 @@ export default class AccountRepositoryPostgresql implements IAccountRepository {
 		return account.balance
 	}
 
-	async debit(cpf: Cpf, value: number): Promise<void> {
+	async updateBalance(cpf: Cpf, value: number): Promise<void> {
 		const account = await this.typeormAdpter.getAccountEntity().findOneBy({cpf:cpf.value})
 		if (!account) throw new Error('Account not found')
 		account.balance = value
 		await this.typeormAdpter.getAccountEntity().save(account)
+	}
+
+	async getAccount(cpf: string): Promise<Account | undefined> {
+		const _account = await this.typeormAdpter.getAccountEntity().findOneBy({cpf:cpf})
+		if (!_account) return
+		return Account.restore(
+			_account.cpf,_account.name,
+			_account.mother_name,_account.date_of_birth
+			,_account.balance,_account.opening_date,
+			_account.active,_account.pix_key)
 	}
 	
 }

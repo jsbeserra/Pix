@@ -48,7 +48,7 @@ export default class Account {
 	public deposit(depositValue:number): void {
 		if (this.isZero(depositValue)) throw new AccountErrorMinimumValue()
 		if (this.isNegative(depositValue)) throw new AccountErrorNegativeValue()
-		this._balance += depositValue
+		this._balance = parseFloat(this._balance.toString()) + parseFloat(depositValue.toString())
 	}
 
 	public debit(debitValue:number): void {
