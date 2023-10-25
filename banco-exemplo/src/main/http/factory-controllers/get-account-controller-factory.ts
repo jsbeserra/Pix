@@ -1,4 +1,4 @@
-import { GetAccountController } from '../controllers/get-account'
+import { GetAccountController } from '@presentation/controllers/get-account'
 import { WebController } from '../web-controller'
 import { MakeGetAccount } from '@main/factories/get-account-factory'
 

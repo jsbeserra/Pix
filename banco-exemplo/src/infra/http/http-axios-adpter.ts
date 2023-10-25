@@ -1,7 +1,8 @@
 
 import axios, { AxiosInstance } from 'axios'
 import HttpClient from '@infra/http/http-client'
-import { HttpClientECONNREFUSED, HttpClientError } from '@main/errors/http/http-error'
+import { HttpClientECONNREFUSED } from '@main/errors/http/http-error'
+import { HttpClientErrorInfra } from '@infra/errors/http-client/http-client-error'
 
 export default class AxiosAdapter implements HttpClient {
 	private apiAxios: AxiosInstance
@@ -17,8 +18,9 @@ export default class AxiosAdapter implements HttpClient {
 			const response = await this.apiAxios.get(url)
 			return response.data
 		} catch (err: any) {
-			if (err.code === 'ECONNREFUSED') return new HttpClientECONNREFUSED()
-			return new HttpClientError(err.response.data, err.statusCode)
+			console.log(err)
+			if (err.code === 'ECONNREFUSED') throw new HttpClientECONNREFUSED()
+			throw new HttpClientErrorInfra(err.response)
 		}
 	}
 
@@ -27,8 +29,9 @@ export default class AxiosAdapter implements HttpClient {
 			const response = await this.apiAxios.post(url, body)
 			return response.data
 		} catch (err: any) {
+			console.log(err)
 			if (err.code === 'ECONNREFUSED') return new HttpClientECONNREFUSED()
-			return new HttpClientError(err.response.data, err.statusCode)
+			throw new HttpClientErrorInfra(err.response.data)
 		}
 	}
 
@@ -37,8 +40,8 @@ export default class AxiosAdapter implements HttpClient {
 			const response = await this.apiAxios.put(url, body)
 			return response.data
 		} catch (err: any) {
-			if (err.code === 'ECONNREFUSED') return new HttpClientECONNREFUSED()
-			return new HttpClientError(err.response.data, err.statusCode)
+			if (err.code === 'ECONNREFUSED') throw new HttpClientECONNREFUSED()
+			throw new HttpClientErrorInfra(err.response.data)
 		}
 	}
 
@@ -48,7 +51,7 @@ export default class AxiosAdapter implements HttpClient {
 			return response.data
 		} catch (err: any) {
 			if (err.code === 'ECONNREFUSED') return new HttpClientECONNREFUSED()
-			return new HttpClientError(err.response.data, err.statusCode)
+			throw new HttpClientErrorInfra(err.response.data)
 		}
 	}
 }

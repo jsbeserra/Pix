@@ -1,5 +1,5 @@
 import CreateAccount from '@application/command/create-account/create-account'
-import AccountRepositoryPostgresql from '@infra/data/Accout-repository-sql'
+import AccountRepositoryPostgresql from '@infra/data/Accout-repository-typeorm'
 import TypeOrmHelperAdpter from '@main/data-base/typeorm/typeorm-adpter-postgres'
 
 

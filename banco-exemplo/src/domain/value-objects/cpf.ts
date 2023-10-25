@@ -15,6 +15,7 @@ export default class Cpf {
 	}
 	
 	public static isValid(cpf: string): boolean {
+		cpf = this.sanitizer(cpf)
 		this.validate(cpf)
 		return true
 	}

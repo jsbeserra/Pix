@@ -8,15 +8,16 @@ async function server() {
 	const httpServerExpress = new ExpressHttpServer()
 	const httpServer = http.createServer(httpServerExpress.app)
 	httpServer.listen(process.env.PORT,()=>{
-		console.log('Server started!')
+		console.log('🚀 Server Active: The server is up and running successfully!')
+		console.log(`🌐 Port: ${process.env.PORT}`)
 	})
 }
 
 async function connectDataBases() {
 	await TypeOrmHelperAdpter.instance().connect()
-		.then(()=>console.log('Data base connected'))
+		.then(()=>console.log('🎉 Database Connected: Successfully connected to the database.'))
 		.catch(err=> {
-			console.log(err)
+			console.log(err.message)
 		})
 }
 

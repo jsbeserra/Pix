@@ -1,7 +1,7 @@
 import { ApplicationHandle } from '@application/applicationHandle'
-import { ControllerOperation, HttpRequest, HttpResponse } from '../ports'
-import { ok } from '../util'
 import handleError from '@main/errors/handleError'
+import { ControllerOperation, HttpRequest, HttpResponse } from '@main/http/ports'
+import { ok } from '@main/http/util'
 
 export class DeletePixKeyController implements ControllerOperation {
 	readonly requiredParams: string[] = ['cpf','pix_key']

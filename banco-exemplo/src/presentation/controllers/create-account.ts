@@ -1,10 +1,10 @@
 import { ApplicationHandle } from '@application/applicationHandle'
-import { ControllerOperation, HttpRequest, HttpResponse } from '../ports'
-import { created } from '../util'
 import handleError from '@main/errors/handleError'
+import { ControllerOperation, HttpRequest, HttpResponse } from '@main/http/ports'
+import { created } from '@main/http/util'
 
-export class DebitController implements ControllerOperation {
-	readonly requiredParams: string[] = [ 'value', 'payer_cpf', 'receiver_cpf']
+export class CreateAccountController implements ControllerOperation {
+	readonly requiredParams: string[] = [ 'name', 'cpf', 'motherName', 'dateOfBirth']
 	private command: ApplicationHandle
 
 	constructor(command: ApplicationHandle) {

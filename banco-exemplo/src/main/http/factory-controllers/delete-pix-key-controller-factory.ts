@@ -1,5 +1,5 @@
 import { MakeDeletePixKey } from '@main/factories/delete-pix-key-factory'
-import { DeletePixKeyController } from '../controllers/delete-pix-key'
+import { DeletePixKeyController } from '@presentation/controllers/delete-pix-key'
 import { WebController } from '../web-controller'
 
 

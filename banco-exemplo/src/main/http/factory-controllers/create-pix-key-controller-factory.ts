@@ -1,4 +1,4 @@
-import { CreatePixController } from '../controllers/create-pix-key'
+import { CreatePixController } from '@presentation/controllers/create-pix-key'
 import { WebController } from '../web-controller'
 import { MakeCreatePixKey } from '@main/factories/create-pix-key-factory'
 

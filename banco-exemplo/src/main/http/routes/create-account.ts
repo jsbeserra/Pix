@@ -4,6 +4,7 @@ import { makeCreateAccountController } from '../factory-controllers/create-accou
 import { makeCreatePixKeyController } from '../factory-controllers/create-pix-key-controller-factory'
 import { makeGetAccountController } from '../factory-controllers/get-account-controller-factory'
 import { makeDeletePixKeyController } from '../factory-controllers/delete-pix-key-controller-factory'
+import { makeDeleteAccountController } from '../factory-controllers/delete-account-controller-factory'
 
 
 
@@ -12,5 +13,6 @@ export default (router: Router): void => {
 	router.get('/account/:cpf', adaptRoute(makeGetAccountController())) 
 	router.post('/account/create/pixkey', adaptRoute(makeCreatePixKeyController())) 
 	router.delete('/account/delete/pixkey/:cpf/:pix_key', adaptRoute(makeDeletePixKeyController())) 
+	router.delete('/account/delete/:cpf/:dateOfBirth', adaptRoute(makeDeleteAccountController()))
 	
 }

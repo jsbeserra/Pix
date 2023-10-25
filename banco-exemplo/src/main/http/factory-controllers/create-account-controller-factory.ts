@@ -1,5 +1,5 @@
 import { MakeCreateAccountCommand } from '@main/factories/create-account-command-factory'
-import { CreateAccountController } from '../controllers/create-account'
+import { CreateAccountController } from '@presentation/controllers/create-account'
 import { WebController } from '../web-controller'
 
 export const makeCreateAccountController = (): WebController => {

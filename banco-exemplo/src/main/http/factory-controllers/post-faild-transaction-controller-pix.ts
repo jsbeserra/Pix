@@ -1,9 +1,10 @@
 import { TransactionController } from '@presentation/controllers/transaction'
 import { WebController } from '../web-controller'
-import { MakeTransaction } from '@main/factories/transaction-factory'
+import { makeRefundTransactionPix } from '@main/factories/refund-transaction-pix-factory'
 
-export const makeTransactionController = (): WebController => {
-	const transaction = MakeTransaction()
+
+export const makeRefundTransactionController = (): WebController => {
+	const transaction = makeRefundTransactionPix()
 	const controller = new WebController(new TransactionController(transaction))
 	return controller
 }

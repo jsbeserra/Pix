@@ -1,10 +1,10 @@
 import { ApplicationHandle } from '@application/applicationHandle'
-import { ControllerOperation, HttpRequest, HttpResponse } from '../ports'
-import { ok } from '../util'
 import handleError from '@main/errors/handleError'
+import { ControllerOperation, HttpRequest, HttpResponse } from '@main/http/ports'
+import { created } from '@main/http/util'
 
-export class GetAccountController implements ControllerOperation {
-	readonly requiredParams: string[] = ['cpf']
+export class DepositController implements ControllerOperation {
+	readonly requiredParams: string[] = [ 'value', 'payer_cpf', 'receiver_cpf']
 	private command: ApplicationHandle
 
 	constructor(command: ApplicationHandle) {
@@ -13,8 +13,8 @@ export class GetAccountController implements ControllerOperation {
 
 	async operation(request: HttpRequest): Promise<HttpResponse> {
 		try {
-			const result = await this.command.handle(request.params.cpf)
-			return ok(result)
+			const result = await this.command.handle(request.body)
+			return created(result)
 		} catch (err: any) {
 			return handleError(err)
 		}

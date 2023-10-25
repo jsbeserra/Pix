@@ -13,8 +13,9 @@ export default class CreatePixKey implements ApplicationHandle {
 	constructor(private repository:IAccountRepository, private gatewayPix:IGatewayPix){}
 
 	async handle(input: InputCreatePixKey): Promise<void> {
-		this.validateInput(input)
-		const account = await this.repository.getAccount(input.cpf)
+		const cpf = Cpf.create(input.cpf)
+		this.validateInput(input.pix_key)
+		const account = await this.repository.getAccount(cpf.value)
 		if (!account) throw new AccountNotFound()
 		if (account!.pixKey) throw new AlreadyExistsAccountPixKey()
 		account.createPixKey(input.pix_key)
@@ -23,9 +24,8 @@ export default class CreatePixKey implements ApplicationHandle {
 		await this.repository.savePixKey(account.pixKey!,account.cpf)
 	}
 
-	private validateInput(input: InputCreatePixKey){
-		Cpf.isValid(input.cpf)
-		PixKey.isValid(input.pix_key)
+	private validateInput(pixKey: string){
+		PixKey.isValid(pixKey)
 	}
 
 	private async sendCreatePixKey(cpf:string,pixkey:string){

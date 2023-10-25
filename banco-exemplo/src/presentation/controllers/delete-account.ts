@@ -1,10 +1,10 @@
 import { ApplicationHandle } from '@application/applicationHandle'
-import { ControllerOperation, HttpRequest, HttpResponse } from '../ports'
-import { created } from '../util'
 import handleError from '@main/errors/handleError'
+import { ControllerOperation, HttpRequest, HttpResponse } from '@main/http/ports'
+import { ok } from '@main/http/util'
 
-export class TransactionController implements ControllerOperation {
-	readonly requiredParams: string[] = [ 'payer_cpf', 'receiver_pixkey', 'value']
+export class DeleteAccountController implements ControllerOperation {
+	readonly requiredParams: string[] = ['cpf','dateOfBirth']
 	private command: ApplicationHandle
 
 	constructor(command: ApplicationHandle) {
@@ -13,8 +13,8 @@ export class TransactionController implements ControllerOperation {
 
 	async operation(request: HttpRequest): Promise<HttpResponse> {
 		try {
-			const result = await this.command.handle(request.body)
-			return created(result)
+			const result = await this.command.handle(request.params)
+			return ok(result)
 		} catch (err: any) {
 			return handleError(err)
 		}

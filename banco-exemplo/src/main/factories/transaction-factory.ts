@@ -1,8 +1,8 @@
 import Transaction from '@application/command/transaction/transaction'
-import AccountRepositoryPostgresql from '@infra/data/Accout-repository-sql'
+import AccountRepositoryPostgresql from '@infra/data/Accout-repository-typeorm'
 import PixGateway from '@infra/geteway/get-account-gateway'
+import AxiosAdapter from '@infra/http/http-axios-adpter'
 import TypeOrmHelperAdpter from '@main/data-base/typeorm/typeorm-adpter-postgres'
-import AxiosAdapter from '@main/http/axios-client/http-axios-adpter'
 
 
 export const MakeTransaction = (): Transaction => {

@@ -1,7 +1,7 @@
 import { ApplicationHandle } from '@application/applicationHandle'
-import { ControllerOperation, HttpRequest, HttpResponse } from '../ports'
-import { created } from '../util'
 import handleError from '@main/errors/handleError'
+import { ControllerOperation, HttpRequest, HttpResponse } from '@main/http/ports'
+import { created } from '@main/http/util'
 
 export class CreatePixController implements ControllerOperation {
 	readonly requiredParams: string[] = [ 'cpf', 'pix_key']
