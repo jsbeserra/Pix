@@ -41,15 +41,10 @@ export default class RegisterTransaction implements ApplicationHandle {
 	}
 
 	private async requestAccountsData(payer_pix_key:string,receiver_pix_key:string) {
-		const accountsData = await this.accountGateway.exec({
+		return await this.accountGateway.exec({
 			payer_pix_key:payer_pix_key,
 			receiver_pix_key:receiver_pix_key
 		})
-		if (accountsData instanceof Error){
-			console.log(accountsData.message)
-			throw new Error(accountsData.message)
-		}
-		return accountsData
 	}
 
     

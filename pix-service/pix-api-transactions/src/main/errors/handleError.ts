@@ -1,5 +1,5 @@
 import { MainError } from '@main/errors/main-errors'
-import { badRequest, serverError } from '../http/util'
+import { badRequest, serverError } from '../../infra/http/util'
 
   
 export default function handleError(error:any){

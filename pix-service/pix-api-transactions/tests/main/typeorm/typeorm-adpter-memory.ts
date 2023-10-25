@@ -1,7 +1,7 @@
 import { DataSource, EntityManager, Repository } from 'typeorm'
 import path from 'path'
 import ITypeOrmAdpter from '@infra/itypeorm-adpter'
-import TransactionsData from './entity/TransactionsData'
+import Transactions from './entity/TransactionsData'
 
 
 export default class TypeOrmHelperAdpterMemory implements ITypeOrmAdpter {
@@ -32,7 +32,7 @@ export default class TypeOrmHelperAdpterMemory implements ITypeOrmAdpter {
 	manager():EntityManager{
 		return this.client.manager
 	}
-	getTransactionEntity() :Repository<TransactionsData>{
-		return this.client.getRepository(TransactionsData)
+	getTransactionEntity() :Repository<Transactions>{
+		return this.client.getRepository(Transactions)
 	}
 }

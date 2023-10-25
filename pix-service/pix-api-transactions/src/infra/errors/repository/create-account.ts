@@ -1,5 +1,4 @@
-import { ApplicationError } from '@application/errors/application-error'
-
+import { ApplicationError } from '@application/errors/application-errors'
 
 export class TransactionFailed extends ApplicationError {
 	public readonly name = 'Transaction failed'

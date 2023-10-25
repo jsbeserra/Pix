@@ -12,15 +12,15 @@ export default class ProcessTransaction implements ApplicationHandle {
 
 	async handle(input:payloadTransactionQueue): Promise<void> {
 		const payload:payloadTransactionQueue = input
-		const response = await this.processTransactionGateway.exec(payload.receiver.url_for_transaction,{
-			payer_cpf:payload.payer.cpf,
-			receiver_cpf:payload.receiver.cpf,
-			value:payload.value
-		})
-		if (response instanceof Error){
-			console.log('fazer algum tratamento')
-			throw new Error(response.message)
-		}
-		await this.transactionRepository.updateStatus(payload.code,'success')
+		try {
+			await this.processTransactionGateway.exec(payload.receiver.url_for_transaction,{
+				payer_cpf:payload.payer.cpf,
+				receiver_cpf:payload.receiver.cpf,
+				value:payload.value
+			})
+			await this.transactionRepository.updateStatus(payload.code,'success')
+		} catch (error) {
+			throw new Error(error.message)
+		}	
 	}
 }

@@ -21,10 +21,10 @@ export default class AMQPClientAdpter implements IQueue {
 	}
 
 	public async publish(queueName: string, message: any): Promise<void> {
-		const merda:string = JSON.stringify(message)
+		const messageConvertedToString:string = JSON.stringify(message)
 		const channel = await this.client.channel()
 		const queue = await channel.queue(queueName)
-		await queue.publish(merda)
+		await queue.publish(messageConvertedToString)
 	}
 
 	async consumer(queueName: string, callback: ApplicationHandle): Promise<void> {

@@ -1,7 +1,7 @@
 
-import { WebController } from '../web-controller'
+import { TransactionController } from '@presentation/controllers/transaction-controller'
+import { WebController } from '../../infra/http/web-controller'
 import { MakeTransactionFactory } from '@main/factories/make-transaction-factory'
-import { TransactionController } from '../controllers/transaction-controller'
 
 export const makeTransactionController = (): WebController => {
 	const createAccountCommand = MakeTransactionFactory()

@@ -31,6 +31,7 @@ export default class TypeOrmHelperAdpterPostgress implements ITypeOrmAdpter {
 		if (!TypeOrmHelperAdpterPostgress._instance) TypeOrmHelperAdpterPostgress._instance = new TypeOrmHelperAdpterPostgress()
 		return TypeOrmHelperAdpterPostgress._instance
 	}
+	
 	async connect () : Promise<any> {
 		return await this.client.initialize()
 	}

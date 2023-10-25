@@ -2,7 +2,7 @@ import { http400 } from '../errors/http-400'
 import { http500 } from '../errors/http-500'
 
 export const GetTransactionEndpoint = {
-	'/transaction/{code}': {
+	'/transaction/status/{code}': {
 		'get': {
 			'summary': 'Busca o status de um transação',
 			'tags': [

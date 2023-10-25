@@ -1,6 +1,6 @@
 
-import { WebController } from '../web-controller'
-import { GetTransactionController } from '../controllers/get-transaction-status-controller'
+import { GetTransactionController } from '@presentation/controllers/get-transaction-status-controller'
+import { WebController } from '../../infra/http/web-controller'
 import { MakeGetTransactionFactory } from '@main/factories/make-get-transaction-status-factory'
 
 export const makeGetTransactionStatusController = (): WebController => {

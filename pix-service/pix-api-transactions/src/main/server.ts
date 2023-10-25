@@ -1,10 +1,10 @@
 import 'reflect-metadata'
 import http from 'http'
 import 'dotenv/config'
-import ExpressHttpServer from './http/express/ExpressHttpServer'
-import TypeOrmHelperAdpterPostgress from './data-base/typeorm/typeorm-adpter-postgres'
-import AMQPClientAdpter from './queue/amqpclient-queue-adpter'
+import AMQPClientAdpter from '@infra/adpters/amqpclient-queue-adpter'
+import ExpressHttpServer from '@infra/http/express/ExpressHttpServer'
 import { environment } from './config/config'
+import TypeOrmHelperAdpterPostgress from './data-base/typeorm/typeorm-adpter-postgres'
 import { makeProcessTransactionConsumer } from './factories/make-process-transaction-consumer'
 
 
@@ -15,6 +15,7 @@ async function server() {
 		console.log('Conectado ao amqp!')
 	}).catch((err)=>{
 		console.log('Falha ao conectar com amqp')
+		console.log(err.message)
 	})
 	await connectDataBases()
 	const httpServerExpress = new ExpressHttpServer()

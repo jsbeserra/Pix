@@ -9,7 +9,6 @@ export default class TransactionRepositoryTypeOrm implements ITransactionReposit
 	}
 
 	async save(transaction: Transaction): Promise<void> {
-		console.log(transaction)
 		const _transaction = await this.typeormAdpter.getTransactionEntity().create({
 			payer_pix_key:transaction.payer_pix_key,
 			receiver_pix_key:transaction.receiver_pix_key,
@@ -17,6 +16,7 @@ export default class TransactionRepositoryTypeOrm implements ITransactionReposit
 			value:transaction.value,
 			code:transaction.code
 		})
+		
 		await this.typeormAdpter.getTransactionEntity().save(_transaction)
 	}
 

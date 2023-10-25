@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, BaseEntity } from 'typeorm'
 
 @Entity()
-export default class TransactionsData extends BaseEntity {
+export default class Transactions extends BaseEntity {
 	@PrimaryGeneratedColumn('increment') id: string
 
 	@Column({ type: 'varchar', length: 255, nullable: false }) code: string
