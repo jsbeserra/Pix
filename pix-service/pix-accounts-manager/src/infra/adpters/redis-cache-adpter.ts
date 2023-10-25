@@ -1,7 +1,7 @@
 import ICache from '@application/interfaces/data/cache/icache'
 import { RedisHelper } from '@main/data-base/redis/redis.helper'
 
-export default class RedisCache implements ICache {
+export default class RedisCacheAdpter implements ICache {
 
 	async find(key: string): Promise<string> {
 		return await RedisHelper.get(key)

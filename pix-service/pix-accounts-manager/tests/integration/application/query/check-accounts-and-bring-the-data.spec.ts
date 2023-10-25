@@ -13,7 +13,7 @@ import Cpf from '@domain/value-objects/cpf'
 import PixKey from '@domain/value-objects/pix-key'
 import Url from '@domain/value-objects/url'
 import { faker } from '@faker-js/faker'
-import RedisCache from '@infra/cache/redis-cache'
+import RedisCacheAdpter from '@infra/adpters/redis-cache-adpter'
 import ITypeOrmAdpter from '@infra/itypeorm-adpter'
 import AccountQuery from '@infra/query/get-account-query'
 import AccountRepositoryTypeOrm from '@infra/repository/Accout-repository-typeorm'
@@ -38,7 +38,7 @@ describe('CheckAccountsAndBringTheData',() => {
 		bankRepository = new BankRepositoryTypeOrm(typeormAdpter)
 		accountRepository = new AccountRepositoryTypeOrm(typeormAdpter)
 		accountQuery = new AccountQuery(typeormAdpter)
-		cache = new RedisCache()
+		cache = new RedisCacheAdpter()
 		const cacheExpireIn = 60
 		sut = new CheckAccountsAndBringTheData(accountQuery,cache,cacheExpireIn)
 	})

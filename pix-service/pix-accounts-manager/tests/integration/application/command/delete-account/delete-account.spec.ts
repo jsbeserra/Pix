@@ -13,7 +13,7 @@ import { PixKeyNotFound } from '@application/errors/application-error'
 import { RedisHelper } from '@main/data-base/redis/redis.helper'
 import ICache from '@application/interfaces/data/cache/icache'
 import Redis from 'ioredis-mock'
-import RedisCache from '@infra/cache/redis-cache'
+import RedisCacheAdpter from '@infra/adpters/redis-cache-adpter'
 import ITypeOrmAdpter from '@infra/itypeorm-adpter'
 import TypeOrmHelperAdpterMemory from '@test/integration/typeorm/typeorm-adpter-memory'
 import BankRepositoryTypeOrm from '@infra/repository/bank-repository-typeorm'
@@ -35,7 +35,7 @@ describe('Delete PixKey',()=>{
 		bankRepository = new BankRepositoryTypeOrm(typeormAdpter)
 		accountRepository = new AccountRepositoryTypeOrm(typeormAdpter)
 		accountQuery = new AccountQuery(typeormAdpter)
-		cache = new RedisCache()
+		cache = new RedisCacheAdpter()
 		sut = new DeleteAccount(accountQuery,accountRepository,cache)
 	})
 

@@ -1,5 +1,5 @@
 import { WebController } from '../web-controller'
-import { GetAccountController } from '../controllers/get-account'
+import { GetAccountController } from '@presentation/controllers/get-account'
 import { MakeGetAccountFactory } from '@main/factories/make-get-account--factory'
 
 

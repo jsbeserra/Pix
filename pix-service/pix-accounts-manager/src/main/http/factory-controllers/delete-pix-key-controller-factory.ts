@@ -1,5 +1,5 @@
 import { WebController } from '../web-controller'
-import { DeletePixKeyController } from '../controllers/delete-pix-key'
+import { DeletePixKeyController } from '@presentation/controllers/delete-pix-key'
 import { MakeDeletePixKeyFactory } from '@main/factories/make-delete-pix-key-factory'
 
 export const makeDeletePixKeyController = (): WebController => {

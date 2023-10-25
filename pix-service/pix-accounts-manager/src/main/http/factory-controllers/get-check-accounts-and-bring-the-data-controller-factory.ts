@@ -1,5 +1,5 @@
 import { WebController } from '../web-controller'
-import { CheckAccountsAndBringTheDataAccountController } from '../controllers/check-accounts-and-bring-the-data'
+import { CheckAccountsAndBringTheDataAccountController } from '@presentation/controllers/check-accounts-and-bring-the-data'
 import { MakeCheckAccountsAndBringTheDataFactory } from '@main/factories/make-check-accounts-and-bring-the-data-factory'
 
 
