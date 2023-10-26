@@ -1,8 +1,39 @@
-version: '3.7'
+version: '3'
 
-services:  
-  postgresdb:
-    container_name: banco-database-1
+services:
+
+  redis:
+      image: redis
+      container_name: redis-account-manager
+      restart: always
+      ports:
+        - 6379:6379
+      command: redis-server --requirepass 123@Mudar
+
+  postgresdba-ccount-manage:
+    container_name: account-manager
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: account-manager
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 123@Mudar
+    ports:
+      - 5433:5432
+
+  postgresdb-transaction-pix:
+    container_name: transaction-pix
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: transaction_db
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 123@Mudar
+    ports:
+      - 5434:5432
+
+  postgresdbBancoExemplo:
+    container_name: banco-database
     image: postgres
     restart: always
     environment:
@@ -10,17 +41,4 @@ services:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: 123@Mudar
     ports:
-      - 5435:5432
-  messager-api:
-    hostname: banco-exemplo
-    container_name: banco-exemplo
-    build:
-      context: ./banco-exemplo
-      dockerfile: Dockerfile
-    # ports:
-    #   - 5055:5055
-    restart: always
-    # networks: 
-    #   - kafka-network
-    # environment:
-    #   - MONGODB_URI=mongodb://admin:admin@mongodbMessages:27017
+      - 5432:5432
