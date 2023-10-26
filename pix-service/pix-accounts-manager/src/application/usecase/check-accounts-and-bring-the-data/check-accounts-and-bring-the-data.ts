@@ -12,21 +12,11 @@ export default class CheckAccountsAndBringTheData implements usecase<InputcheckA
 
 	async handle(input: InputcheckAccountsAndBringTheData): Promise<OutPutcheckAccountsAndBringTheData> {
 		this.validateInput(input)
-		const cachedData = await this.hasCache(input)
-		if (!cachedData.payer && !cachedData.receiver){
-			const accountsData = await this.getTwoAccounts(input.payer_pix_key,input.receiver_pix_key)
-			await this.saveTwoAccountInCache(accountsData.payerAccount,accountsData.receiverAccount)
-			return this.createOutput(accountsData.payerAccount,accountsData.receiverAccount)
-		} else if (cachedData.payer && !cachedData.receiver){
-			const receiverAccount = await this.getAccountReceiver(input.receiver_pix_key)
-			await this.cache.create(input.receiver_pix_key,JSON.stringify(receiverAccount),this.cacheExpireIn)
-			return this.createOutput(JSON.parse(cachedData.payer),receiverAccount)
-		} else if (!cachedData.payer && cachedData.receiver){
-			const payerAccount = await this.getAccountPayer(input.payer_pix_key)
-			await this.cache.create(input.payer_pix_key,JSON.stringify(payerAccount),this.cacheExpireIn)
-			return this.createOutput(payerAccount,JSON.parse(cachedData.receiver!))
-		} 
-		return this.createOutput(JSON.parse(cachedData.payer!),JSON.parse(cachedData.receiver!))
+		const cacheData = await this.getCache(input.payer_pix_key,input.receiver_pix_key)
+		if (cacheData.payer && cacheData.receiver) return {payer:cacheData.payer,receiver:cacheData.receiver}
+		const accountsData = await this.getTwoAccounts(input.payer_pix_key,input.receiver_pix_key)
+		await this.saveTwoAccountInCache(accountsData.payerAccount,accountsData.receiverAccount)
+		return this.createOutput(accountsData.payerAccount,accountsData.receiverAccount)
 	}
 
 	private validateInput(input: InputcheckAccountsAndBringTheData):void{
@@ -34,12 +24,12 @@ export default class CheckAccountsAndBringTheData implements usecase<InputcheckA
 		PixKey.create(input.receiver_pix_key)
 	}
 
-	private async hasCache(input: InputcheckAccountsAndBringTheData): Promise<{payer:string | undefined, receiver:string | undefined}>{
-		const payer = await this.cache.find(input.payer_pix_key)
-		const receiver = await this.cache.find(input.receiver_pix_key)
+	private async getCache(payer_pix_key:string,receiver_pix_key:string): Promise<{payer, receiver}>{
+		const payer = await this.cache.find(payer_pix_key)
+		const receiver = await this.cache.find(receiver_pix_key)
 		return {
-			payer,
-			receiver
+			payer:JSON.parse(payer),
+			receiver:JSON.parse(receiver)
 		}
 	}
 
@@ -55,18 +45,6 @@ export default class CheckAccountsAndBringTheData implements usecase<InputcheckA
 		const cache = this.createOutput(payer, receiver)
 		await this.cache.create(cache.payer.pix_key,JSON.stringify(cache.payer),this.cacheExpireIn)
 		await this.cache.create(cache.receiver.pix_key,JSON.stringify(cache.receiver),this.cacheExpireIn)
-	}
-
-	private async getAccountPayer(pixKey:string):Promise<Account>{
-		const payer = await this.repository.getAccountByPixKey(pixKey)
-		if (!payer) throw new PixKeyValueNotFound(pixKey)
-		return payer
-	}
-
-	private async getAccountReceiver(pix_key:string):Promise<Account>{
-		const payerAccount = await this.repository.getAccountByPixKey(pix_key)
-		if (!payerAccount) throw new PixKeyValueNotFound(pix_key)
-		return payerAccount
 	}
 
 	private createOutput(payer:Account, receiver:Account): OutPutcheckAccountsAndBringTheData {
