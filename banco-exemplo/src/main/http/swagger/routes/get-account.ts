@@ -30,13 +30,25 @@ export const GetAccount = {
 										'type': 'string',
 										'example': 'string'
 									},
-									'pix_key': {
-										'type': 'string',
-										'example': 'string'
+									'pix_keys': {
+										'type': 'array',
+										'items': {
+											'type': 'string',
+											'example': 'string'
+										}
 									},
 									'balance': {
 										'type': 'number',
 										'example': '1000'
+									},
+									'mother_name': {
+										'type': 'string',
+										'example': 'string'
+									},
+									'opening_date': {
+										'type': 'string',
+										'format': 'date-time',
+										'example': '2023-10-27T00:08:44.520Z'
 									}
 								}
 							}
