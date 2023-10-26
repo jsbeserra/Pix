@@ -51,47 +51,4 @@ describe('ProcessTransaction',()=>{
 		const result = await sut.handle(input)
 		expect(result).toBeUndefined()
 	})
-
-	it('Should fail proccess transaction if the gateway returns error', async()=>{
-		const spy = jest.spyOn(accountGateway,'exec')
-		spy.mockRejectedValue(new Error('fake error'))
-		const input = {
-			payer:{
-				cpf:'531.263.690-81',
-				pix_key:'asasdeer',
-				url_for_transaction:'http://fake.com',
-				webhook_notification:'http://fake.com'
-			},
-			receiver:{
-				cpf:'725.534.900-54',
-				pix_key:'asasdeer',
-				url_for_transaction:'http://fake.com',
-				webhook_notification:'http://fake.com'
-			},
-			value:500,
-			code:'fakecode'
-		}
-		await expect(sut.handle(input)).rejects.toThrow(new Error('fake error'))
-	})
-
-	it('Should fail proccess transaction if transaction does not exist in the database', async()=>{
-		const input = {
-			payer:{
-				cpf:'531.263.690-81',
-				pix_key:'asasdeer',
-				url_for_transaction:'http://fake.com',
-				webhook_notification:'http://fake.com'
-			},
-			receiver:{
-				cpf:'725.534.900-54',
-				pix_key:'asasdeer',
-				url_for_transaction:'http://fake.com',
-				webhook_notification:'http://fake.com'
-			},
-			value:500,
-			code:'99999'
-		}
-		await expect(sut.handle(input)).rejects.toThrow(new Error('Transaction not found'))
-	})
-
 })

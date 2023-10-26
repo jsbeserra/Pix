@@ -1,15 +1,15 @@
-
-import { ApplicationHandle } from '@application/application-handle'
 import handleError from '@main/errors/handleError'
 import { ControllerOperation, HttpRequest, HttpResponse } from '@infra/http/ports'
 import { ok } from '@infra/http/util'
+import { OutputTransaction } from '@application/use-case/get-transaction-status/output-transaction'
+import { usecase } from '@application/usecase'
 
 
 export class GetTransactionController implements ControllerOperation {
 	readonly requiredParams: string[] = [ 'code']
-	private applicationHandle: ApplicationHandle
+	private applicationHandle: usecase<string,OutputTransaction>
 
-	constructor(usecase: ApplicationHandle) {
+	constructor(usecase: usecase<string,OutputTransaction>) {
 		this.applicationHandle = usecase
 	}
 

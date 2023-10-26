@@ -3,7 +3,7 @@ import Account from './Account'
 
 @Entity()
 export class Bank extends BaseEntity{
-  @PrimaryGeneratedColumn('uuid') id: string
+	@PrimaryGeneratedColumn('uuid') id: string
 
 	@Column({ type: 'varchar', length: 255, unique: true, nullable: false }) name: string
 

@@ -68,11 +68,6 @@ export class Accounts1697843348465 implements MigrationInterface {
 						isNullable: false,
 					},
 					{
-						name: 'pix_key',
-						type: 'varchar(10)',
-						isNullable: false,
-					},
-					{
 						name: 'created_at',
 						type: 'timestamp',
 						default: 'CURRENT_TIMESTAMP',

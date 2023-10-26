@@ -12,15 +12,15 @@ describe('Create Account',()=>{
 		const fakeBankUrl = Url.create('http://www.fake.com/transacitons')
 		const fakeBankWebHookUrl = Url.create('http://www.fake.com/transacitons')
 		const fakeBank = Bank.create('banco tabajara', fakeBankUrl,fakeBankWebHookUrl)
-		const account = Account.create(fakePixKey,fakeCpf,fakeBank)
+		const account = Account.create([fakePixKey],fakeCpf,fakeBank)
 		expect(account.cpf.value).toBe(fakeCpf.value)
-		expect(account.pixKey.value).toBe(fakePixKey.value)
+		expect(account.pixKey.length).toBe(1)
 		expect(account.bank.urlForTransactions.value).toBe('http://www.fake.com/transacitons')
 	})
 
 	it('Should restore account',()=>{
 		const bank = Bank.restore('2',faker.person.firstName(),faker.internet.url(),faker.internet.url())
-		const account = Account.restore('1','45693014010',bank)
+		const account = Account.restore(['1'],'45693014010',bank,'1')
 		expect(account).toBeInstanceOf(Account)
 	})
 })

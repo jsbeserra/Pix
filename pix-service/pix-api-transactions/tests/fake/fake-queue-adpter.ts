@@ -1,5 +1,5 @@
-import { ApplicationHandle } from '@application/application-handle'
 import { IQueue } from '@application/interfaces/queue/queue'
+import { usecase } from '@application/usecase'
 
 export default class FakeQueueClientAdpter implements IQueue {
 	private static instance: FakeQueueClientAdpter
@@ -22,7 +22,7 @@ export default class FakeQueueClientAdpter implements IQueue {
 
 	}
 
-	async consumer(queueName: string, callback: ApplicationHandle): Promise<void> {
+	async consumer(queueName: string, callback: usecase<any,void>): Promise<void> {
 
 	}
 
