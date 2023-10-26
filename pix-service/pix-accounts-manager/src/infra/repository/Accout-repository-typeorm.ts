@@ -33,7 +33,6 @@ export default class AccountRepositoryTypeOrm implements IAccountRepository {
 			.innerJoinAndSelect('account.bank', 'bank')
 			.where('account.cpf = :cpf', { cpf: cpf })
 			.getOne()
-		console.log(account+'aaa')
 		if (!account) return
 		const pixkeys:string[] = account.pixKeys?.map(key => key.pix_key)
 		const bank = Bank.restore(account.bank.id,account.bank.name,account.bank.url_for_transaction,account.bank.url_for_refund)
