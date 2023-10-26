@@ -12,6 +12,7 @@ export default class ProcessTransactionGateway implements IProcessTransactionGat
 	}
 
 	async exec(url: string, body: processTransactionPayload): Promise<void | Error> {
+		console.log(body)
 		return await this.httpClient.post(url,body)
 	}
 }

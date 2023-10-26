@@ -18,8 +18,8 @@ export default class Transaction implements CommandHandler<InputTransaction,OutP
 		if (!account) throw new AccountNotFound()
 		this.validateAccountPayer(account,input.value)
 		const payer_pix_key = await this.gatewayPix.getPixKey(input.payer_cpf)
-		if (!payer_pix_key) throw new AccountNotFound()
-		const transactionStatus = await this.sendTransaction(payer_pix_key.pix_key,input.receiver_pixkey,input.value)
+		if (payer_pix_key.length <= 0) throw new Error('falta pix na conta')
+		const transactionStatus = await this.createPixTransaction(payer_pix_key[0],input.receiver_pixkey,input.value)
 		account.debit(input.value)
 		await this.repository.updateBalance(account.cpf,account.balance)
 		return {code:transactionStatus.code, status:transactionStatus.status}
@@ -43,7 +43,7 @@ export default class Transaction implements CommandHandler<InputTransaction,OutP
 		return transactionValue <= 0
 	}
 
-	private async sendTransaction(payer_pixKey:string,receiverPixKey:string, transactionValue:number): Promise<{status:string,code:string}> {
+	private async createPixTransaction(payer_pixKey:string,receiverPixKey:string, transactionValue:number): Promise<{status:string,code:string}> {
 		const result = await this.gatewayPix.transaction(payer_pixKey,receiverPixKey,transactionValue)
 		if (result instanceof Error) throw new FailedTransaction()
 		return result

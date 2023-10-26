@@ -14,7 +14,7 @@ export default class CreatePixKey implements CommandHandler<InputCreatePixKey,vo
 		const cpf = Cpf.create(input.cpf)
 		const account = await this.repository.getAccount(cpf.value)
 		if (!account) throw new AccountNotFound()
-		await this.createPixKey(account.cpf.value,account.pixKey!.value)
+		await this.createPixKey(account.cpf.value,input.pix_key)
 	}
 
 	private async createPixKey(cpf:string,pixkey:string){

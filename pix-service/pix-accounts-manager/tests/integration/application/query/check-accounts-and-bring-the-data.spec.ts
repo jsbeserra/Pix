@@ -188,7 +188,7 @@ describe('CheckAccountsAndBringTheData',() => {
 				cpf: accountPayer.cpf.value,
 				pix_key: accountPayer.pixKey.value,
 				url_for_transaction:accountPayer.bank.urlForTransactions.value,
-				webhook_notification:accountPayer.bank.url_for_refund.value
+				url_for_refund:accountPayer.bank.url_for_refund.value
 			},
 			receiver:{
 				cpf: accountReceiver.cpf.value,

@@ -5,7 +5,7 @@ import { environment } from '@main/config/config'
 export default class PixGateway implements IGatewayPix {
 	constructor(private httpClient:HttpClient){}
 
-	async getPixKey(cpf: string): Promise<{ cpf: string; pix_key: string } | undefined> {
+	async getPixKey(cpf: string): Promise<string[]> {
 		return await this.httpClient.get(`${environment.PIX_ACCOUNTS_API_URL}/pixkey/${cpf}`)
 	}
 
@@ -23,6 +23,8 @@ export default class PixGateway implements IGatewayPix {
 			receiver_pix_key: receiverPixKey,
 			value: value
 		}
+		console.log('payload')
+		console.log(payload)
 		return await this.httpClient.post(`${environment.PIX_TRANSACTION_API_URL}/transaction`,payload)
 	}
 	

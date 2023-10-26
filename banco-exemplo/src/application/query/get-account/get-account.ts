@@ -13,11 +13,11 @@ export default class GetAccount implements QueryHandler<string,OutPutAccount> {
 		const _cpf = Cpf.create(cpf)
 		const account = await this.accountQuery.getAccountByCpf(_cpf.value)
 		if (!account) throw new AccountNotFound()
-		const pixKey = await this.gatewayPix.getPixKey(account?.cpf)
+		const pixKeys = await this.gatewayPix.getPixKey(account?.cpf)
 		const output:OutPutAccount = {
 			balance:account.balance,
 			name:account.name,
-			pix_key:pixKey!.pix_key,
+			pix_keys:pixKeys,
 			mother_name: account.mother_name,
 			opening_date: account.opening_date
 		}
