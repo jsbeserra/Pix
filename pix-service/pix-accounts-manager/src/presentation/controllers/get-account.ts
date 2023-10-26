@@ -6,9 +6,9 @@ import { ok } from '@main/http/util'
 
 export class GetPixKeyController implements ControllerOperation {
 	readonly requiredParams: string[] = [ 'cpf' ]
-	private usecase: usecase
+	private usecase: usecase<string,string[] | undefined>
 	
-	constructor(usecase: usecase) {
+	constructor(usecase: usecase<string,string[] | undefined>) {
 		this.usecase = usecase
 	}
 

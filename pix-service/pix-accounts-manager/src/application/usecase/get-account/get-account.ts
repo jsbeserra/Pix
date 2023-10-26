@@ -2,7 +2,7 @@ import { usecase } from '../usecase'
 import ICache from '@application/interfaces/data/cache/icache'
 import IAccountRepository from '@application/interfaces/data/repository/iaccount-repository'
 
-export default class GetPixKey implements usecase {
+export default class GetPixKey implements usecase<string,string[] | undefined> {
 
 	constructor(private query:IAccountRepository, private cache:ICache, private cacheExpireIn:number){}
 

@@ -8,11 +8,11 @@ import Cpf from '@domain/value-objects/cpf'
 import Account from '@domain/entities/account'
 
 
-export default class DeletePixKey implements usecase {
+export default class DeletePixKey implements usecase<InputDeletePixAccount,void>{
 
 	constructor(private repository:IAccountRepository, private cache:ICache){}
 
-	async handle(input:InputDeletePixAccount): Promise<any> {
+	async handle(input:InputDeletePixAccount): Promise<void> {
 		this.validateInput(input)
 		const account = await this.repository.getAccountByPixKey(input.pix_key)
 		if (!account) throw new PixKeyNotFound()

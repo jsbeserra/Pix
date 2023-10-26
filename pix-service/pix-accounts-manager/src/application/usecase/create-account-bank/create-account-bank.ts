@@ -6,7 +6,7 @@ import Bank from '@domain/entities/bank'
 import Url from '@domain/value-objects/url'
 
 
-export default class CreateAccountBank implements usecase {
+export default class CreateAccountBank implements usecase<InputCreateAccountBank,{id:string}> {
 
 	constructor(private repository:IBankRepository){}
 

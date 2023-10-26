@@ -1,3 +1,3 @@
-export interface usecase {
-  handle(request: any): Promise<any>
+export interface usecase<Input,Output> {
+  handle(request: Input): Promise<Output>
 }

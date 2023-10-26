@@ -3,14 +3,14 @@ import ICache from '@application/interfaces/data/cache/icache'
 import {InputcheckAccountsAndBringTheData} from './input-check-accounts-and-bring-the-data'
 import { OutPutcheckAccountsAndBringTheData } from './output-check-accounts-and-bring-the-data'
 import PixKey from '@domain/value-objects/pix-key'
-import { PixKeyValueNotFound } from '@application/errors/query/check-accounts-and-bring-the-data-errors'
 import IAccountRepository from '@application/interfaces/data/repository/iaccount-repository'
 import Account from '@domain/entities/account'
+import { PixKeyValueNotFound } from '@application/errors/use-case/check-accounts-and-bring-the-data-errors'
 
-export default class CheckAccountsAndBringTheData implements usecase {
+export default class CheckAccountsAndBringTheData implements usecase<InputcheckAccountsAndBringTheData,OutPutcheckAccountsAndBringTheData> {
 	constructor(private repository:IAccountRepository, private cache:ICache, private cacheExpireIn:number){}
 
-	async handle(input: InputcheckAccountsAndBringTheData): Promise<any> {
+	async handle(input: InputcheckAccountsAndBringTheData): Promise<OutPutcheckAccountsAndBringTheData> {
 		this.validateInput(input)
 		const cachedData = await this.hasCache(input)
 		if (!cachedData.payer && !cachedData.receiver){

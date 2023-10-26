@@ -7,7 +7,7 @@ import PixKey from '@domain/value-objects/pix-key'
 import { IBankRepository } from '@application/interfaces/data/repository/ibank-repository'
 import { BankNotFoundAlreadyRegistered, PixKeyAlreadyRegistered } from '@application/errors/use-case/create-account'
 
-export default class CreatePixKey implements usecase {
+export default class CreatePixKey implements usecase<InputCreatePixKey,void>{
 
 	constructor(private repository:IAccountRepository, private bankRepository:IBankRepository){}
 
