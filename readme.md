@@ -22,12 +22,12 @@ yarn dev
 ## 2. Explorando o Swagger
 Agora que os serviços estão em execução, você pode acessar a documentação Swagger em:
 
-http://localhost:3007/api
+http://localhost:3007
 
-http://localhost:3008/api
+http://localhost:3008
 
 ### 2.1 Cadastrando banco
-1.1 Abra a url http://localhost:3007/api
+1.1 Abra a url http://localhost:3007
 
 1.2 Navegue até a aba banco e prencha o payload como indicado abaixo.
 ```bash
@@ -54,6 +54,12 @@ yarn dev
 
 # 4. Explorando os Endpoints
 Agora, você pode explorar os endpoints disponíveis no "banco-exemplo". Este serviço funciona como um banco e também é um gateway para operações Pix.
+
+Você pode acessar a documentação Swagger em:
+
+```bash
+http://localhost:3005
+```
 
 Sinta-se à vontade para realizar operações Pix e explorar as funcionalidades do sistema.
 
