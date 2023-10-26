@@ -8,4 +8,5 @@ export default interface IAccountRepository {
     updateBalance(cpf:Cpf, value:number):Promise<void>
     balance(cpf:Cpf):Promise<number>
     getAccount(cpf:string):Promise<Account | undefined>
+    deleteAccount(cpf:string):Promise<void>
 }

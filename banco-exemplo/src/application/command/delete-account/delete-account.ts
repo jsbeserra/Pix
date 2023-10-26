@@ -16,8 +16,11 @@ export default class DeleteAccount implements CommandHandler<InputDeleteAccount,
 		const account = await this.repository.getAccount(cpf.value)
 		if (!account) throw new AccountNotFound()
 		this.validateDateOfBirth(account.dateOfBirth.value, new Date(input.dateOfBirth))
-		const pixkey = await this.gatewayPix.getPixKey(account.cpf.value)
-		//if (pixkey) await this.gatewayPix.deletePixKey(pixkey.pix_key,account.cpf.value)
+		await this.repository.deleteAccount(account.cpf.value)
+		const pixkeys = await this.gatewayPix.getPixKey(account.cpf.value)
+		for (const key of pixkeys){
+			await this.gatewayPix.deletePixKey(key,account.cpf.value)
+		}
 	}
 	
 	private validateInput(input: InputDeleteAccount){

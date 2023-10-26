@@ -1,5 +1,5 @@
 import { CommandHandler } from '@application/Handle'
-import { InputRefundTransactionPix } from '@application/command/ refund-transaction-pix/input-transaction'
+import { InputRefundTransactionPix } from '@application/command/refund-transaction-pix/input-transaction'
 import handleError from '@main/errors/handleError'
 import { ControllerOperation, HttpRequest, HttpResponse } from '@main/http/ports'
 import { created } from '@main/http/util'

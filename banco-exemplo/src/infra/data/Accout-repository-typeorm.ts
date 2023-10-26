@@ -7,6 +7,10 @@ export default class AccountRepositoryPostgreTypeorm implements IAccountReposito
 
 	constructor(private typeormAdpter:ITypeOrmAdpter){
 	}
+
+	async deleteAccount(cpf: string): Promise<void> {
+		await this.typeormAdpter.getAccountEntity().delete({cpf:cpf})
+	}
    
 	async create(account: Account): Promise<void> {
 		const _account = this.typeormAdpter.getAccountEntity().create({

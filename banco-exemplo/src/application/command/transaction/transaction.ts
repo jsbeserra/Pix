@@ -14,10 +14,11 @@ export default class Transaction implements CommandHandler<InputTransaction,OutP
 
 	async handle(input: InputTransaction): Promise<OutPutTransaction> {
 		this.validateInput(input)
-		const account = await this.repository.getAccount(input.payer_cpf)
+		const cpf = Cpf.create(input.payer_cpf)
+		const account = await this.repository.getAccount(cpf.value)
 		if (!account) throw new AccountNotFound()
 		this.validateAccountPayer(account,input.value)
-		const payer_pix_key = await this.gatewayPix.getPixKey(input.payer_cpf)
+		const payer_pix_key = await this.gatewayPix.getPixKey(cpf.value)
 		if (payer_pix_key.length <= 0) throw new Error('falta pix na conta')
 		const transactionStatus = await this.createPixTransaction(payer_pix_key[0],input.receiver_pixkey,input.value)
 		account.debit(input.value)
@@ -26,7 +27,6 @@ export default class Transaction implements CommandHandler<InputTransaction,OutP
 	} 
 
 	private validateInput(input: InputTransaction){
-		Cpf.isValid(input.payer_cpf)
 		if (this.hasMinimumValue(input.value)) throw new TransactionMinimumValue()
 	}
 	
