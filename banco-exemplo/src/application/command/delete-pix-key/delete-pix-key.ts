@@ -14,7 +14,7 @@ export default class DeletePixKey implements CommandHandler<InputDeletePixKey, v
 		this.validateInput(input)
 		const account = await this.repository.getAccount(input.cpf)
 		if (!account) throw new AccountNotFound()
-		await this.gatewayPix.deletePixKey(input.pix_key)
+		await this.gatewayPix.deletePixKey(input.pix_key,input.cpf)
 	}
 
 	private validateInput(input: InputDeletePixKey){

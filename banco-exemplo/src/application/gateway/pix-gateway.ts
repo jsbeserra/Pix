@@ -8,6 +8,6 @@ export type InputCreatePixKey = {
 export interface IGatewayPix {
     getPixKey(cpf:string):Promise<string[]>
     createPixKey(input:InputCreatePixKey):Promise<void>
-    deletePixKey(pix_key:string):Promise<void>
+    deletePixKey(pix_key:string, cpf:string):Promise<void>
     transaction(payerPixKey:string, receiverPixKey:string, value:number):Promise<{code:string,status:string}>
 }

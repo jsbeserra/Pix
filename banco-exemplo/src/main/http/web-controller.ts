@@ -11,7 +11,6 @@ export class WebController {
 
 	public async handle(request: HttpRequest): Promise<HttpResponse> {
 		try {
-			console.log(request)
 			const missingParams: string = WebController.getMissingParams(request, this.controllerOp.requiredParams)
 			if (missingParams) {
 				return badRequest(new MissingParamError(missingParams))

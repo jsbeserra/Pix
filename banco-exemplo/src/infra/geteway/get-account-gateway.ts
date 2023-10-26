@@ -13,8 +13,8 @@ export default class PixGateway implements IGatewayPix {
 		return await this.httpClient.post(`${environment.PIX_ACCOUNTS_API_URL}/pixkey`,input)
 	}
 
-	async deletePixKey(pix_key: string): Promise<any> {
-		return await this.httpClient.delete(`${environment.PIX_ACCOUNTS_API_URL}/pixkey/${pix_key}`)
+	async deletePixKey(pix_key: string, cpf:string): Promise<any> {
+		return await this.httpClient.delete(`${environment.PIX_ACCOUNTS_API_URL}/pixkey/${pix_key}/${cpf}`)
 	}
 
 	async transaction(payerPixKey: string, receiverPixKey: string, value: number): Promise<{ code: string; status: string }> {
@@ -23,8 +23,6 @@ export default class PixGateway implements IGatewayPix {
 			receiver_pix_key: receiverPixKey,
 			value: value
 		}
-		console.log('payload')
-		console.log(payload)
 		return await this.httpClient.post(`${environment.PIX_TRANSACTION_API_URL}/transaction`,payload)
 	}
 	
