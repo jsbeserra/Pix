@@ -16,6 +16,10 @@ export default class PixKey {
 		return new PixKey(value)
 	}
 
+	public static isValid(value: string) {
+		this.validate(value)
+	}
+
 	private static validate(value:string){
 		if (!this.containLettersAndNumbers(value)) throw new PixKeyUnacceptedCharacters()
 		if (this.hasAMinimumSize(value)) throw new PixKeyMinimumLength(this.minimumKeyLength)

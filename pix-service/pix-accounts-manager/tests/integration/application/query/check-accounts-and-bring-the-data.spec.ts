@@ -96,7 +96,7 @@ describe('CheckAccountsAndBringTheData',() => {
 				cpf: accountPayer.cpf.value,
 				pix_key: accountPayer.pixKey.value,
 				url_for_transaction:accountPayer.bank.urlForTransactions.value,
-				webhook_notification:accountPayer.bank.webhookNotification.value
+				webhook_notification:accountPayer.bank.url_for_refund.value
 			},
 			payer:{
 				cpf: payerInCache.cpf,
@@ -132,7 +132,7 @@ describe('CheckAccountsAndBringTheData',() => {
 				cpf: accountPayer.cpf.value,
 				pix_key: accountPayer.pixKey.value,
 				url_for_transaction:accountPayer.bank.urlForTransactions.value,
-				webhook_notification:accountPayer.bank.webhookNotification.value
+				webhook_notification:accountPayer.bank.url_for_refund.value
 			},
 			receiver:{
 				cpf: receiverInCache.cpf,
@@ -188,13 +188,13 @@ describe('CheckAccountsAndBringTheData',() => {
 				cpf: accountPayer.cpf.value,
 				pix_key: accountPayer.pixKey.value,
 				url_for_transaction:accountPayer.bank.urlForTransactions.value,
-				webhook_notification:accountPayer.bank.webhookNotification.value
+				webhook_notification:accountPayer.bank.url_for_refund.value
 			},
 			receiver:{
 				cpf: accountReceiver.cpf.value,
 				pix_key: accountReceiver.pixKey.value,
 				url_for_transaction:accountReceiver.bank.urlForTransactions.value,
-				webhook_notification:accountReceiver.bank.webhookNotification.value
+				webhook_notification:accountReceiver.bank.url_for_refund.value
 			}
 		}
 		expect(result).toMatchObject(expectOutput)
@@ -256,7 +256,7 @@ describe('CheckAccountsAndBringTheData',() => {
 			cpf:account.cpf.value,
 			pix_key:receiver_pix_key,
 			url_for_transaction:account.bank.urlForTransactions.value,
-			webhook_notification:account.bank.webhookNotification.value,
+			webhook_notification:account.bank.url_for_refund.value,
 		}
 		await cache.create(payer.pix_key,JSON.stringify(payer),3000)
 		const input = {

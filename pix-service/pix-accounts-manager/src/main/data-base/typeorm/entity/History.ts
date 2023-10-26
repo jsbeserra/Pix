@@ -22,5 +22,5 @@ export default class HistoryAccount extends BaseEntity {
 
   @Column({ type: 'varchar', length: 255, nullable: false }) bank_url_for_transaction: string
 
-  @Column({ type: 'varchar', length: 255, nullable: false }) bank_webhook_notification: string
+  @Column({ type: 'varchar', length: 255, nullable: false }) bank_url_for_refund: string
 }

@@ -15,7 +15,7 @@ export default class DeletePixKey implements usecase {
 		const account = await this.query.getAccountByPixKey(pix_key.value)
 		if (!account) throw new PixKeyNotFound()
 		await this.cache.remove(input_pix_key)
-		await this.accountRepository.delete(pix_key)
+		await this.accountRepository.delete(pix_key.value)
 	}
     
 }

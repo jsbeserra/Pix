@@ -1,10 +1,11 @@
 import { DataSource, EntityManager, Repository } from 'typeorm'
 import { Bank } from './entity/Bank'
 import path from 'path'
-import ITypeOrmAdpter from '@infra/itypeorm-adpter'
 import { environment } from '@main/config/config'
 import Account from './entity/Account'
 import HistoryAccount from './entity/History'
+import ITypeOrmAdpter from './itypeorm-adpter'
+import PixKey from './entity/PixKey'
 
 export default class TypeOrmHelperAdpterPostgress implements ITypeOrmAdpter{
 	private client: DataSource
@@ -28,6 +29,7 @@ export default class TypeOrmHelperAdpterPostgress implements ITypeOrmAdpter{
 		})
 		
 	}
+	
 
 	static instance(): TypeOrmHelperAdpterPostgress {
 		if (!TypeOrmHelperAdpterPostgress._instance) TypeOrmHelperAdpterPostgress._instance = new TypeOrmHelperAdpterPostgress()
@@ -55,5 +57,9 @@ export default class TypeOrmHelperAdpterPostgress implements ITypeOrmAdpter{
 	}
 	getHistoryAccountEntity (): Repository<HistoryAccount> {
 		return this.client.getRepository(HistoryAccount)
+	}
+
+	getPixKeyEntity(): Repository<PixKey> {
+		return this.client.getRepository(PixKey)
 	}
 }

@@ -2,7 +2,7 @@ import Url from '@domain/value-objects/url'
 
 
 export default class Bank {
-	private constructor(readonly name:string, readonly urlForTransactions:Url, readonly webhookNotification:Url,readonly id?:string){}
+	private constructor(readonly name:string, readonly urlForTransactions:Url, readonly url_for_refund:Url,readonly id?:string){}
 
 	public static create(name:string, urlForTransactions:Url, webhookNotification:Url):Bank{
 		return new Bank(name,urlForTransactions,webhookNotification)

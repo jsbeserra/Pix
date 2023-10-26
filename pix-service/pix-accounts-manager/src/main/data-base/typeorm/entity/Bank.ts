@@ -9,7 +9,7 @@ export class Bank extends BaseEntity{
 
 	@Column({ type: 'varchar', length: 255,unique: true, nullable: false }) url_for_transaction: string
 
-	@Column({ type: 'varchar', length: 255,unique: true, nullable: false }) webhook_notification: string
+	@Column({ type: 'varchar', length: 255,unique: true, nullable: false }) url_for_refund: string
 
 	@CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })created_at: Date
 

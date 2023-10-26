@@ -1,10 +1,7 @@
 import Account from '@domain/entities/account'
-import Cpf from '@domain/value-objects/cpf'
-import PixKey from '@domain/value-objects/pix-key'
 
 export default interface IAccountRepository {
     create(account:Account): Promise<void>
-    existsCpf(cpf:Cpf): Promise<boolean>
-    existsPixKey(pixKey:PixKey): Promise<boolean>
-    delete(pix_key:PixKey): Promise<void>
+    delete(pix_key:string): Promise<void>
+    getAccount(cpf:string): Promise<Account | undefined>
 }

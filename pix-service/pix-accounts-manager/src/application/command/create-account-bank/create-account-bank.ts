@@ -14,8 +14,8 @@ export default class CreateAccountBank implements usecase {
 		const bank = await this.repository.findByName(input.name)
 		if (bank) throw new BankAlreadyExists()
 		const url_for_transaction = Url.create(input.url_for_transaction)
-		const webhook_notification = Url.create(input.webhook_notification)
-		const account = Bank.create(input.name,url_for_transaction,webhook_notification)
+		const url_for_refund = Url.create(input.url_for_refund)
+		const account = Bank.create(input.name,url_for_transaction,url_for_refund)
 		const id = await this.repository.create(account)
 		return id
 	}

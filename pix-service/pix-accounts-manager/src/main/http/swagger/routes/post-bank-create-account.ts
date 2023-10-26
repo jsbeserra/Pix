@@ -25,9 +25,9 @@ export const PostBankCreateAccount = {
 									'type': 'string',
 									'description': 'endpoint para transferencias bancaria'
 								},
-								'webhook_notification': {
+								'url_for_refund': {
 									'type': 'string',
-									'description': 'enpoint para avisar quando a transação for concluida'
+									'description': 'enpoint estornar transação em caso de falha'
 								}
 							}
 						}

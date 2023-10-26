@@ -9,26 +9,26 @@ import { PixKeyValueNotFound } from '@application/errors/query/check-accounts-an
 export default class CheckAccountsAndBringTheData implements usecase {
 	constructor(private query:IAccountQuery, private cache:ICache, private cacheExpireIn:number){}
 
-	async handle(input: InputcheckAccountsAndBringTheData): Promise<OutPutcheckAccountsAndBringTheData> {
-		this.validateInput(input)
-		const cachedData = await this.hasCache(input)
-		if (!cachedData.payer && !cachedData.receiver){
-			const payerAccount = await this.getAccountPayer(input.payer_pix_key)
-			const receiverAccount = await this.getAccountReceiver(input.receiver_pix_key)
-			await this.cache.create(input.payer_pix_key,JSON.stringify(payerAccount),this.cacheExpireIn)
-			await this.cache.create(input.receiver_pix_key,JSON.stringify(receiverAccount),this.cacheExpireIn)
-			return this.createOutput(payerAccount,receiverAccount)
-		} else if (cachedData.payer && !cachedData.receiver){
-			const receiverAccount = await this.getAccountReceiver(input.receiver_pix_key)
-			await this.cache.create(input.receiver_pix_key,JSON.stringify(receiverAccount),this.cacheExpireIn)
-			return this.createOutput(JSON.parse(cachedData.payer),receiverAccount)
-		} else if (!cachedData.payer && cachedData.receiver){
-			const payerAccount = await this.getAccountPayer(input.payer_pix_key)
-			await this.cache.create(input.payer_pix_key,JSON.stringify(payerAccount),this.cacheExpireIn)
-			return this.createOutput(payerAccount,JSON.parse(cachedData.receiver!))
-		} else {
-			return this.createOutput(JSON.parse(cachedData.payer!),JSON.parse(cachedData.receiver!))
-		}
+	async handle(input: InputcheckAccountsAndBringTheData): Promise<void> {
+		// this.validateInput(input)
+		// const cachedData = await this.hasCache(input)
+		// if (!cachedData.payer && !cachedData.receiver){
+		// 	const payerAccount = await this.getAccountPayer(input.payer_pix_key)
+		// 	const receiverAccount = await this.getAccountReceiver(input.receiver_pix_key)
+		// 	await this.cache.create(input.payer_pix_key,JSON.stringify(payerAccount),this.cacheExpireIn)
+		// 	await this.cache.create(input.receiver_pix_key,JSON.stringify(receiverAccount),this.cacheExpireIn)
+		// 	return this.createOutput(payerAccount,receiverAccount)
+		// } else if (cachedData.payer && !cachedData.receiver){
+		// 	const receiverAccount = await this.getAccountReceiver(input.receiver_pix_key)
+		// 	await this.cache.create(input.receiver_pix_key,JSON.stringify(receiverAccount),this.cacheExpireIn)
+		// 	return this.createOutput(JSON.parse(cachedData.payer),receiverAccount)
+		// } else if (!cachedData.payer && cachedData.receiver){
+		// 	const payerAccount = await this.getAccountPayer(input.payer_pix_key)
+		// 	await this.cache.create(input.payer_pix_key,JSON.stringify(payerAccount),this.cacheExpireIn)
+		// 	return this.createOutput(payerAccount,JSON.parse(cachedData.receiver!))
+		// } else {
+		// 	return this.createOutput(JSON.parse(cachedData.payer!),JSON.parse(cachedData.receiver!))
+		// }
 
 	}
 
@@ -58,22 +58,22 @@ export default class CheckAccountsAndBringTheData implements usecase {
 		return account
 	}
 
-	private createOutput(payer:AccountDto, receiver:AccountDto): OutPutcheckAccountsAndBringTheData {
-		const output:OutPutcheckAccountsAndBringTheData = {
-			payer:{
-				cpf: payer.cpf,
-				pix_key: payer.pix_key,
-				url_for_transaction: payer.url_for_transaction,
-				webhook_notification: payer.webhook_notification
-			},
-			receiver:{
-				cpf: receiver.cpf,
-				pix_key: receiver.pix_key,
-				url_for_transaction: receiver.url_for_transaction,
-				webhook_notification: receiver.webhook_notification
-			}
-		}
-		return output
-	}
+	// private createOutput(payer:AccountDto, receiver:AccountDto): OutPutcheckAccountsAndBringTheData {
+	// 	const output:OutPutcheckAccountsAndBringTheData = {
+	// 		payer:{
+	// 			cpf: payer.cpf,
+	// 			pix_key: payer.pix_key,
+	// 			url_for_transaction: payer.url_for_transaction,
+	// 			webhook_notification: payer.webhook_notification
+	// 		},
+	// 		receiver:{
+	// 			cpf: receiver.cpf,
+	// 			pix_key: receiver.pix_key,
+	// 			url_for_transaction: receiver.url_for_transaction,
+	// 			webhook_notification: receiver.webhook_notification
+	// 		}
+	// 	}
+	// 	return output
+	// }
 
 }

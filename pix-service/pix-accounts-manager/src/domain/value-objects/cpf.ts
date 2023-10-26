@@ -13,6 +13,10 @@ export default class Cpf {
 	public static restore(cpf: string): Cpf {
 		return new Cpf(cpf)
 	}
+
+	public static isValid(cpf: string) {
+		this.validate(cpf)
+	}
   
 	private static validate(cpf: string) {
 		if (this.isValidLength(cpf)) throw new InvalidCpfLength()
