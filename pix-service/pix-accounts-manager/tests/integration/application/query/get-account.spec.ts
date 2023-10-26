@@ -59,8 +59,8 @@ describe('GetAccount',() => {
 		const input = {
 			pix_key:'1xxxxxd58d'
 		}
-		await accountRepository.create(Account.create(PixKey.create(input.pix_key),Cpf.create('644.750.060-66'),bank!))	
-		await accountRepository.create(Account.create(PixKey.create('123sertyu'),Cpf.create('199.922.710-78'),bank!))	
+		await accountRepository.createAccount(Account.create(PixKey.create(input.pix_key),Cpf.create('644.750.060-66'),bank!))	
+		await accountRepository.createAccount(Account.create(PixKey.create('123sertyu'),Cpf.create('199.922.710-78'),bank!))	
 		const account = await sut.handle(input.pix_key)
 		expect(account.cpf).toBe('64475006066')
 		expect(account.pix_key).toBe(input.pix_key)
@@ -76,7 +76,7 @@ describe('GetAccount',() => {
 			pix_key:'888888aaa'
 		}
 		const account = Account.create(PixKey.create(input.pix_key),Cpf.create('049.459.470-58'),bank!)
-		await accountRepository.create(account)
+		await accountRepository.createAccount(account)
 		const cacheData = {
 			cpf:account.cpf.value,
 			pix_key:account.pixKey.value

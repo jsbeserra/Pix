@@ -2,7 +2,7 @@ import { http400 } from '../errors/http-400'
 import { http500 } from '../errors/http-500'
 
 export const DeletePixKey = {
-	'/pixkey/{pix_key}': {
+	'/pixkey/{pix_key}/{cpf}': {
 		'delete': {
 			'summary': 'Deleta chave pix',
 			'tags': [
@@ -12,6 +12,14 @@ export const DeletePixKey = {
 				{
 					'in': 'path',
 					'name': 'pix_key',
+					'required': true,
+					'schema': {
+						'type': 'string'
+					}
+				},
+				{
+					'in': 'path',
+					'name': 'cpf',
 					'required': true,
 					'schema': {
 						'type': 'string'

@@ -55,7 +55,7 @@ describe('Delete PixKey',()=>{
 		const bankData = await bankRepository.findByName('teste2')
 		await cache.create(pix_key,'fake payload',3000)
 		const account = Account.create(PixKey.create(pix_key),Cpf.create('990.650.830-22'),bankData!)
-		await accountRepository.create(account)
+		await accountRepository.createAccount(account)
 		await expect(sut.handle(pix_key)).resolves.toBeUndefined()
 		const cachedAccount = await cache.find(pix_key)
 		expect(cachedAccount).toBeNull()

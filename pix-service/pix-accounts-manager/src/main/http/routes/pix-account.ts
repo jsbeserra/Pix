@@ -9,7 +9,7 @@ import { MakeCheckAccountsAndBringTheDataAccountController } from '../factory-co
 
 export default (router: Router): void => {
 	router.post('/pixkey', adaptRoute(makeCreatePixKeyController())) 
-	router.delete('/pixkey/:pix_key', adaptRoute(makeDeletePixKeyController())) 
+	router.delete('/pixkey/:pix_key/:cpf', adaptRoute(makeDeletePixKeyController())) 
 	router.get('/pixkey/:cpf', adaptRoute(MakeGetPixKeyController())) 
 	router.get('/pixkey/two/details/:payer_pix_key/:receiver_pix_key',adaptRoute(MakeCheckAccountsAndBringTheDataAccountController())) 
 }

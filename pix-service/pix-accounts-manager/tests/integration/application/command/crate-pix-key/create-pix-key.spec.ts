@@ -1,4 +1,4 @@
-import CreatePixKey from '@application/command/create-pix-key/create-pix-key'
+import CreatePixKey from '@application/usecase/create-pix-key/create-pix-key'
 import { BankNotFoundAlreadyRegistered, CpfAlreadyRegistered, PixKeyAlreadyRegistered } from '@application/errors/use-case/create-account'
 import IAccountRepository from '@application/interfaces/data/repository/iaccount-repository'
 import { IBankRepository } from '@application/interfaces/data/repository/ibank-repository'

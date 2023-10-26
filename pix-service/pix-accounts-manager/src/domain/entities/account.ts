@@ -6,13 +6,13 @@ export default class Account {
 
 	private constructor(readonly pixKey: PixKey[], readonly cpf: Cpf, readonly bank: Bank, readonly id?:string ) {}
 
-	public static create(pixKey: PixKey[], cpf: Cpf, bank: Bank): Account {
+	public static create(pixKey: PixKey[] = [], cpf: Cpf, bank: Bank): Account {
 		return new Account(pixKey,cpf,bank)
 	}
 
 	public static restore(pixKey: string[], cpf: string, bank: Bank, id:string) {
 		const pixkeys: PixKey[] = []
-		for (const pixkey in pixKey){
+		for (const pixkey of pixKey){
 			pixkeys.push(PixKey.restore(pixkey))
 		}
 		const _cpf = Cpf.restore(cpf)

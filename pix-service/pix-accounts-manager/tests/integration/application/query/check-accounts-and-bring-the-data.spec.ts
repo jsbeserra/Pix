@@ -5,7 +5,7 @@ import { IAccountQuery } from '@application/interfaces/data/query/account-query'
 import IAccountRepository from '@application/interfaces/data/repository/iaccount-repository'
 import { IBankRepository } from '@application/interfaces/data/repository/ibank-repository'
 import CheckAccountsAndBringTheData from '@application/query/check-accounts-and-bring-the-data/check-accounts-and-bring-the-data'
-import { OutPutcheckAccountsAndBringTheData } from '@application/query/check-accounts-and-bring-the-data/output-check-accounts-and-bring-the-data'
+import { OutPutcheckAccountsAndBringTheData } from '@application/usecase/check-accounts-and-bring-the-data/output-check-accounts-and-bring-the-data'
 import Account from '@domain/entities/account'
 import Bank from '@domain/entities/bank'
 import { PixKeyUnacceptedCharacters } from '@domain/errors/value-objects/pix-key-errors'
@@ -77,7 +77,7 @@ describe('CheckAccountsAndBringTheData',() => {
 		await bankRepository.create(bank)
 		const bankData = await bankRepository.findByName('teste2')
 		const accountPayer = Account.create(PixKey.create('Payer'),Cpf.create('573.855.410-89'),bankData!)
-		await accountRepository.create(accountPayer)
+		await accountRepository.createAccount(accountPayer)
 		const payerInCache = {
 			cpf:'fake_cpf',
 			pix_key:'xxxxxx258',
@@ -113,7 +113,7 @@ describe('CheckAccountsAndBringTheData',() => {
 		await bankRepository.create(bank)
 		const bankData = await bankRepository.findByName('teste2')
 		const accountPayer = Account.create(PixKey.create('Payernoca'),Cpf.create('369.054.550-16'),bankData!)
-		await accountRepository.create(accountPayer)
+		await accountRepository.createAccount(accountPayer)
 		const receiverInCache = {
 			cpf:'fake_cpf',
 			pix_key:'23598rty',
@@ -176,8 +176,8 @@ describe('CheckAccountsAndBringTheData',() => {
 		const bankData = await bankRepository.findByName('teste2')
 		const accountPayer = Account.create(PixKey.create('xlllop00'),Cpf.create('032.952.680-45'),bankData!)
 		const accountReceiver = Account.create(PixKey.create('000tyuiop'),Cpf.create('908.499.080-35'),bankData!)
-		await accountRepository.create(accountPayer)
-		await accountRepository.create(accountReceiver)
+		await accountRepository.createAccount(accountPayer)
+		await accountRepository.createAccount(accountReceiver)
 		const input = {
 			payer_pix_key:accountPayer.pixKey.value,
 			receiver_pix_key:accountReceiver.pixKey.value
@@ -205,7 +205,7 @@ describe('CheckAccountsAndBringTheData',() => {
 		await bankRepository.create(bank)
 		const bankData = await bankRepository.findByName('teste2')
 		const account = Account.create(PixKey.create(payer_pix_key),Cpf.create('990.650.830-22'),bankData!)
-		await accountRepository.create(account)
+		await accountRepository.createAccount(account)
 		const payer = {
 			cpf:'99065083022',
 			pix_key:payer_pix_key,
@@ -231,7 +231,7 @@ describe('CheckAccountsAndBringTheData',() => {
 		await bankRepository.create(bank)
 		const bankData = await bankRepository.findByName('teste3')
 		const account = Account.create(PixKey.create(receiver_pix_key),Cpf.create('376.259.210-18'),bankData!)
-		await accountRepository.create(account)
+		await accountRepository.createAccount(account)
 		const input = {
 			payer_pix_key:'123s5frtyf',
 			receiver_pix_key:receiver_pix_key
@@ -245,7 +245,7 @@ describe('CheckAccountsAndBringTheData',() => {
 		await bankRepository.create(bank)
 		const bankData = await bankRepository.findByName('testepayed')
 		const account = Account.create(PixKey.create(receiver_pix_key),Cpf.create('464.932.950-76'),bankData!)
-		await accountRepository.create(account)
+		await accountRepository.createAccount(account)
 		const payer = {
 			cpf:'fake_cpf',
 			pix_key:'98541dfty',

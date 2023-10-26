@@ -6,17 +6,16 @@ import IAccountRepository from '@application/interfaces/data/repository/iaccount
 import PixKey from '@domain/value-objects/pix-key'
 import { IBankRepository } from '@application/interfaces/data/repository/ibank-repository'
 import { BankNotFoundAlreadyRegistered, PixKeyAlreadyRegistered } from '@application/errors/use-case/create-account'
-import IPixKeyRepository from '@application/interfaces/data/repository/pix-key-repository'
 
 export default class CreatePixKey implements usecase {
 
-	constructor(private repository:IAccountRepository, private bankRepository:IBankRepository,private pixKeyRepository:IPixKeyRepository){}
+	constructor(private repository:IAccountRepository, private bankRepository:IBankRepository){}
 
 	async handle(input: InputCreatePixKey): Promise<void> {
 		PixKey.isValid(input.pix_key)
 		const cpf = Cpf.create(input.cpf)
-		const account = await this.repository.getAccount(cpf.value)
-		const existsPixKey = await this.pixKeyRepository.get(cpf.value)
+		const account = await this.repository.getAccountByCpf(cpf.value)
+		const existsPixKey = await this.repository.getAccountByPixKey(input.pix_key)
 		if (existsPixKey) throw new PixKeyAlreadyRegistered()
 		if (account && !existsPixKey){
 			await this.ifTheAccountExistsAddAnewKey(input.pix_key,account.id!)
@@ -26,7 +25,7 @@ export default class CreatePixKey implements usecase {
 	}
 
 	private async ifTheAccountExistsAddAnewKey(pixKey:string, accountId:string){
-		await this.pixKeyRepository.save(pixKey,accountId)
+		await this.repository.createPixKey(accountId,pixKey)
 	}
 
 	private async createAccountPix(input: InputCreatePixKey): Promise<void> {
@@ -35,7 +34,7 @@ export default class CreatePixKey implements usecase {
 		const newPixKey = PixKey.create(input.pix_key)
 		const cpf = Cpf.create(input.cpf)
 		const newAccount = Account.create([newPixKey],cpf,bank)
-		await this.repository.create(newAccount)
+		await this.repository.createAccount(newAccount)
 	}
     
 }

@@ -1,11 +1,11 @@
 
-import { usecase } from '@application/command/usecase'
+import { usecase } from '@application/usecase/usecase'
 import handleError from '@main/errors/handleError'
 import { ControllerOperation, HttpRequest, HttpResponse } from '@main/http/ports'
 import { created } from '@main/http/util'
 
 export class DeletePixKeyController implements ControllerOperation {
-	readonly requiredParams: string[] = [ 'pix_key' ]
+	readonly requiredParams: string[] = [ 'pix_key', 'cpf' ]
 	private usecase: usecase
 	
 	constructor(usecase: usecase) {
@@ -14,7 +14,7 @@ export class DeletePixKeyController implements ControllerOperation {
 
 	async operation(request: HttpRequest): Promise<HttpResponse> {
 		try {
-			const result = await this.usecase.handle(request.params.pix_key)
+			const result = await this.usecase.handle(request.params)
 			return created(result)
 		} catch (err: any) {
 			return handleError(err)

@@ -1,4 +1,4 @@
-import CreateAccountBank from '@application/command/create-account-bank/create-account-bank'
+import CreateAccountBank from '@application/usecase/create-account-bank/create-account-bank'
 import { IBankRepository } from '@application/interfaces/data/repository/ibank-repository'
 import {faker} from '@faker-js/faker'
 import { BankAlreadyExists } from '@application/errors/use-case/create-account'

@@ -1,4 +1,4 @@
-import { usecase } from '@application/command/usecase'
+import { usecase } from '@application/usecase/usecase'
 import handleError from '@main/errors/handleError'
 import { ControllerOperation, HttpRequest, HttpResponse } from '@main/http/ports'
 import { ok } from '@main/http/util'
