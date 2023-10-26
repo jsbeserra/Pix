@@ -12,7 +12,7 @@ export default class CreatePixKey implements usecase<InputCreatePixKey,void>{
 	constructor(private repository:IAccountRepository, private bankRepository:IBankRepository){}
 
 	async handle(input: InputCreatePixKey): Promise<void> {
-		PixKey.isValid(input.pix_key)
+		const pixKey = PixKey.create(input.pix_key)
 		const cpf = Cpf.create(input.cpf)
 		const account = await this.repository.getAccountByCpf(cpf.value)
 		const existsPixKey = await this.repository.getAccountByPixKey(input.pix_key)
@@ -21,19 +21,17 @@ export default class CreatePixKey implements usecase<InputCreatePixKey,void>{
 			await this.ifTheAccountExistsAddAnewKey(input.pix_key,account.id!)
 			return
 		}
-		await this.createAccountPix(input)
+		await this.createAccountPix(input.bank_id,cpf,pixKey)
 	}
 
 	private async ifTheAccountExistsAddAnewKey(pixKey:string, accountId:string){
 		await this.repository.createPixKey(accountId,pixKey)
 	}
 
-	private async createAccountPix(input: InputCreatePixKey): Promise<void> {
-		const bank = await this.bankRepository.findById(input.bank_id)
+	private async createAccountPix(bankId:string, cpf:Cpf, pixKey:PixKey): Promise<void> {
+		const bank = await this.bankRepository.findById(bankId)
 		if (!bank) throw new BankNotFoundAlreadyRegistered()
-		const newPixKey = PixKey.create(input.pix_key)
-		const cpf = Cpf.create(input.cpf)
-		const newAccount = Account.create([newPixKey],cpf,bank)
+		const newAccount = Account.create([pixKey],cpf,bank)
 		await this.repository.createAccount(newAccount)
 	}
     
