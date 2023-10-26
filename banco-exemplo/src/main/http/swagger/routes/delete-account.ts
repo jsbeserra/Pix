@@ -22,7 +22,7 @@ export const DeleteAccount = {
 					'name': 'dateOfBirth',
 					'required': true,
 					'schema': {
-						'type': 'date'
+						'type': 'string'
 					}
 				}
 			],

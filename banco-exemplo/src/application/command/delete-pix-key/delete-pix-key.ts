@@ -11,14 +11,10 @@ export default class DeletePixKey implements CommandHandler<InputDeletePixKey, v
 	constructor(private repository:IAccountRepository, private gatewayPix:IGatewayPix){}
 
 	async handle(input: InputDeletePixKey): Promise<void> {
-		this.validateInput(input)
-		const account = await this.repository.getAccount(input.cpf)
+		const cpf = Cpf.create(input.cpf)
+		const account = await this.repository.getAccount(cpf.value)
 		if (!account) throw new AccountNotFound()
-		await this.gatewayPix.deletePixKey(input.pix_key,input.cpf)
-	}
-
-	private validateInput(input: InputDeletePixKey){
-		Cpf.create(input.cpf)
+		await this.gatewayPix.deletePixKey(input.pix_key,cpf.value)
 	}
 
 }
