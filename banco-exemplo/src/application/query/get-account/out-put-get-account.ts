@@ -1,5 +1,7 @@
 export interface OutPutAccount {
-    balance:string
-    name:string,
+    balance:number
+    name:string
     pix_key:string
+    mother_name:string
+    opening_date:string
 }

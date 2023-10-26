@@ -2,11 +2,8 @@ import Cpf from '@domain/value-objects/cpf'
 import DateOfBirth from '@domain/value-objects/date-of-birth'
 import FullName from '@domain/value-objects/full-name'
 import { AccountErrorInsufficientFundsDebit, AccountErrorMinimumValue, AccountErrorNegativeValue } from '../errors/entities'
-import PixKey from '@domain/value-objects/pix-key'
 
 export default class Account {
-
-	private _pixKey?:PixKey
 
 	constructor(
 		readonly cpf:Cpf,
@@ -19,7 +16,7 @@ export default class Account {
 	){}
 
 	public static restore(cpf:string, name:string, motherName:string,
-		dateOfBirth:string, balance: number, openingDate:Date, active:boolean, pixKey?:string):Account{
+		dateOfBirth:string, balance: number, openingDate:Date, active:boolean):Account{
 		const account = new Account(
 			Cpf.restore(cpf),
 			FullName.restore(name),
@@ -29,7 +26,6 @@ export default class Account {
 			openingDate,
 			active
 		)
-		if (pixKey) account.createPixKey(pixKey)
 		return account
 	}
 
@@ -39,10 +35,6 @@ export default class Account {
 
 	get balance(): number {
 		return this._balance
-	}
-
-	get pixKey(): PixKey|undefined {
-		return this._pixKey
 	}
 
 	public deposit(depositValue:number): void {
@@ -56,14 +48,6 @@ export default class Account {
 		if (this.isNegative(debitValue)) throw new AccountErrorNegativeValue()
 		if (debitValue > this._balance) throw new AccountErrorInsufficientFundsDebit()
 		this._balance -= debitValue
-	}
-
-	public createPixKey(key:string): void {
-		this._pixKey = PixKey.create(key)
-	}
-
-	public removePixKey(): void {
-		this._pixKey = undefined
 	}
 
 	private isZero(value:number): boolean {

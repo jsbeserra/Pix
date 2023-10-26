@@ -1,8 +1,8 @@
 import { http400 } from '../errors/http-400'
 import { http500 } from '../errors/http-500'
 
-export const GetPixKeyDetails = {
-	'/pixkey/details/{pixkey}': {
+export const GetPixKey = {
+	'/pixkey/{cpf}': {
 		'get': {
 			'summary': 'Busca dados de uma conta pix',
 			'tags': [
@@ -11,7 +11,7 @@ export const GetPixKeyDetails = {
 			'parameters': [
 				{
 					'in': 'path',
-					'name': 'pixkey',
+					'name': 'cpf',
 					'required': true,
 					'schema': {
 						'type': 'string'
@@ -26,10 +26,6 @@ export const GetPixKeyDetails = {
 							'schema': {
 								'type': 'object',
 								'properties': {
-									'cpf': {
-										'type': 'string',
-										'example': 'string'
-									},
 									'pix_key': {
 										'type': 'string',
 										'example': 'string'

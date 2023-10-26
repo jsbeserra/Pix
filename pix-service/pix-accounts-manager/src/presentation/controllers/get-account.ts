@@ -4,8 +4,8 @@ import handleError from '@main/errors/handleError'
 import { ControllerOperation, HttpRequest, HttpResponse } from '@main/http/ports'
 import { ok } from '@main/http/util'
 
-export class GetAccountController implements ControllerOperation {
-	readonly requiredParams: string[] = [ 'pix_key' ]
+export class GetPixKeyController implements ControllerOperation {
+	readonly requiredParams: string[] = [ 'cpf' ]
 	private usecase: usecase
 	
 	constructor(usecase: usecase) {
@@ -14,7 +14,8 @@ export class GetAccountController implements ControllerOperation {
 
 	async operation(request: HttpRequest): Promise<HttpResponse> {
 		try {
-			const result = await this.usecase.handle(request.params.pix_key)
+			console.log(request)
+			const result = await this.usecase.handle(request.params.cpf)
 			return ok(result)
 		} catch (err: any) {
 			return handleError(err)

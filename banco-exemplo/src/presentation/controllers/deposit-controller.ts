@@ -1,13 +1,13 @@
-import { ApplicationHandle } from '@application/applicationHandle'
+import { ApplicationHandler } from '@application/applicationHandle'
 import handleError from '@main/errors/handleError'
 import { ControllerOperation, HttpRequest, HttpResponse } from '@main/http/ports'
 import { created } from '@main/http/util'
 
 export class DepositController implements ControllerOperation {
 	readonly requiredParams: string[] = [ 'value', 'payer_cpf', 'receiver_cpf']
-	private command: ApplicationHandle
+	private command: ApplicationHandler
 
-	constructor(command: ApplicationHandle) {
+	constructor(command: ApplicationHandler) {
 		this.command = command
 	}
 

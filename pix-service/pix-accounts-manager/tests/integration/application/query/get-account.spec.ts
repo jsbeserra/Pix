@@ -3,7 +3,7 @@ import ICache from '@application/interfaces/data/cache/icache'
 import { IAccountQuery } from '@application/interfaces/data/query/account-query'
 import IAccountRepository from '@application/interfaces/data/repository/iaccount-repository'
 import { IBankRepository } from '@application/interfaces/data/repository/ibank-repository'
-import GetAccount from '@application/query/get-account/get-account'
+import GetPixKey from '@application/query/get-account/get-account'
 import Account from '@domain/entities/account'
 import Bank from '@domain/entities/bank'
 import Cpf from '@domain/value-objects/cpf'
@@ -25,7 +25,7 @@ describe('GetAccount',() => {
 	let accountQuery:IAccountQuery
 	let accountRepository:IAccountRepository
 	let bankRepository: IBankRepository
-	let sut:GetAccount
+	let sut:GetPixKey
 	let cache:ICache
 	let typeormAdpter:ITypeOrmAdpter
 
@@ -38,7 +38,7 @@ describe('GetAccount',() => {
 		accountQuery = new AccountQuery(typeormAdpter)
 		cache = new RedisCacheAdpter()
 		const cacheExpireIn = 60
-		sut = new GetAccount(accountQuery,cache,cacheExpireIn)
+		sut = new GetPixKey(accountQuery,cache,cacheExpireIn)
 	})
 
 	afterEach(async ()=>{

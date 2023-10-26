@@ -1,4 +1,3 @@
-export type OutPutGetAccount = {
-    cpf:string
+export type OutPutGetPixKey = {
     pix_key:string
 }

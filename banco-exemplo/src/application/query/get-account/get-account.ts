@@ -2,20 +2,24 @@ import { IAccountQuery } from '@application/interfaces/data/query/account-query'
 import Cpf from '@domain/value-objects/cpf'
 import { OutPutAccount } from './out-put-get-account'
 import { AccountNotFound } from '@application/errors/shared-errors'
-import { ApplicationHandle } from '@application/applicationHandle'
+import { QueryHandler } from '@application/Handle'
+import { IGatewayPix } from '@application/gateway/pix-gateway'
 
-export default class GetAccount implements ApplicationHandle {
+export default class GetAccount implements QueryHandler<string,OutPutAccount> {
 
-	constructor(private accountQuery:IAccountQuery){}
+	constructor(private accountQuery:IAccountQuery,private gatewayPix:IGatewayPix){}
 
 	async handle(cpf: string): Promise<OutPutAccount> {
 		const _cpf = Cpf.create(cpf)
-		const result = await this.accountQuery.getAccountByCpf(_cpf.value)
-		if (!result) throw new AccountNotFound()
+		const account = await this.accountQuery.getAccountByCpf(_cpf.value)
+		if (!account) throw new AccountNotFound()
+		const pixKey = await this.gatewayPix.getPixKey(account?.cpf)
 		const output:OutPutAccount = {
-			balance:result.balance,
-			name:result.name,
-			pix_key:result.pix_key
+			balance:account.balance,
+			name:account.name,
+			pix_key:pixKey!.pix_key,
+			mother_name: account.mother_name,
+			opening_date: account.opening_date
 		}
 		return output
 	}

@@ -1,13 +1,15 @@
-import { ApplicationHandle } from '@application/applicationHandle'
+import { CommandHandler } from '@application/Handle'
+import { InputTransaction } from '@application/command/transaction/input-transaction'
+import { OutPutTransaction } from '@application/command/transaction/out-put-transaction'
 import handleError from '@main/errors/handleError'
 import { ControllerOperation, HttpRequest, HttpResponse } from '@main/http/ports'
 import { created } from '@main/http/util'
 
 export class TransactionController implements ControllerOperation {
 	readonly requiredParams: string[] = [ 'payer_cpf', 'receiver_pixkey', 'value']
-	private command: ApplicationHandle
+	private command: CommandHandler<InputTransaction,OutPutTransaction>
 
-	constructor(command: ApplicationHandle) {
+	constructor(command: CommandHandler<InputTransaction,OutPutTransaction>) {
 		this.command = command
 	}
 

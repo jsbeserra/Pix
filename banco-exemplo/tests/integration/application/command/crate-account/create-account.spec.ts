@@ -1,6 +1,6 @@
 import CreateAccount from '@application/command/create-account/create-account'
 import { CpfAlreadyRegistered } from '@application/errors/command/create-account'
-import AccountRepositoryPostgresql from '@infra/data/Accout-repository-typeorm'
+import AccountRepositoryPostgreTypeorm from '@infra/data/Accout-repository-typeorm'
 import IAccountRepository from '@application/interfaces/data/repository/iaccount-repository'
 import ITypeOrmAdpter from '@infra/itypeorm-adpter'
 import TypeOrmHelperAdpterMemory from '@test/integration/typeorm/typeorm-adpter-memory'
@@ -15,7 +15,7 @@ describe('CreateAccountCommand',() => {
 	beforeAll(async()=>{
 		databaseConnection = new TypeOrmHelperAdpterMemory()
 		await databaseConnection.connect()
-		accountRepositoryPostgresql = new AccountRepositoryPostgresql(databaseConnection)
+		accountRepositoryPostgresql = new AccountRepositoryPostgreTypeorm(databaseConnection)
 		sut = new CreateAccount(accountRepositoryPostgresql)
 	})
 	

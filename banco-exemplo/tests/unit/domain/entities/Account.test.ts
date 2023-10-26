@@ -1,6 +1,5 @@
 import Account from '@domain/entities/account'
 import { AccountErrorInsufficientFundsDebit, AccountErrorMinimumValue, AccountErrorNegativeValue } from '@domain/errors/entities'
-import { PixKeyMaximumLength, PixKeyMinimumLength } from '@domain/errors/value-objects/pix-key-errors'
 import Cpf from '@domain/value-objects/cpf'
 import DateOfBirth from '@domain/value-objects/date-of-birth'
 import FullName from '@domain/value-objects/full-name'
@@ -69,7 +68,7 @@ describe('Create Account',()=>{
 		const fakeDateOfBirth = '1999-05-15'
 		const openingDate = new Date()
 		const balance = 100
-		const account = Account.restore(fakeCpf,fakeName,fakeMotherName,fakeDateOfBirth,balance,openingDate,true,'fakepixkey')
+		const account = Account.restore(fakeCpf,fakeName,fakeMotherName,fakeDateOfBirth,balance,openingDate,true)
 		expect(account.cpf.value).toBe(fakeCpf)
 		expect(account.name.value).toBe(fakeName)
 		expect(account.motherName.value).toBe(fakeMotherName)
@@ -139,28 +138,5 @@ describe('Account Operations',() => {
 		sut.deposit(depositValue)
 		expect(sut.balance).toBe(50)
 	})
-
-	it('Should create a pix key',() => {
-		const fakePixKey = '125569AAz'
-		sut.createPixKey(fakePixKey)
-		expect(sut.pixKey?.value).toBe(fakePixKey)
-	})
-
-	it('Should fail when creating a piz key with less than 5 characters',() => {
-		const fakePixKey = '125'	
-		expect(()=>sut.createPixKey(fakePixKey)).toThrow(new PixKeyMinimumLength(5))
-	})
-
-	it('should fail when creating a piz key longer than 10 characters',() => {
-		const fakePixKey = '125ASDWERQPTY'	
-		expect(()=>sut.createPixKey(fakePixKey)).toThrow(new PixKeyMaximumLength(10))
-	})
 	
-
-	it('Should remove a pix key',() => {
-		const fakePixKey = 'AAxxccT526'
-		sut.createPixKey(fakePixKey)
-		sut.removePixKey()
-		expect(sut.pixKey).toBeUndefined()
-	})
 })

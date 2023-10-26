@@ -21,7 +21,9 @@
       "knex": "^3.0.1",
       "pg": "^8.11.3",
       "swagger-ui-express": "^5.0.0",
-      "tsconfig-paths": "^4.2.0"
+      "tsconfig-paths": "^4.2.0",
+      "tscpaths": "^0.0.9",
+      "typeorm": "^0.3.17"
    },
    "devDependencies": {
       "@types/jest": "^29.5.5",

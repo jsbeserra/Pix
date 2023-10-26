@@ -1,20 +1,22 @@
-import { ApplicationHandle } from '@application/applicationHandle'
 import handleError from '@main/errors/handleError'
+import { QueryHandler } from '@application/Handle'
 import { ControllerOperation, HttpRequest, HttpResponse } from '@main/http/ports'
 import { ok } from '@main/http/util'
+import { OutPutAccount } from '@application/query/get-account/out-put-get-account'
+
 
 export class GetAccountController implements ControllerOperation {
 	readonly requiredParams: string[] = ['cpf']
-	private command: ApplicationHandle
+	private command: QueryHandler<string,OutPutAccount>
 
-	constructor(command: ApplicationHandle) {
+	constructor(command: QueryHandler<string,OutPutAccount>) {
 		this.command = command
 	}
 
 	async operation(request: HttpRequest): Promise<HttpResponse> {
 		try {
-			const result = await this.command.handle(request.params.cpf)
-			return ok(result)
+			const account = await this.command.handle(request.params.cpf)
+			return ok(account)
 		} catch (err: any) {
 			return handleError(err)
 		}

@@ -1,10 +1,9 @@
 import IAccountRepository from '@application/interfaces/data/repository/iaccount-repository'
 import Account from '@domain/entities/account'
 import Cpf from '@domain/value-objects/cpf'
-import PixKey from '@domain/value-objects/pix-key'
 import ITypeOrmAdpter from '@infra/itypeorm-adpter'
 
-export default class AccountRepositoryPostgresql implements IAccountRepository {
+export default class AccountRepositoryPostgreTypeorm implements IAccountRepository {
 
 	constructor(private typeormAdpter:ITypeOrmAdpter){
 	}
@@ -24,20 +23,6 @@ export default class AccountRepositoryPostgresql implements IAccountRepository {
 		const exist = await this.typeormAdpter.getAccountEntity().findOneBy({cpf:cpf})
 		if (!exist) return false
 		return true
-	}
-    
-	async savePixKey(pixKey: PixKey, cpf: Cpf): Promise<void> {
-		const account = await this.typeormAdpter.getAccountEntity().findOneBy({cpf:cpf.value})
-		if (!account) throw new Error('Account not found')
-		account.pix_key = pixKey.value
-		await this.typeormAdpter.getAccountEntity().save(account)
-	}
-
-	async removePixKey(cpf: Cpf): Promise<void> {
-		const account = await this.typeormAdpter.getAccountEntity().findOneBy({cpf:cpf.value})
-		if (!account) throw new Error('Account not found')
-		account.pix_key = null
-		await this.typeormAdpter.getAccountEntity().save(account)
 	}
 
 	async deposit(cpf: Cpf, deposit: number): Promise<void> {
@@ -67,7 +52,7 @@ export default class AccountRepositoryPostgresql implements IAccountRepository {
 			_account.cpf,_account.name,
 			_account.mother_name,_account.date_of_birth
 			,_account.balance,_account.opening_date,
-			_account.active,_account.pix_key)
+			_account.active)
 	}
 	
 }

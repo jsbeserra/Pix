@@ -1,13 +1,12 @@
-import { ApplicationHandle } from '../../applicationHandle'
 import Cpf from '@domain/value-objects/cpf'
 import IAccountRepository from '@application/interfaces/data/repository/iaccount-repository'
 import { AccountNotFound } from '@application/errors/shared-errors'
 import { IGatewayPix } from '@application/gateway/pix-gateway'
-import { FailedDeleteAccount } from '@application/errors/command/dele-account'
 import { InputDeleteAccount } from './input-delete-account'
+import { CommandHandler } from '@application/Handle'
 
 
-export default class DeleteAccount implements ApplicationHandle {
+export default class DeleteAccount implements CommandHandler<InputDeleteAccount,void> {
 
 	constructor(private repository:IAccountRepository, private gatewayPix:IGatewayPix){}
 
@@ -16,8 +15,8 @@ export default class DeleteAccount implements ApplicationHandle {
 		const account = await this.repository.getAccount(input.cpf)
 		if (!account) throw new AccountNotFound()
 		this.validateDateOfBirth(account.dateOfBirth.value,input.dateOfBirth)
-		if (account.pixKey) await this.sendDeletePixKey(account.pixKey.value)
-		await this.repository.removePixKey(account.cpf)
+		const pixkey = await this.gatewayPix.getPixKey(account.cpf.value)
+		if (pixkey) await this.gatewayPix.deletePixKey(pixkey.pix_key)
 	}
 	
 	private validateInput(input: InputDeleteAccount){
@@ -42,11 +41,6 @@ export default class DeleteAccount implements ApplicationHandle {
 
 	private isValidYear(dateOfBirth:Date,inputDateOfBirth:Date): boolean {
 		return dateOfBirth.getFullYear() === inputDateOfBirth.getFullYear()
-	}
-
-	private async sendDeletePixKey(pixKey:string):Promise<void>{
-		const result = await this.gatewayPix.deletePixKey(pixKey)
-		if (result instanceof Error) throw new FailedDeleteAccount() 
 	}
 
 	private isDateField(dateOfBirth: any): boolean {

@@ -6,8 +6,6 @@ export default class Account extends BaseEntity {
 
 	@Column({ type: 'varchar', length: 11, unique: true, nullable: false }) cpf: string
 
-	@Column({ type: 'varchar', length: 10, unique: true, nullable: true }) pix_key: string
-
 	@Column({ type: 'varchar', length: 255, nullable: false }) name: string
 
 	@Column({ type: 'varchar', length: 255, nullable: false }) mother_name: string

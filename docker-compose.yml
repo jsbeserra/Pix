@@ -1,0 +1,26 @@
+version: '3.7'
+
+services:  
+  postgresdb:
+    container_name: banco-database-1
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: bancoTeste
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 123@Mudar
+    ports:
+      - 5435:5432
+  messager-api:
+    hostname: banco-exemplo
+    container_name: banco-exemplo
+    build:
+      context: ./banco-exemplo
+      dockerfile: Dockerfile
+    # ports:
+    #   - 5055:5055
+    restart: always
+    # networks: 
+    #   - kafka-network
+    # environment:
+    #   - MONGODB_URI=mongodb://admin:admin@mongodbMessages:27017

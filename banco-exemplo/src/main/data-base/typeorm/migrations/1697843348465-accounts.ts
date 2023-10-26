@@ -21,12 +21,6 @@ export class Accounts1697843348465 implements MigrationInterface {
 						isNullable: false,
 					},
 					{
-						name: 'pix_key',
-						type: 'varchar',
-						length: '10',
-						isUnique: true
-					},
-					{
 						name: 'cpf',
 						type: 'varchar',
 						length: '11',

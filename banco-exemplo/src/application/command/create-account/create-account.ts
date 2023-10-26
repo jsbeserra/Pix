@@ -1,4 +1,3 @@
-import { ApplicationHandle } from '../../applicationHandle'
 import { InputCreateAccount } from './input-create-account'
 import Account from '@domain/entities/account'
 import FullName from '@domain/value-objects/full-name'
@@ -6,12 +5,13 @@ import Cpf from '@domain/value-objects/cpf'
 import DateOfBirth from '@domain/value-objects/date-of-birth'
 import { CpfAlreadyRegistered } from '@application/errors/command/create-account'
 import IAccountRepository from '@application/interfaces/data/repository/iaccount-repository'
+import { CommandHandler } from '@application/Handle'
 
-export default class CreateAccount implements ApplicationHandle {
+export default class CreateAccount implements CommandHandler<InputCreateAccount,void> {
 
 	constructor(private repository:IAccountRepository){}
 
-	async handle(input: InputCreateAccount): Promise<any> {
+	async handle(input: InputCreateAccount): Promise<void> {
 		const account = this.createAccount(input)
 		const existsCpf = await this.repository.getAccount(account.cpf.value)
 		if (existsCpf) throw new CpfAlreadyRegistered()

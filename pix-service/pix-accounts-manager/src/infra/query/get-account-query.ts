@@ -5,6 +5,13 @@ export default class AccountQuery implements IAccountQuery{
 	constructor(readonly typeormAdpter:ITypeOrmAdpter){
 	}
 
+	async getAccountByPixCpf(cpf: string): Promise<AccountDto | undefined> {
+		const account = await this.typeormAdpter.getAccountEntity().findOneBy({cpf:cpf})
+		if (!account) return
+		const accountDto:AccountDto = { pix_key:account.pix_key }
+		return accountDto
+	}
+
 	async getAccountByPixKey(pix_key: string): Promise<AccountDto | undefined> {
 		const account = await this.typeormAdpter.getAccountEntity()
 			.createQueryBuilder('account')

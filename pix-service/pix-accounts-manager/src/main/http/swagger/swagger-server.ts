@@ -1,9 +1,9 @@
 import { environment } from '@main/config/config'
 import { PostCreatePixKey } from './routes/post-pix-key-create'
 import { DeletePixKey } from './routes/delete-pix-key-delete'
-import { GetPixKeyDetails } from './routes/get-pix-key-details'
 import { PostBankCreateAccount } from './routes/post-bank-create-account'
 import { GetPixKeyTwoDetails } from './routes/get-pix-key-two-details'
+import { GetPixKey } from './routes/get-pix-key-details'
 
 export const swaggerServer = {
 	'openapi': '3.0.0',
@@ -29,7 +29,7 @@ export const swaggerServer = {
 	'paths': {
 		...PostCreatePixKey,
 		...DeletePixKey,
-		...GetPixKeyDetails,
+		...GetPixKey,
 		...GetPixKeyTwoDetails,
 		...PostBankCreateAccount
 	}

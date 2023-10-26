@@ -3,9 +3,9 @@ import Cpf from '@domain/value-objects/cpf'
 import { InputDeposit } from './input-deposit'
 import { AccountNotFound } from '@application/errors/shared-errors'
 import { DepositMinimumValue } from '@application/errors/command/deposit'
-import { ApplicationHandle } from '@application/applicationHandle'
+import { CommandHandler } from '@application/Handle'
 
-export default class Deposit implements ApplicationHandle{
+export default class Deposit implements CommandHandler<InputDeposit,void>{
 
 	constructor(private repository:IAccountRepository){}
     
@@ -24,10 +24,6 @@ export default class Deposit implements ApplicationHandle{
 
 	private convertToFloat(valeu:number):number {
 		return parseFloat(valeu.toString())
-	}
-
-	private increaseTheBalance (balance:number, deposit:number):number {
-		return this.convertToFloat(balance) + this.convertToFloat(deposit)
 	}
     
 }
