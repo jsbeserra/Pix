@@ -14,7 +14,6 @@ export class GetPixKeyController implements ControllerOperation {
 
 	async operation(request: HttpRequest): Promise<HttpResponse> {
 		try {
-			console.log(request)
 			const result = await this.usecase.handle(request.params.cpf)
 			return ok(result)
 		} catch (err: any) {

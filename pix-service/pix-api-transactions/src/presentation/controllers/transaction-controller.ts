@@ -16,7 +16,6 @@ export class TransactionController implements ControllerOperation {
 
 	async operation(request: HttpRequest): Promise<HttpResponse> {
 		try {
-			console.log(request.body)
 			const result = await this.applicationHandle.handle(request.body)
 			return created(result)
 		} catch (err: any) {

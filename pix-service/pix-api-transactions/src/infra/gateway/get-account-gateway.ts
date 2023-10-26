@@ -7,7 +7,6 @@ export default class GetAccountGateway implements IGatewayAccount{
     
 	async exec(input: InputGateway): Promise<OutPutGateway> {
 		const result = await this.httpClient.get(`${environment.PIX_ACCOUNTS_MANAGER_URL}/pixkey/two/details/${input.payer_pix_key}/${input.receiver_pix_key}`)
-		console.log(result)
 		return result as OutPutGateway
 	}
 	

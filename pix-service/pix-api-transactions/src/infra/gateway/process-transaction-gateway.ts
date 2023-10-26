@@ -8,7 +8,6 @@ export default class ProcessTransactionGateway implements IProcessTransactionGat
 	constructor(private httpClient:HttpClient){}
 
 	async refaund(url: string, body: refaundTransactionPayload): Promise<void | Error> {
-		console.log(body)
 		return await this.httpClient.post(url,body)
 	}
 
