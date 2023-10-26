@@ -13,7 +13,7 @@ export default class Transaction implements CommandHandler<InputTransaction,OutP
 	constructor(private repository:IAccountRepository, private gatewayPix:IGatewayPix){}
 
 	async handle(input: InputTransaction): Promise<OutPutTransaction> {
-		this.validateInput(input)
+		if (this.hasMinimumValue(input.value)) throw new TransactionMinimumValue()
 		const cpf = Cpf.create(input.payer_cpf)
 		const account = await this.repository.getAccount(cpf.value)
 		if (!account) throw new AccountNotFound()
@@ -25,10 +25,6 @@ export default class Transaction implements CommandHandler<InputTransaction,OutP
 		await this.repository.updateBalance(account.cpf,account.balance)
 		return {code:transactionStatus.code, status:transactionStatus.status}
 	} 
-
-	private validateInput(input: InputTransaction){
-		if (this.hasMinimumValue(input.value)) throw new TransactionMinimumValue()
-	}
 	
 	private validateAccountPayer(account:Account,transactionValue:number): void {
 		if (!account) throw new AccountNotFound()

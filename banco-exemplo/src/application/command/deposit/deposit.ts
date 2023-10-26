@@ -21,9 +21,5 @@ export default class Deposit implements CommandHandler<InputDeposit,void>{
 		if (input.value <= 0) throw new DepositMinimumValue()
 		Cpf.isValid(input.receiver_cpf)
 	}
-
-	private convertToFloat(valeu:number):number {
-		return parseFloat(valeu.toString())
-	}
     
 }

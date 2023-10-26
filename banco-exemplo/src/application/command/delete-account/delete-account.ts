@@ -4,6 +4,7 @@ import { AccountNotFound } from '@application/errors/shared-errors'
 import { IGatewayPix } from '@application/gateway/pix-gateway'
 import { InputDeleteAccount } from './input-delete-account'
 import { CommandHandler } from '@application/Handle'
+import { InvalidDateOfBirth } from '@domain/errors/value-objects'
 
 
 export default class DeleteAccount implements CommandHandler<InputDeleteAccount,void> {
@@ -11,26 +12,27 @@ export default class DeleteAccount implements CommandHandler<InputDeleteAccount,
 	constructor(private repository:IAccountRepository, private gatewayPix:IGatewayPix){}
 
 	async handle(input: InputDeleteAccount): Promise<void> {
+		if (!this.isValidDate(input.dateOfBirth)) throw new Error('Invalid date format')
 		const cpf = Cpf.create(input.cpf)
-		this.validateInput(input)
 		const account = await this.repository.getAccount(cpf.value)
 		if (!account) throw new AccountNotFound()
 		this.validateDateOfBirth(account.dateOfBirth.value, new Date(input.dateOfBirth))
 		await this.repository.deleteAccount(account.cpf.value)
-		const pixkeys = await this.gatewayPix.getPixKey(account.cpf.value)
-		for (const key of pixkeys){
-			await this.gatewayPix.deletePixKey(key,account.cpf.value)
-		}
-	}
-	
-	private validateInput(input: InputDeleteAccount){
-		if (!this.isDateField(input.dateOfBirth)) throw new Error('Invalid date format')
+		await this.removePixKey(account.cpf.value)
 	}
 
+	private async removePixKey(cpf:string):Promise<void>{
+		const pixkeys = await this.gatewayPix.getPixKey(cpf)
+		for (const key of pixkeys){
+			await this.gatewayPix.deletePixKey(key,cpf)
+		}
+	}
+
+
 	private validateDateOfBirth(dateOfBirth:Date,inputDateOfBirth:Date) {
-		if (!this.isValidDay(dateOfBirth,inputDateOfBirth)) throw new Error('date provided is different from the registered date')
-		if (!this.isValidMonth(dateOfBirth,inputDateOfBirth)) throw new Error('date provided is different from the registered date')
-		if (!this.isValidYear(dateOfBirth,inputDateOfBirth)) throw new Error('date provided is different from the registered date')
+		if (!this.isValidDay(dateOfBirth,inputDateOfBirth)) throw new InvalidDateOfBirth()
+		if (!this.isValidMonth(dateOfBirth,inputDateOfBirth)) throw new InvalidDateOfBirth()
+		if (!this.isValidYear(dateOfBirth,inputDateOfBirth)) throw new InvalidDateOfBirth()
 	}
     
 	private isValidDay(dateOfBirth:Date,inputDateOfBirth:Date): boolean {
@@ -46,7 +48,7 @@ export default class DeleteAccount implements CommandHandler<InputDeleteAccount,
 		return dateOfBirth.getFullYear() === inputDateOfBirth.getFullYear()
 	}
 
-	private isDateField(dateOfBirth: any): boolean {
+	private isValidDate(dateOfBirth: any): boolean {
 		try {
 			new Date(dateOfBirth)
 			return true
