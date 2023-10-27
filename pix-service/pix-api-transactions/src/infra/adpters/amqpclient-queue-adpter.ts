@@ -1,5 +1,5 @@
-import { ApplicationHandle } from '@application/application-handle'
 import { IQueue } from '@application/interfaces/queue/queue'
+import { usecase } from '@application/usecase'
 import { AMQPClient } from '@cloudamqp/amqp-client'
 
 export default class AMQPClientAdpter implements IQueue {
@@ -27,7 +27,7 @@ export default class AMQPClientAdpter implements IQueue {
 		await queue.publish(messageConvertedToString)
 	}
 
-	async consumer(queueName: string, callback: ApplicationHandle): Promise<void> {
+	async consumer(queueName: string, callback: usecase<any,any>): Promise<void> {
 		const channel = await this.client.channel()
 		const queue = await channel.queue(queueName)
 		await queue.subscribe({},async (message) =>{
