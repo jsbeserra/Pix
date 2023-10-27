@@ -9,13 +9,13 @@ export default class FakeGetAccountGateway implements IGatewayAccount{
 				cpf:'452.931.750-17',
 				pix_key:input.payer_pix_key,
 				url_for_transaction:'http://fake.com',
-				webhook_notification:'http://fake.com'
+				url_for_refund:'http://fake.com'
 			},
 			receiver:{
 				cpf:'828.850.310-18',
 				pix_key:input.receiver_pix_key,
 				url_for_transaction:'http://fake.com',
-				webhook_notification:'http://fake.com'
+				url_for_refund:'http://fake.com'
 			}
 		}
 		return fakeResult

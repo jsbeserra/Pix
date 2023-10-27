@@ -37,13 +37,13 @@ describe('ProcessTransaction',()=>{
 				cpf:'531.263.690-81',
 				pix_key:'asasdeer',
 				url_for_transaction:'http://fake.com',
-				webhook_notification:'http://fake.com'
+				url_for_refund:'http://fake.com'
 			},
 			receiver:{
 				cpf:'725.534.900-54',
 				pix_key:'asasdeer',
 				url_for_transaction:'http://fake.com',
-				webhook_notification:'http://fake.com'
+				url_for_refund:'http://fake.com'
 			},
 			value:500,
 			code:'fakecode'
