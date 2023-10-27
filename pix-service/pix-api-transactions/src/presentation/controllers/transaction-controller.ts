@@ -1,5 +1,5 @@
 
-import handleError from '@main/errors/handleError'
+import errorMapper from '@main/errors/error-mapper'
 import { ControllerOperation, HttpRequest, HttpResponse } from '@infra/http/ports'
 import { created } from '@infra/http/util'
 import { usecase } from '@application/usecase'
@@ -19,7 +19,7 @@ export class TransactionController implements ControllerOperation {
 			const result = await this.applicationHandle.handle(request.body)
 			return created(result)
 		} catch (err: any) {
-			return handleError(err)
+			return errorMapper(err)
 		}
 	}
 

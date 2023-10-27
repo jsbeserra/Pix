@@ -1,7 +1,5 @@
-import { ApplicationError } from '@application/errors/application-errors'
 
-
-export class GatewayError extends ApplicationError {
+export class GatewayError extends Error {
 	public readonly name = 'Gateway Error'
 	constructor () {
 		super('Failure to perform transfer')

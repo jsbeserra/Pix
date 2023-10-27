@@ -5,7 +5,7 @@ import { PostTransaction } from './routes/post-transaction'
 export const swaggerServer = {
 	'openapi': '3.0.0',
 	'info': {
-		'title': 'API de Transferencias Bancarias',
+		'title': 'API de transferencias pix',
 		'version': '1.0.0',
 		'description': 'Documentação da API Transferencias Bancarias'
 	},

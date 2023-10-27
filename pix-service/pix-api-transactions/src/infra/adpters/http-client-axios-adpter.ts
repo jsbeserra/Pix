@@ -19,7 +19,7 @@ export default class AxiosClientAdapter implements HttpClient {
 		} catch (err: any) {
 			console.log(err.message)
 			if (err.code === 'ECONNREFUSED') throw new HttpClientECONNREFUSED()
-			throw new HttpClientErrorInfra(err.response)
+			throw new HttpClientErrorInfra(err.response.data.message)
 		}
 	}
 
@@ -29,8 +29,8 @@ export default class AxiosClientAdapter implements HttpClient {
 			return response.data
 		} catch (err: any) {
 			console.log(err.message)
-			if (err.code === 'ECONNREFUSED') return new HttpClientECONNREFUSED()
-			throw new HttpClientErrorInfra(err.response.data)
+			if (err.code === 'ECONNREFUSED') throw new HttpClientECONNREFUSED()
+			throw new HttpClientErrorInfra(err.response.data.message)
 		}
 	}
 
