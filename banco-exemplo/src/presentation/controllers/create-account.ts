@@ -1,6 +1,6 @@
 import { CommandHandler } from '@application/Handle'
 import { InputCreateAccount } from '@application/command/create-account/input-create-account'
-import handleError from '@main/errors/handleError'
+import errorMapper from '@main/errors/error-mapper'
 import { ControllerOperation, HttpRequest, HttpResponse } from '@main/http/ports'
 import { created } from '@main/http/util'
 
@@ -17,7 +17,7 @@ export class CreateAccountController implements ControllerOperation {
 			await this.command.handle(request.body)
 			return created()
 		} catch (err: any) {
-			return handleError(err)
+			return errorMapper(err)
 		}
 	}
 

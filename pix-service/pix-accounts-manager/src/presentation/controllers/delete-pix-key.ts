@@ -1,7 +1,7 @@
 
 import { InputDeletePixAccount } from '@application/usecase/delete-pix-key/input-delete-pix-key'
 import { usecase } from '@application/usecase/usecase'
-import handleError from '@main/errors/handleError'
+import handleError from '@main/errors/error-mapper'
 import { ControllerOperation, HttpRequest, HttpResponse } from '@main/http/ports'
 import { created } from '@main/http/util'
 

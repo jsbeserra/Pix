@@ -1,6 +1,6 @@
 import { CommandHandler } from '@application/Handle'
 import { InputDeletePixKey } from '@application/command/delete-pix-key/input-create-cpf'
-import handleError from '@main/errors/handleError'
+import errorMapper from '@main/errors/error-mapper'
 import { ControllerOperation, HttpRequest, HttpResponse } from '@main/http/ports'
 import { ok } from '@main/http/util'
 
@@ -17,7 +17,7 @@ export class DeletePixKeyController implements ControllerOperation {
 			await this.command.handle(request.params)
 			return ok()
 		} catch (err: any) {
-			return handleError(err)
+			return errorMapper(err)
 		}
 	}
 

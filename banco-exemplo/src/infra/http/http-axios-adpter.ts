@@ -18,9 +18,8 @@ export default class AxiosAdapter implements HttpClient {
 			const response = await this.apiAxios.get(url)
 			return response.data
 		} catch (err: any) {
-			console.log(err)
 			if (err.code === 'ECONNREFUSED') throw new HttpClientECONNREFUSED()
-			throw new HttpClientErrorInfra(err.response)
+			throw new HttpClientErrorInfra(err.response.data.message)
 		}
 	}
 
@@ -29,9 +28,8 @@ export default class AxiosAdapter implements HttpClient {
 			const response = await this.apiAxios.post(url, body)
 			return response.data
 		} catch (err: any) {
-			console.log(err)
 			if (err.code === 'ECONNREFUSED') throw new HttpClientECONNREFUSED()
-			throw new HttpClientErrorInfra(err.response.data)
+			throw new HttpClientErrorInfra(err.response.data.message)
 		}
 	}
 
@@ -41,7 +39,7 @@ export default class AxiosAdapter implements HttpClient {
 			return response.data
 		} catch (err: any) {
 			if (err.code === 'ECONNREFUSED') throw new HttpClientECONNREFUSED()
-			throw new HttpClientErrorInfra(err.response.data)
+			throw new HttpClientErrorInfra(err.response.data.message)
 		}
 	}
 
@@ -51,7 +49,7 @@ export default class AxiosAdapter implements HttpClient {
 			return response.data
 		} catch (err: any) {
 			if (err.code === 'ECONNREFUSED') return new HttpClientECONNREFUSED()
-			throw new HttpClientErrorInfra(err.response.data)
+			throw new HttpClientErrorInfra(err.response.data.message)
 		}
 	}
 }

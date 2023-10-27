@@ -1,7 +1,7 @@
 
 import InputCreateAccountBank from '@application/usecase/create-account-bank/input-create-account-ban'
 import { usecase } from '@application/usecase/usecase'
-import handleError from '@main/errors/handleError'
+import handleError from '@main/errors/error-mapper'
 import { ControllerOperation, HttpRequest, HttpResponse } from '@main/http/ports'
 import { created } from '@main/http/util'
 

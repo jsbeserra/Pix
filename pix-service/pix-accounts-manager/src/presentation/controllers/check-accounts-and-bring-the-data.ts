@@ -1,7 +1,7 @@
 import { InputcheckAccountsAndBringTheData } from '@application/usecase/check-accounts-and-bring-the-data/input-check-accounts-and-bring-the-data'
 import { OutPutcheckAccountsAndBringTheData } from '@application/usecase/check-accounts-and-bring-the-data/output-check-accounts-and-bring-the-data'
 import { usecase } from '@application/usecase/usecase'
-import handleError from '@main/errors/handleError'
+import handleError from '@main/errors/error-mapper'
 import { ControllerOperation, HttpRequest, HttpResponse } from '@main/http/ports'
 import { ok } from '@main/http/util'
 

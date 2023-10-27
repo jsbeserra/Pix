@@ -1,13 +1,15 @@
-import { ApplicationHandler } from '@application/applicationHandle'
-import handleError from '@main/errors/handleError'
+
+import { CommandHandler } from '@application/Handle'
+import { InputDeposit } from '@application/command/deposit/input-deposit'
+import errorMapper from '@main/errors/error-mapper'
 import { ControllerOperation, HttpRequest, HttpResponse } from '@main/http/ports'
 import { created } from '@main/http/util'
 
 export class DepositController implements ControllerOperation {
 	readonly requiredParams: string[] = [ 'value', 'payer_cpf', 'receiver_cpf']
-	private command: ApplicationHandler
+	private command: CommandHandler<InputDeposit,void>
 
-	constructor(command: ApplicationHandler) {
+	constructor(command: CommandHandler<InputDeposit,void>) {
 		this.command = command
 	}
 
@@ -16,7 +18,7 @@ export class DepositController implements ControllerOperation {
 			const result = await this.command.handle(request.body)
 			return created(result)
 		} catch (err: any) {
-			return handleError(err)
+			return errorMapper(err)
 		}
 	}
 

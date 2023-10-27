@@ -8,7 +8,7 @@ import { GetPixKey } from './routes/get-pix-key-details'
 export const swaggerServer = {
 	'openapi': '3.0.0',
 	'info': {
-		'title': 'PIX ACCOUNTS MANAGER API',
+		'title': 'Api de contas pix',
 		'version': '1.0.0',
 		'description': 'API de Gestão De Contas Pix'
 	},

@@ -1,4 +1,4 @@
-import handleError from '@main/errors/handleError'
+import errorMapper from '@main/errors/error-mapper'
 import { QueryHandler } from '@application/Handle'
 import { ControllerOperation, HttpRequest, HttpResponse } from '@main/http/ports'
 import { ok } from '@main/http/util'
@@ -18,7 +18,7 @@ export class GetAccountController implements ControllerOperation {
 			const account = await this.command.handle(request.params.cpf)
 			return ok(account)
 		} catch (err: any) {
-			return handleError(err)
+			return errorMapper(err)
 		}
 	}
 
