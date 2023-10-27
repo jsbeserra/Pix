@@ -15,7 +15,7 @@ export default class ProcessTransaction implements usecase<payloadTransactionQue
 			await this.executeTransaction(input)
 			await this.transactionRepository.updateStatus(input.code,'success')
 		} catch (error) {
-			await this.sendRefound(input)
+			await this.executeRefound(input)
 		}	
 	}
 
@@ -27,7 +27,7 @@ export default class ProcessTransaction implements usecase<payloadTransactionQue
 		})	
 	}
 
-	private async sendRefound(input:payloadTransactionQueue): Promise<void> {
+	private async executeRefound(input:payloadTransactionQueue): Promise<void> {
 		await this.processTransactionGateway.refaund(input.payer.url_for_refund,{
 			cpf:input.payer.cpf,
 			code:input.code,
